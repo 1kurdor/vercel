@@ -1,0 +1,2792 @@
+<!DOCTYPE html>
+
+<html lang="ckb">
+<head>
+    <meta charset="UTF-8">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0a2a5e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="سیخوڕ">
+    <link rel="apple-touch-icon" href="assets/image/sikhur.jpg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>سیخوڕ | Sikhur</title>
+    <link rel="icon" type="image/png" href="assets/image/sikhur.jpg">
+    <style>
+        @font-face {
+            font-family: 'Rabar';
+            src: url('assets/fonts/Rabar.ttf') format('truetype');
+            font-weight: normal; font-style: normal; font-display: swap;
+        }
+        @font-face {
+            font-family: 'Rabar';
+            src: url('assets/fonts/Rabar-bold.ttf') format('truetype');
+            font-weight: bold; font-style: normal; font-display: swap;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        * { -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; }
+        input, textarea { -webkit-user-select:text; -moz-user-select:text; -ms-user-select:text; user-select:text; }
+        html { font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif; }
+        *, *::before, *::after { font-family:inherit; }
+        button, input, select, textarea, a {
+            font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif !important;
+            -webkit-appearance:none;
+        }
+    body {
+        font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif !important;
+        background:linear-gradient(145deg,#e6f0ff 0%,#f0f7ff 100%);
+        min-height:100vh; display:flex; justify-content:center; align-items:center;
+        direction:rtl; padding:12px; position:relative;
+    }
+    .game-container {
+        width:100%; max-width:420px;
+        background:rgba(255,255,255,0.85);
+        backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+        border-radius:36px; padding:24px 20px 20px 20px;
+        box-shadow:0 15px 30px rgba(0,100,255,0.1),0 5px 15px rgba(255,200,0,0.1);
+        position:relative; overflow:hidden;
+        border:1px solid rgba(255,215,0,0.2); margin-bottom:10px;
+    }
+    .game-container::before {
+        content:""; position:absolute; top:-50px; right:-50px; width:200px; height:200px;
+        background:radial-gradient(circle,rgba(0,150,255,0.1),transparent 70%);
+        border-radius:50%; z-index:0;
+    }
+    .game-container::after {
+        content:""; position:absolute; bottom:-50px; left:-50px; width:200px; height:200px;
+        background:radial-gradient(circle,rgba(255,215,0,0.1),transparent 70%);
+        border-radius:50%; z-index:0;
+    }
+    .content { position:relative; z-index:2; }
+
+h2 {
+font-size:1.6rem; text-align:center; margin-bottom:18px;
+color:#0066cc; position:relative; padding-bottom:8px; font-weight:500;
+}
+h2::after {
+content:””; position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+width:50px; height:2px;
+background:linear-gradient(90deg,#0066cc,#ffcc00); border-radius:2px;
+}
+
+.animated-icon { text-align:center; margin:10px 0 20px 0; }
+.game-icon {
+width:300px; height:auto;
+animation:gentlePulse 2.5s infinite ease-in-out;
+filter:drop-shadow(0 8px 15px rgba(0,102,204,0.4));
+border-radius:30px; transition:all 0.3s ease; cursor:pointer;
+}
+.game-icon:hover { animation:none; transform:scale(1.05); filter:drop-shadow(0 0 20px #ffcc00); }
+@keyframes gentlePulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+
+.how-to-play-link {
+text-align:center; margin:5px 0 15px 0; font-size:1rem;
+color:#666; cursor:pointer; text-decoration:underline; transition:color 0.2s;
+}
+.how-to-play-link:hover { color:#0066cc; }
+
+.btn {
+width:100%; padding:16px 20px; border:none; border-radius:40px;
+font-size:1.2rem; font-weight:500; cursor:pointer; transition:all 0.2s;
+margin:10px 0; font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+box-shadow:0 4px 10px rgba(0,102,204,0.1);
+}
+.btn-blue  { background:linear-gradient(135deg,#0066cc,#0099ff); color:white; box-shadow:0 4px 0 #003366; }
+.btn-blue:hover:not(:disabled)  { transform:translateY(-2px); box-shadow:0 6px 0 #003366; }
+.btn-blue:disabled { background:linear-gradient(135deg,#aaa,#ccc); box-shadow:0 4px 0 #888; cursor:not-allowed; opacity:0.7; }
+.btn-red   { background:linear-gradient(135deg,#ff4444,#cc0000); color:white; box-shadow:0 4px 0 #990000; }
+.btn-red:hover   { transform:translateY(-2px); box-shadow:0 6px 0 #990000; }
+.btn-yellow{ background:linear-gradient(135deg,#ffcc00,#ffaa00); color:#1a2a3a; box-shadow:0 4px 0 #996600; }
+.btn-yellow:hover{ transform:translateY(-2px); box-shadow:0 6px 0 #996600; }
+.btn-secondary { background:white; color:#0066cc; border:1px solid #ffcc00; }
+
+.counter-container {
+display:flex; justify-content:center; align-items:center; gap:15px;
+margin:20px 0; background:white; padding:12px; border-radius:50px;
+box-shadow:0 4px 10px rgba(0,102,204,0.05); border:1px solid rgba(255,204,0,0.2);
+}
+.counter-btn {
+width:45px; height:45px; border-radius:25px;
+background:linear-gradient(135deg,#0066cc,#0099ff);
+border:none; font-size:1.8rem; font-weight:500; color:white; cursor:pointer;
+box-shadow:0 4px 8px rgba(0,102,204,0.2); transition:all 0.2s;
+display:flex; justify-content:center; align-items:center;
+}
+.counter-btn:active { transform:scale(0.95); }
+.counter-value { font-size:2.5rem; font-weight:500; color:#0066cc; min-width:60px; text-align:center; }
+
+.player-input {
+width:100%; padding:14px 18px; margin:8px 0;
+border:1px solid rgba(0,102,204,0.2); border-radius:40px;
+background:white; font-size:1rem; text-align:right; direction:rtl;
+font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+transition:all 0.2s; box-shadow:0 2px 5px rgba(0,0,0,0.02);
+}
+.player-input:focus { outline:none; border-color:#ffcc00; box-shadow:0 0 0 3px rgba(255,204,0,0.1); }
+.player-input::placeholder { color:#99b8d9; font-size:0.95rem; }
+
+.card {
+background:white; border-radius:32px; padding:40px 20px; margin:18px 0;
+text-align:center; transition:all 0.3s;
+animation:gentleFade 0.4s ease; border:2px solid #0066cc;
+box-shadow:0 15px 30px rgba(0,102,204,0.1);
+touch-action:pan-x;
+}
+@keyframes gentleFade { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+.player-name { font-size:2rem; color:#0066cc; margin-bottom:20px; font-weight:500; }
+.tap-message {
+font-size:1.1rem; color:#666; margin:25px 0; background:#f5f9ff;
+padding:12px 20px; border-radius:40px; display:inline-block;
+border:1px solid rgba(255,204,0,0.2);
+}
+.role-icon { font-size:4rem; margin-bottom:15px; animation:gentleBounce 0.4s ease; }
+@keyframes gentleBounce { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+
+.card-spy-revealed {
+background:linear-gradient(145deg,rgba(255,68,68,0.25),rgba(204,0,0,0.25));
+color:white; border:2px solid #ffcc00;
+box-shadow:0 15px 30px rgba(255,0,0,0.15); cursor:default;
+padding:40px 20px; border-radius:32px; text-align:center; backdrop-filter:blur(2px);
+}
+.card-civilian-revealed {
+background:linear-gradient(145deg,rgba(0,204,102,0.25),rgba(0,153,77,0.25));
+color:white; border:2px solid #ffcc00;
+box-shadow:0 15px 30px rgba(0,204,0,0.15); cursor:default;
+padding:40px 20px; border-radius:32px; text-align:center; backdrop-filter:blur(2px);
+}
+.card-spy-revealed .player-name, .card-civilian-revealed .player-name { color:white; }
+.card-spy-revealed .tap-message, .card-civilian-revealed .tap-message { background:rgba(255,255,255,0.2); color:white; }
+
+.word-display {
+font-size:3rem; font-weight:bold; padding:20px 30px;
+border-radius:40px; display:inline-block; margin:15px 0;
+}
+.card-spy-revealed .word-display, .card-civilian-revealed .word-display { background:rgba(0,0,0,0.2); color:#2E6F40; }
+.card-white-revealed {
+background:white; color:#333; border:2px solid #0066cc;
+box-shadow:0 15px 30px rgba(0,102,204,0.1); cursor:default;
+padding:40px 20px; border-radius:32px; text-align:center;
+}
+.card-white-revealed .word-display { background:#f0f7ff; color:#00AA00; border:2px solid #ffcc00; }
+
+.waiting-turn-box {
+background:linear-gradient(145deg,#f0f7ff,#e6f0ff);
+border:2px solid #0066cc; border-radius:32px;
+padding:40px 20px; text-align:center; margin:18px 0;
+animation:gentleFade 0.4s ease;
+}
+.waiting-turn-box .wt-icon { font-size:4rem; margin-bottom:15px; }
+.waiting-turn-box .wt-name { font-size:1.8rem; color:#0066cc; font-weight:500; margin:10px 0; }
+.waiting-turn-box .wt-msg  { font-size:1rem; color:#666; }
+
+.progress {
+background:white; padding:12px; border-radius:40px; text-align:center;
+margin:18px 0; font-size:1rem; color:#0066cc; font-weight:500;
+border:1px solid rgba(255,204,0,0.2); box-shadow:0 2px 5px rgba(0,102,204,0.05);
+}
+.starter-box {
+background:linear-gradient(135deg,#0066cc,#0099ff); color:white;
+padding:25px; border-radius:40px; margin:20px 0; text-align:center;
+border:3px solid #ffcc00; box-shadow:0 10px 20px rgba(0,102,204,0.3);
+}
+.starter-name { font-size:2.5rem; font-weight:bold; margin:10px 0; color:#ffcc00; }
+.starter-message { font-size:1.3rem; margin-bottom:10px; }
+
+.reveal-btn {
+background:linear-gradient(135deg,#ffcc00,#ffaa00); color:#1a2a3a;
+font-size:1.3rem; padding:18px; border-radius:40px; border:none;
+width:100%; margin:20px 0; cursor:pointer; box-shadow:0 4px 0 #996600;
+transition:all 0.3s; font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif; font-weight:bold;
+}
+.reveal-btn:hover { transform:translateY(-2px); box-shadow:0 6px 0 #996600; }
+
+.reveal-card {
+background:linear-gradient(145deg,#1a1a1a,#333333); border:3px solid #ffcc00;
+border-radius:32px; padding:30px 20px; text-align:center;
+animation:gentleReveal 0.5s ease; box-shadow:0 20px 40px rgba(0,0,0,0.3); margin:20px 0;
+}
+@keyframes gentleReveal { from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)} }
+.reveal-card .role-icon { font-size:5rem; }
+.person-name { font-size:2.2rem; margin:15px 0; font-weight:500; color:#ffcc00; }
+
+.results-container { background:#f8fbff; border-radius:32px; padding:20px; margin:20px 0; border:1px solid rgba(255,204,0,0.2); }
+.player-result {
+display:flex; justify-content:space-between; align-items:center;
+padding:14px 18px; margin:6px 0; background:white; border-radius:30px;
+font-size:1.1rem; border:1px solid rgba(0,102,204,0.1);
+}
+.spy-badge      { background:linear-gradient(135deg,#ff4444,#cc0000); color:white; padding:6px 18px; border-radius:30px; font-size:1rem; }
+.civilian-badge { background:linear-gradient(135deg,#00cc66,#00994d); color:white; padding:6px 18px; border-radius:30px; font-size:1rem; }
+.different-badge{ background:linear-gradient(135deg,#ff4444,#cc0000); color:white; padding:6px 18px; border-radius:30px; font-size:1rem; }
+.normal-badge   { background:linear-gradient(135deg,#0066cc,#0099ff); color:white; padding:6px 18px; border-radius:30px; font-size:1rem; }
+
+.hidden { display:none !important; }
+.welcome-text { color:#4a5a6a; text-align:center; margin:15px 0 25px 0; font-size:1.1rem; line-height:1.5; }
+.word-box { background:white; border:2px solid #ffcc00; border-radius:32px; padding:20px; margin:15px 0; text-align:center; }
+.word-value          { color:#333;   font-size:2.5rem; font-weight:bold; }
+.word-value-different{ color:#cc0000; font-size:2.5rem; font-weight:bold; }
+
+.game-modal {
+position:fixed; top:0; left:0; right:0; bottom:0; width:100vw; height:100vh;
+background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); z-index:10000;
+display:flex; justify-content:center; align-items:center; padding:20px;
+}
+.game-modal-content {
+background:white; border-radius:48px; padding:35px 25px;
+max-width:380px; width:100%; text-align:center;
+box-shadow:0 30px 60px rgba(0,0,0,0.5); border:3px solid #ffcc00; animation:modalPop 0.3s ease;
+}
+@keyframes modalPop { from{opacity:0;transform:scale(0.8)} to{opacity:1;transform:scale(1)} }
+.game-modal-icon { font-size:5rem; margin-bottom:15px; }
+.game-modal-title { font-size:2rem; font-weight:bold; margin-bottom:20px; }
+.game-modal-title.blue { color:#0066cc; }
+.game-modal-title.red  { color:#cc0000; }
+.game-modal-text {
+font-size:1.3rem; line-height:1.6; color:#333; margin:20px 0; padding:15px;
+background:#f5f9ff; border-radius:30px; border:1px solid #ffcc00; text-align:right;
+}
+.game-modal-buttons { display:flex; gap:10px; margin-top:20px; }
+.game-modal-btn {
+flex:1; padding:16px; border:none; border-radius:40px;
+font-size:1.2rem; font-weight:500; cursor:pointer; transition:all 0.2s;
+font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+}
+.game-modal-btn.confirm { background:linear-gradient(135deg,#00cc66,#00994d); color:white; box-shadow:0 4px 0 #006633; }
+.game-modal-btn.confirm:hover { transform:translateY(-2px); box-shadow:0 6px 0 #006633; }
+.game-modal-btn.cancel  { background:white; color:#666; border:2px solid #ccc; box-shadow:0 4px 0 #999; }
+.game-modal-btn.cancel:hover { transform:translateY(-2px); box-shadow:0 6px 0 #999; }
+
+.how-to-play-modal {
+position:fixed; top:0; left:0; right:0; bottom:0; width:100vw; height:100vh;
+background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); z-index:10001;
+display:flex; justify-content:center; align-items:center; padding:20px;
+}
+.how-to-play-content {
+background:white; border-radius:48px; padding:30px 25px;
+max-width:380px; width:100%; text-align:center;
+box-shadow:0 30px 60px rgba(0,0,0,0.5); border:3px solid #ffcc00; animation:modalPop 0.3s ease;
+}
+.how-to-play-option {
+width:100%; padding:20px; margin:10px 0; border:none; border-radius:40px;
+font-size:1.3rem; font-weight:500; cursor:pointer; transition:all 0.2s;
+font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+}
+.how-to-play-option.blue { background:linear-gradient(135deg,#0066cc,#0099ff); color:white; box-shadow:0 4px 0 #003366; }
+.how-to-play-option.red  { background:linear-gradient(135deg,#ff4444,#cc0000); color:white; box-shadow:0 4px 0 #990000; }
+.how-to-play-option:hover { transform:translateY(-2px); }
+.how-to-play-close {
+margin-top:15px; padding:12px; background:#f0f0f0; border:none;
+border-radius:40px; font-size:1.1rem; cursor:pointer; width:100%;
+font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+}
+
+.welcome-notification{
+position:fixed; top:18px; left:50%; transform:translateX(-50%);
+background:linear-gradient(135deg,#0f4c81,#1976d2); color:#ffffff;
+padding:12px 20px; border-radius:14px; font-size:0.95rem; font-weight:500;
+text-align:center; direction:rtl; max-width:85%; white-space:nowrap;
+box-shadow:0 8px 22px rgba(0,0,0,0.18); border:1px solid rgba(255,255,255,0.25);
+backdrop-filter:blur(6px); z-index:20000; cursor:pointer; pointer-events:auto;
+animation:slideDown 0.45s ease, fadeOut 0.45s ease 4.5s forwards;
+}
+@keyframes slideDown{
+from{ top:-60px; opacity:0; transform:translateX(-50%) scale(0.95); }
+to{ top:18px; opacity:1; transform:translateX(-50%) scale(1); }
+}
+@keyframes fadeOut{
+to{ opacity:0; transform:translateX(-50%) translateY(-10px); visibility:hidden; }
+}
+
+.nickname-big-icon { text-align:center; font-size:5rem; margin:10px 0 5px; }
+
+.mode-pick-pair { display:flex; gap:12px; margin:15px 0; }
+.mode-pick-big {
+flex:1; padding:22px 10px; border:none; border-radius:40px;
+font-size:1.2rem; font-weight:500; cursor:pointer; transition:all 0.2s;
+font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif; line-height:1.6;
+}
+.mode-pick-big.spy  { background:linear-gradient(135deg,#0066cc,#0099ff); color:white; box-shadow:0 4px 0 #003366; }
+.mode-pick-big.diff { background:linear-gradient(135deg,#ff4444,#cc0000); color:white; box-shadow:0 4px 0 #990000; }
+.mode-pick-big:hover { transform:translateY(-2px); }
+
+.room-code-box {
+background:linear-gradient(135deg,#0066cc,#0099ff); color:white;
+border-radius:32px; padding:20px; text-align:center; margin:12px 0;
+border:3px solid #ffcc00; box-shadow:0 10px 20px rgba(0,102,204,0.25);
+}
+.room-code-label { font-size:0.95rem; opacity:0.85; margin-bottom:6px; }
+.room-code-value { font-size:3rem; font-weight:bold; color:#ffcc00; letter-spacing:8px; }
+.copy-hint { font-size:0.82rem; opacity:0.7; margin-top:6px; cursor:pointer; text-decoration:underline; }
+
+.players-box {
+background:white; border-radius:28px; padding:14px; margin:10px 0;
+border:1px solid rgba(255,204,0,0.3);
+}
+.players-box-title { color:#0066cc; font-size:0.9rem; text-align:center; margin-bottom:8px; }
+.waiting-row {
+display:flex; align-items:center; gap:10px;
+padding:9px 14px; margin:4px 0; background:#f5f9ff; border-radius:30px;
+font-size:1rem; color:#333;
+}
+.waiting-row .wr-name { flex:1; }
+.online-dot { width:10px; height:10px; background:#00cc66; border-radius:50%; flex-shrink:0; }
+
+.ready-btn {
+padding:6px 14px; border:none; border-radius:30px; font-size:0.85rem;
+cursor:pointer; transition:all 0.2s; flex-shrink:0;
+font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+background:linear-gradient(135deg,#0066cc,#0099ff); color:white;
+box-shadow:0 3px 0 #003366;
+}
+.ready-btn:hover { transform:translateY(-1px); }
+.ready-btn.is-ready { background:linear-gradient(135deg,#00cc66,#00994d); box-shadow:0 3px 0 #006633; cursor:default; }
+.ready-check { color:#00cc66; font-size:1.2rem; flex-shrink:0; }
+
+.ready-count-msg {
+text-align:center; font-size:0.9rem; color:#666;
+margin:-4px 0 8px 0; padding:8px 16px;
+background:#f5f9ff; border-radius:30px; border:1px solid rgba(255,204,0,0.2);
+}
+
+.online-mode-row { display:flex; gap:10px; margin:10px 0; }
+.online-mode-btn {
+flex:1; padding:15px 8px; border:none; border-radius:40px;
+font-size:1.1rem; font-weight:500; cursor:pointer; transition:all 0.2s;
+font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+}
+.online-mode-btn.spy  { background:linear-gradient(135deg,#0066cc,#0099ff); color:white; box-shadow:0 4px 0 #003366; }
+.online-mode-btn.diff { background:linear-gradient(135deg,#ff4444,#cc0000); color:white; box-shadow:0 4px 0 #990000; }
+.online-mode-btn:hover { transform:translateY(-2px); }
+.online-mode-btn.selected { outline:4px solid #ffcc00; outline-offset:2px; }
+
+.voice-bar {
+display:flex; align-items:center; gap:12px; background:white;
+border-radius:40px; padding:10px 18px; margin:10px 0;
+border:1px solid rgba(255,204,0,0.3); box-shadow:0 2px 8px rgba(0,102,204,0.05);
+}
+.mic-btn { width:46px; height:46px; border-radius:23px; border:none; font-size:1.4rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; flex-shrink:0; }
+.mic-btn.on  { background:linear-gradient(135deg,#00cc66,#00994d); box-shadow:0 3px 0 #006633; }
+.mic-btn.off { background:linear-gradient(135deg,#aaaaaa,#888888); box-shadow:0 3px 0 #555; }
+.voice-label { font-size:0.9rem; color:#555; flex:1; }
+.speak-bars { display:flex; gap:3px; align-items:flex-end; height:22px; }
+.speak-bar { width:4px; background:#00cc66; border-radius:2px; animation:speakAnim 0.5s infinite ease-in-out; }
+.speak-bar:nth-child(2){ animation-delay:0.15s; }
+.speak-bar:nth-child(3){ animation-delay:0.3s; }
+@keyframes speakAnim { 0%,100%{height:4px} 50%{height:20px} }
+
+.chat-box {
+background:white; border-radius:28px; border:1px solid rgba(0,102,204,0.12);
+height:185px; overflow-y:auto; padding:10px 12px; margin:8px 0;
+display:flex; flex-direction:column; gap:6px; scroll-behavior:smooth;
+}
+.bubble { padding:8px 14px; border-radius:22px; font-size:0.95rem; max-width:82%; word-break:break-word; direction:rtl; }
+.bubble.me    { background:linear-gradient(135deg,#0066cc,#0099ff); color:white; align-self:flex-end; border-bottom-right-radius:6px; }
+.bubble.other { background:#f0f7ff; color:#333; align-self:flex-start; border-bottom-left-radius:6px; border:1px solid rgba(0,102,204,0.1); }
+.bubble .bname{ font-size:0.75rem; opacity:0.65; margin-bottom:2px; }
+.bubble.system{ background:transparent; color:#aaa; font-size:0.8rem; align-self:center; text-align:center; max-width:100%; }
+
+.chat-row { display:flex; gap:8px; margin-top:6px; align-items:center; }
+.chat-row input { flex:1; margin:0; }
+.send-btn {
+width:50px; height:50px; border-radius:25px;
+background:linear-gradient(135deg,#0066cc,#0099ff);
+border:none; color:white; font-size:1.3rem; cursor:pointer;
+display:flex; align-items:center; justify-content:center; flex-shrink:0;
+box-shadow:0 4px 0 #003366; transition:all 0.2s;
+}
+.send-btn:hover { transform:translateY(-2px); }
+
+.leave-btn-small {
+background:linear-gradient(135deg,#ff4444,#cc0000); color:white;
+border:none; border-radius:30px; padding:7px 14px; font-size:0.82rem;
+cursor:pointer; font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+box-shadow:0 3px 0 #990000; transition:all 0.2s;
+}
+.leave-btn-small:hover { transform:translateY(-1px); }
+.lobby-top-bar { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+
+.vote-timer-box {
+background:linear-gradient(135deg,#0066cc,#0099ff); color:white;
+border-radius:32px; padding:16px; text-align:center; margin:10px 0; border:3px solid #ffcc00;
+}
+.vote-timer-label { font-size:0.9rem; opacity:0.85; }
+.vote-timer-value { font-size:3rem; font-weight:bold; color:#ffcc00; }
+.vote-timer-value.urgent { color:#ff4444; animation:urgentPulse 0.5s infinite; }
+@keyframes urgentPulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+.vote-row {
+display:flex; align-items:center; gap:10px;
+padding:12px 16px; margin:6px 0; background:white; border-radius:30px;
+border:2px solid rgba(0,102,204,0.15); transition:all 0.2s; cursor:pointer;
+}
+.vote-row:hover:not(.voted):not(.cant-vote) { border-color:#0066cc; background:#f0f7ff; }
+.vote-row.selected { border-color:#ffcc00 !important; background:linear-gradient(135deg,rgba(255,204,0,0.15),rgba(255,170,0,0.1)) !important; }
+.vote-name { flex:1; font-size:1.1rem; color:#333; }
+.vote-count-badge { background:linear-gradient(135deg,#0066cc,#0099ff); color:white; border-radius:20px; padding:4px 14px; font-size:0.9rem; min-width:32px; text-align:center; }
+.vote-confirm-btn {
+width:100%; padding:16px; border:none; border-radius:40px; margin-top:8px;
+background:linear-gradient(135deg,#ffcc00,#ffaa00); color:#1a2a3a;
+font-size:1.2rem; font-weight:500; cursor:pointer; box-shadow:0 4px 0 #996600;
+transition:all 0.2s; font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+}
+.vote-confirm-btn:hover:not(:disabled) { transform:translateY(-2px); }
+.vote-confirm-btn:disabled { opacity:0.5; cursor:not-allowed; }
+.vote-status-msg { text-align:center; font-size:0.9rem; color:#666; margin:8px 0; padding:8px 16px; background:#f5f9ff; border-radius:30px; border:1px solid rgba(255,204,0,0.2); }
+.see-results-btn {
+width:100%; padding:16px; border:none; border-radius:40px; margin-top:8px;
+background:linear-gradient(135deg,#00cc66,#00994d); color:white;
+font-size:1.2rem; font-weight:500; cursor:pointer; box-shadow:0 4px 0 #006633;
+transition:all 0.2s; font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+}
+.see-results-btn:hover:not(:disabled) { transform:translateY(-2px); }
+.see-results-btn:disabled { background:linear-gradient(135deg,#aaa,#ccc); box-shadow:0 4px 0 #888; cursor:not-allowed; }
+.result-win-card { background:linear-gradient(145deg,rgba(0,204,102,0.2),rgba(0,153,77,0.2)); border:3px solid #00cc66; border-radius:32px; padding:30px 20px; text-align:center; animation:gentleReveal 0.5s ease; margin:15px 0; }
+.result-lose-card { background:linear-gradient(145deg,rgba(255,68,68,0.2),rgba(204,0,0,0.2)); border:3px solid #ff4444; border-radius:32px; padding:30px 20px; text-align:center; animation:gentleReveal 0.5s ease; margin:15px 0; }
+.result-big-icon { font-size:5rem; margin-bottom:10px; }
+.result-big-title { font-size:2rem; font-weight:bold; margin:10px 0; }
+.result-win-card .result-big-title { color:#00994d; }
+.result-lose-card .result-big-title { color:#cc0000; }
+
+/* CARD FACE DOWN */
+.card-face-down {
+background:linear-gradient(145deg,#0a2a5e,#0066cc);
+border:3px solid #ffcc00; border-radius:32px;
+padding:40px 20px; text-align:center; margin:18px 0;
+cursor:pointer;
+touch-action:manipulation;
+-webkit-tap-highlight-color:rgba(255,204,0,0.2);
+user-select:none; -webkit-user-select:none;
+box-shadow:0 8px 28px rgba(255,204,0,0.4);
+}
+.card-face-down:active { opacity:0.6; transform:scale(0.97); }
+.card-fd-name { font-size:2.2rem; color:#ffcc00; font-weight:bold; margin:16px 0 10px; }
+.card-fd-hint { font-size:1rem; color:rgba(255,255,255,0.8); background:rgba(255,255,255,0.12); padding:10px 22px; border-radius:30px; display:inline-block; margin-top:10px; }
+.card-revealed { animation:revealPop 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+@keyframes revealPop { 0%{transform:scale(0.85);opacity:0} 100%{transform:scale(1);opacity:1} }
+
+/* DISCUSSION PAGE */
+.disc-box {
+background:linear-gradient(145deg,#0a2a5e,#0066cc);
+border:3px solid #ffcc00; border-radius:32px;
+padding:20px; margin:12px 0;
+box-shadow:0 8px 20px rgba(0,102,204,0.3);
+}
+.disc-header { text-align:center; margin-bottom:12px; }
+.disc-header .disc-emoji { font-size:2.2rem; }
+.disc-header .disc-title { font-size:1.3rem; font-weight:bold; color:#ffcc00; margin:4px 0 2px; }
+.disc-header .disc-sub { font-size:0.85rem; color:rgba(255,255,255,0.75); }
+.disc-header .disc-starter { font-size:1.5rem; font-weight:bold; color:#fff; margin-top:2px; }
+
+.disc-voice-section {
+background:rgba(0,0,0,0.25); border-radius:22px;
+padding:14px; margin-bottom:12px;
+border:1px solid rgba(255,204,0,0.3);
+}
+.disc-voice-title { text-align:center; color:#ffcc00; font-size:0.9rem; margin-bottom:10px; }
+.disc-voice-players { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+.disc-voice-player {
+display:flex; flex-direction:column; align-items:center; gap:4px;
+background:rgba(255,255,255,0.08); border-radius:16px;
+padding:8px 12px; border:2px solid transparent; transition:all 0.3s; min-width:64px;
+}
+.disc-voice-player.speaking { border-color:#00ff88; background:rgba(0,255,136,0.12); box-shadow:0 0 12px rgba(0,255,136,0.4); }
+.disc-voice-player.muted { opacity:0.5; }
+.disc-voice-player .vp-avatar { font-size:1.8rem; }
+.disc-voice-player .vp-name { font-size:0.72rem; color:#fff; text-align:center; max-width:70px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.disc-voice-player .vp-bars { display:flex; gap:2px; align-items:flex-end; height:14px; }
+.disc-voice-player .vp-bar { width:3px; background:#00ff88; border-radius:2px; animation:vbar 0.5s infinite ease-in-out; }
+.disc-voice-player .vp-bar:nth-child(2){ animation-delay:0.15s; }
+.disc-voice-player .vp-bar:nth-child(3){ animation-delay:0.3s; }
+@keyframes vbar { 0%,100%{height:3px} 50%{height:13px} }
+.disc-voice-player .vp-mute-icon { font-size:0.8rem; color:#ff6666; }
+
+.disc-mic-btn {
+width:100%; padding:13px; border:none; border-radius:30px; margin-top:10px;
+font-size:1.1rem; font-weight:bold; cursor:pointer;
+transition:all 0.2s; touch-action:manipulation;
+display:flex; align-items:center; justify-content:center; gap:8px;
+}
+.disc-mic-btn.mic-on { background:linear-gradient(135deg,#00cc66,#00994d); color:white; box-shadow:0 4px 0 #006633; }
+.disc-mic-btn.mic-off { background:linear-gradient(135deg,#555,#333); color:#ccc; box-shadow:0 4px 0 #111; }
+.disc-mic-btn:active { opacity:0.8; transform:scale(0.98); }
+
+.disc-chat-box {
+background:rgba(255,255,255,0.08); border-radius:20px;
+height:150px; overflow-y:auto; padding:10px 12px; margin:10px 0;
+display:flex; flex-direction:column; gap:6px; scroll-behavior:smooth;
+border:1px solid rgba(255,255,255,0.15);
+}
+.dbubble { padding:8px 14px; border-radius:20px; font-size:0.95rem; max-width:82%; word-break:break-word; direction:rtl; }
+.dbubble.me    { background:rgba(255,204,0,0.9); color:#1a2a3a; align-self:flex-end; border-bottom-right-radius:4px; }
+.dbubble.other { background:rgba(255,255,255,0.18); color:#fff; align-self:flex-start; border-bottom-left-radius:4px; }
+.dbubble .bname { font-size:0.75rem; opacity:0.7; margin-bottom:2px; }
+.disc-chat-row { display:flex; gap:8px; margin-top:8px; align-items:center; }
+.disc-chat-row input {
+flex:1; padding:12px 16px; border:2px solid rgba(255,255,255,0.2); border-radius:30px;
+background:rgba(255,255,255,0.1); color:#fff; font-size:1rem; text-align:right; direction:rtl;
+font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif; outline:none;
+}
+.disc-chat-row input::placeholder { color:rgba(255,255,255,0.4); }
+.disc-chat-row input:focus { border-color:#ffcc00; }
+.disc-send-btn {
+width:46px; height:46px; border-radius:23px;
+background:linear-gradient(135deg,#ffcc00,#ffaa00);
+border:none; color:#1a2a3a; font-size:1.2rem; cursor:pointer;
+display:flex; align-items:center; justify-content:center; flex-shrink:0;
+box-shadow:0 3px 0 #996600; transition:all 0.2s;
+}
+.disc-send-btn:hover { transform:translateY(-1px); }
+.disc-vote-btn {
+width:100%; padding:16px; border:none; border-radius:40px; margin-top:12px;
+background:linear-gradient(135deg,#ff4444,#cc0000); color:white;
+font-size:1.2rem; font-weight:bold; cursor:pointer; box-shadow:0 4px 0 #990000;
+transition:all 0.2s;
+}
+.disc-vote-btn:hover { transform:translateY(-2px); box-shadow:0 6px 0 #990000; }
+.disc-wait-msg {
+text-align:center; padding:14px; margin-top:12px;
+background:rgba(255,255,255,0.1); border-radius:30px;
+color:rgba(255,255,255,0.8); font-size:1rem;
+border:1px solid rgba(255,255,255,0.15);
+}
+
+/* ── PLAYER AVATARS ── */
+.avatar-circle {
+width:38px; height:38px; border-radius:50%; flex-shrink:0;
+display:flex; align-items:center; justify-content:center;
+font-size:1.3rem; border:2px solid white;
+box-shadow:0 2px 6px rgba(0,0,0,0.15);
+}
+.avatar-circle.sm { width:32px; height:32px; font-size:1.1rem; }
+.avatar-circle.lg { width:56px; height:56px; font-size:2rem; border:3px solid #ffcc00; }
+
+/* ── LEADERBOARD ── */
+.leaderboard-row {
+display:flex; align-items:center; gap:10px;
+padding:10px 14px; border-radius:20px; margin:4px 0;
+background:white; border:1px solid rgba(0,102,204,0.08);
+transition:all 0.2s;
+}
+.leaderboard-row.gold   { background:linear-gradient(135deg,#fff9e6,#fff3cc); border-color:#ffcc00; }
+.leaderboard-row.silver { background:linear-gradient(135deg,#f5f5f5,#ececec); border-color:#aaa; }
+.leaderboard-row.bronze { background:linear-gradient(135deg,#fff0e6,#ffe4cc); border-color:#cc7722; }
+.lb-rank  { font-size:1.3rem; width:32px; text-align:center; flex-shrink:0; }
+.lb-name  { flex:1; font-weight:bold; font-size:1rem; color:#1a1a2e; }
+.lb-wins  { font-size:0.9rem; color:#0066cc; font-weight:bold; }
+.lb-games { font-size:0.75rem; color:#999; }
+
+/* ── AUTH PAGES ── */
+.auth-page { text-align:center; padding:10px 0; }
+.auth-logo { font-size:4rem; margin:10px 0 5px; }
+.auth-title { font-size:1.8rem; font-weight:bold; color:#0066cc; margin-bottom:4px; }
+.auth-sub { font-size:0.95rem; color:#888; margin-bottom:24px; }
+
+.auth-tabs { display:flex; background:#f0f5ff; border-radius:40px; padding:4px; margin-bottom:20px; }
+.auth-tab {
+flex:1; padding:12px; border:none; border-radius:36px; font-size:1rem;
+font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+cursor:pointer; transition:all 0.2s; background:transparent; color:#888; font-weight:500;
+}
+.auth-tab.active { background:white; color:#0066cc; box-shadow:0 2px 8px rgba(0,102,204,0.15); font-weight:bold; }
+
+.auth-input-group { margin:10px 0; text-align:right; }
+.auth-input-label { font-size:0.85rem; color:#666; margin-bottom:4px; padding-right:8px; display:block; }
+.auth-input {
+width:100%; padding:14px 18px; border:2px solid rgba(0,102,204,0.15); border-radius:40px;
+background:white; font-size:16px; text-align:right; direction:rtl;
+font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+transition:all 0.2s; outline:none;
+}
+.auth-input:focus { border-color:#0066cc; box-shadow:0 0 0 3px rgba(0,102,204,0.08); }
+.auth-error { color:#cc0000; font-size:0.88rem; text-align:center; margin:8px 0; min-height:20px; padding:0 8px; }
+
+.btn-google {
+width:100%; padding:18px 20px; border:2px solid #e0e0e0; border-radius:40px;
+background:white; font-size:1.15rem; font-weight:600; cursor:pointer;
+display:flex; align-items:center; justify-content:center; gap:12px;
+font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+transition:all 0.25s; box-shadow:0 4px 14px rgba(0,0,0,0.08); margin:8px 0;
+color:#333;
+}
+.btn-google:hover { border-color:#4285F4; box-shadow:0 6px 18px rgba(66,133,244,0.18); transform:translateY(-2px); }
+.btn-google:active { transform:translateY(0); }
+.google-icon { width:22px; height:22px; }
+
+.auth-divider { display:flex; align-items:center; gap:10px; margin:14px 0; color:#bbb; font-size:0.85rem; }
+.auth-divider::before,.auth-divider::after { content:’’; flex:1; height:1px; background:#e8e8e8; }
+
+/* ── PROFILE HEADER BAR ── */
+.profile-header-bar {
+display:flex; align-items:center; gap:10px;
+background:linear-gradient(135deg,#0a2a5e,#0066cc);
+border-radius:24px; padding:10px 14px; margin-bottom:16px;
+border:2px solid rgba(255,204,0,0.4);
+box-shadow:0 4px 14px rgba(0,102,204,0.2);
+cursor:pointer; transition:all 0.2s;
+}
+.profile-header-bar:hover { border-color:#ffcc00; box-shadow:0 4px 18px rgba(0,102,204,0.35); }
+.phb-avatar {
+width:46px; height:46px; border-radius:50%; flex-shrink:0;
+display:flex; align-items:center; justify-content:center;
+font-size:1.6rem; border:2.5px solid #ffcc00;
+box-shadow:0 2px 8px rgba(0,0,0,0.25);
+}
+.phb-info { flex:1; text-align:right; }
+.phb-name { font-size:1.1rem; font-weight:bold; color:#ffcc00; line-height:1.2; }
+.phb-sub  { font-size:0.75rem; color:rgba(255,255,255,0.55); margin-top:1px; }
+.phb-arrow { color:rgba(255,255,255,0.4); font-size:0.9rem; flex-shrink:0; }
+
+/* ── PROFILE PAGE ── */
+.profile-card {
+background:linear-gradient(145deg,#0a2a5e,#0066cc);
+border:3px solid #ffcc00; border-radius:32px;
+padding:28px 20px; text-align:center; margin:10px 0;
+}
+.profile-avatar-big {
+width:80px; height:80px; border-radius:40px; margin:0 auto 12px;
+background:linear-gradient(135deg,#ffcc00,#ffaa00);
+display:flex; align-items:center; justify-content:center;
+font-size:2.5rem; font-weight:bold; color:#1a2a3a;
+border:4px solid white; box-shadow:0 8px 20px rgba(0,0,0,0.2);
+}
+.profile-nickname { font-size:2rem; font-weight:bold; color:#ffcc00; margin-bottom:4px; }
+.profile-email { font-size:0.85rem; color:rgba(255,255,255,0.65); margin-bottom:16px; }
+.profile-stats { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.stat-box {
+background:rgba(255,255,255,0.12); border-radius:20px; padding:12px 18px;
+border:1px solid rgba(255,204,0,0.3); min-width:80px;
+}
+.stat-num { font-size:2rem; font-weight:bold; color:#ffcc00; }
+.stat-label { font-size:0.75rem; color:rgba(255,255,255,0.75); }
+.profile-badge {
+display:inline-block; background:rgba(255,204,0,0.2); border:1px solid #ffcc00;
+border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-top:8px;
+}
+
+
+</style>
+
+
+</head>
+<body>
+
+<a href="https://kurdor.is-a.dev" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;">
+    <div id="welcomeToast" class="welcome-notification">📰- هاتییە دروستکرن ژلایێ رەشید فەرهاد. </div>
+</a>
+
+<div style="display:flex;flex-direction:column;align-items:center;width:100%;">
+<div class="game-container">
+<div class="content" id="app">
+
+<!-- AUTH PAGE -->
+
+<div id="auth-page">
+    <div class="auth-page">
+        <div class="auth-title">سیخوڕ 🕵️</div>
+        <div class="auth-sub" id="auth-sub-text">چوونەژوور یان هەژمارەکا نوی دروستبکە</div>
+
+
+    <!-- TABS -->
+    <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login"  onclick="switchAuthTab('login')">چوونەژوور</button>
+        <button class="auth-tab"        id="tab-signup" onclick="switchAuthTab('signup')">هەژمارا نوی</button>
+    </div>
+
+    <!-- ── LOGIN ── -->
+    <div id="auth-login-form">
+        <div class="auth-input-group">
+            <label class="auth-input-label">ئیمەیڵ 📧</label>
+            <input type="email" id="login-email" class="auth-input"
+                placeholder="sikhur@example.com" autocomplete="email"
+                onkeydown="if(event.key==='Enter')document.getElementById('login-password').focus()">
+        </div>
+        <div class="auth-input-group">
+            <label class="auth-input-label">پاسوورد 🔒</label>
+            <input type="password" id="login-password" class="auth-input"
+                placeholder="••••••" autocomplete="current-password"
+                onkeydown="if(event.key==='Enter')doLogin()">
+        </div>
+        <div class="auth-error" id="login-error"></div>
+        <button class="btn btn-blue" onclick="doLogin()" style="margin-top:4px;">چوونەژوور 🔑</button>
+        <button class="btn-google" onclick="doGoogleLogin()">
+            <svg style="width:22px;height:22px;flex-shrink:0;" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+            برێکا Google داخل ببە
+        </button>
+    </div>
+
+    <!-- ── SIGNUP — email + password only ── -->
+    <div id="auth-signup-form" class="hidden">
+        <div style="background:#f0f7ff;border-radius:20px;padding:12px 14px;margin-bottom:14px;border:1px solid rgba(0,102,204,0.12);font-size:0.88rem;color:#555;text-align:right;direction:rtl;">
+            📝 هەژمارا نوی پێویستی ب تەئکید کرنێ هەیە، برێکا کۆدی.       </div>
+        <div class="auth-input-group">
+            <label class="auth-input-label">ئیمەیڵ 📧</label>
+            <input type="email" id="signup-email" class="auth-input"
+                placeholder="sikhur@example.com" autocomplete="email"
+                onkeydown="if(event.key==='Enter')document.getElementById('signup-password').focus()">
+        </div>
+        <div class="auth-input-group">
+            <label class="auth-input-label">پاسوورد 🔒 (ب کێمی 6 پیت)</label>
+            <input type="password" id="signup-password" class="auth-input"
+                placeholder="••••••" autocomplete="new-password"
+                onkeydown="if(event.key==='Enter')doSignup()">
+        </div>
+        <div class="auth-error" id="signup-error"></div>
+        <button class="btn btn-blue" onclick="doSignup()" style="margin-top:4px;">دروستکرنا هەژمارا نوی ✅</button>
+        <button class="btn-google" onclick="doGoogleLogin()">
+            <svg style="width:22px;height:22px;flex-shrink:0;" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+          برێکا Google خۆ تومار بکە
+        </button>
+    </div>
+
+    <!-- ── 4-DIGIT CODE VERIFICATION ── -->
+    <div id="auth-verify-email" class="hidden">
+        <div style="text-align:center;padding:8px 0 4px;">
+            <div style="font-size:3.5rem;margin-bottom:6px;">📨</div>
+            <div style="font-size:1.25rem;font-weight:bold;color:#0066cc;margin-bottom:6px;">کودی پشتراستبکە</div>
+            <div id="verify-email-addr" style="font-size:0.85rem;color:#555;background:#f0f7ff;padding:7px 14px;border-radius:20px;margin-bottom:12px;border:1px solid rgba(0,102,204,0.15);word-break:break-all;direction:ltr;"></div>
+            <div style="font-size:0.9rem;color:#555;margin-bottom:16px;direction:rtl;line-height:1.5;">
+                کۆدێ 4 ژماڕەیی بو ئیمەیلێ تە هاتە هنارتن!<br>سەرەدانا ئێمیلێ خو بکە!
+            </div>
+            <!-- 4 separate digit boxes — LTR, each auto-advances -->
+            <div id="vc-boxes" style="display:flex;gap:12px;justify-content:center;margin-bottom:16px;direction:ltr;">
+                <input id="vc0" type="tel" inputmode="numeric" maxlength="1" dir="ltr" autocomplete="off"
+                    style="width:60px;height:68px;border-radius:18px;border:2.5px solid #ddd;font-size:2.2rem;font-weight:bold;text-align:center;font-family:inherit;outline:none;transition:all 0.2s;background:#fafafa;color:#0066cc;">
+                <input id="vc1" type="tel" inputmode="numeric" maxlength="1" dir="ltr" autocomplete="off"
+                    style="width:60px;height:68px;border-radius:18px;border:2.5px solid #ddd;font-size:2.2rem;font-weight:bold;text-align:center;font-family:inherit;outline:none;transition:all 0.2s;background:#fafafa;color:#0066cc;">
+                <input id="vc2" type="tel" inputmode="numeric" maxlength="1" dir="ltr" autocomplete="off"
+                    style="width:60px;height:68px;border-radius:18px;border:2.5px solid #ddd;font-size:2.2rem;font-weight:bold;text-align:center;font-family:inherit;outline:none;transition:all 0.2s;background:#fafafa;color:#0066cc;">
+                <input id="vc3" type="tel" inputmode="numeric" maxlength="1" dir="ltr" autocomplete="off"
+                    style="width:60px;height:68px;border-radius:18px;border:2.5px solid #ddd;font-size:2.2rem;font-weight:bold;text-align:center;font-family:inherit;outline:none;transition:all 0.2s;background:#fafafa;color:#0066cc;">
+            </div>
+            <div id="verify-status-msg" style="font-size:0.9rem;min-height:22px;margin-bottom:10px;"></div>
+            <button class="btn btn-blue" onclick="submitVerifyCode()" style="margin-bottom:8px;">
+                ✅ پشتراستکرن
+            </button>
+            <button onclick="resendVerificationEmail()" id="resendBtn"
+                style="width:100%;padding:12px;border:none;border-radius:30px;background:#f0f0f0;color:#555;font-size:0.95rem;cursor:pointer;font-family:inherit;margin-bottom:4px;">
+                📨 دووبارە پنێرە
+            </button>
+            <button onclick="cancelVerification()"
+                style="width:100%;padding:10px;border:none;background:none;color:#aaa;font-size:0.85rem;cursor:pointer;font-family:inherit;">
+                ← زڤرین
+            </button>
+        </div>
+    </div>
+
+    <!-- ── NICKNAME PICKER (after Google login, first time) ── -->
+    <div id="auth-nickname-picker" class="hidden">
+        <div style="background:#f0f7ff;border-radius:24px;padding:18px 16px;border:2px solid rgba(0,102,204,0.15);margin:4px 0;">
+            <p style="color:#0066cc;font-size:1.05rem;margin-bottom:8px;text-align:center;font-weight:bold;">🎭 ناڤێ یارییکەرێ خۆ دیاری بکە </p>
+            <p style="color:#888;font-size:0.82rem;margin-bottom:14px;text-align:center;"> ناڤ یان ناسناڤەکێ بخۆ چێکە، نەشێی بگوهری یەڤە!</p>
+            <input type="text" id="pick-nickname" class="auth-input"
+                placeholder="ناڤێ خۆ..." maxlength="20"
+                oninput="this.value=this.value.replace(/\s/g,'')"
+                onkeydown="if(event.key==='Enter')confirmPickedNickname()">
+            <div class="auth-error" id="pick-nickname-error"></div>
+            <button class="btn btn-blue" style="margin-top:10px;" onclick="confirmPickedNickname()">پشتراستکرن ✅</button>
+        </div>
+    </div>
+
+</div>
+
+
+</div>
+
+<!-- PROFILE PAGE -->
+
+<div id="profile-page" class="hidden">
+    <div class="profile-card">
+        <div class="profile-avatar-big" id="profile-avatar-big" style="font-size:3rem;width:90px;height:90px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;border:4px solid #ffcc00;box-shadow:0 8px 24px rgba(0,0,0,0.3);">?</div>
+        <div class="profile-nickname" id="profile-nickname-display">—</div>
+        <div class="profile-email" id="profile-email-display" style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin-bottom:4px;">—</div>
+        <div class="profile-badge" id="profile-badge-role" style="margin-bottom:16px;">🎭 یارییکەرێ نوی</div>
+        <div class="profile-stats">
+            <div class="stat-box">
+                <div class="stat-num" id="stat-games">0</div>
+                <div class="stat-label">🎮 یاری</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-num" id="stat-wins">0</div>
+                <div class="stat-label">🏆 برنەڤە</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-num" id="stat-rate">0%</div>
+                <div class="stat-label">📊 ڕێژە</div>
+            </div>
+        </div>
+        <div style="margin-top:12px;background:rgba(255,255,255,0.08);border-radius:14px;padding:8px 14px;font-size:0.78rem;color:rgba(255,255,255,0.5);direction:rtl;">
+            داتا و زانییاریێن تە دپاراستی نە - رەشید فەرهاد        </div>
+    </div>
+    <button class="btn btn-blue" style="margin-top:10px;" onclick="showPage('home-page')">یاریکرن 🎮</button>
+    <button class="btn btn-blue" style="margin-top:6px;background:linear-gradient(135deg,#cc8800,#ffaa00);" onclick="openLeaderboard('profile-page')">باشترین یارییکەر 🏆</button>
+    <button class="btn btn-red" onclick="doSignOut()">دەرکەڤتن ل هەژمارێ (Sign Out) 🚪</button>
+</div>
+<!-- LEADERBOARD PAGE -->
+<div id="leaderboard-page" class="hidden">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <button onclick="goBackFromLeaderboard()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;padding:4px;">←</button>
+        <h2 style="margin:0;flex:1;text-align:center;"> باشترین یارییکەر 🏆</h2>
+    </div>
+    <div id="leaderboard-container">
+        <div style="text-align:center;padding:30px;color:#999;">⏳ چاڤەرێ بە...</div>
+    </div>
+</div>
+
+<!-- HOME -->
+
+<div id="home-page" class="hidden">
+    <!-- PROFILE HEADER BAR -->
+    <div class="profile-header-bar" onclick="showPage('profile-page')" id="homeProfileBar">
+        <div class="phb-avatar" id="homeProfileBtn" style="background:#0066cc;">?</div>
+        <div class="phb-info">
+            <div class="phb-name" id="homeProfileName">...</div>
+            <div class="phb-sub">👤 پروفایلێ تە (کلیک بکە بو دیتنا زانیاریێن خو)</div>
+        </div>
+        <div class="phb-arrow">‹</div>
+    </div>
+    <div class="animated-icon">
+        <img src="assets/image/sikhur.jpg" alt="سیخوڕ" class="game-icon" onclick="alert('Developed By Rashid Farhad')">
+    </div>
+    <p class="welcome-text">یارییەک بو بوراندنا دەمێن خوش دگەل هەڤاڵان.<br>Online</p>
+    <div style="margin-bottom:20px;">
+        <button class="btn btn-blue" onclick="goToNickname('create')" style="background:linear-gradient(135deg,#56ab2f,#a8e063);">دروستکرنا ژوورێ (Create Room) 🏠</button>
+        <div style="display:flex;gap:10px;margin-top:10px;">
+            <input type="text" id="join-room-id" class="player-input" placeholder="کۆدێ ژوورێ لێرە بنڤیسە..." style="margin:0;flex:2;" inputmode="numeric" pattern="[0-9]*" onkeydown="if(event.key==='Enter') joinRoomClick()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+            <button class="btn btn-yellow" onclick="joinRoomClick()" style="margin:0;flex:1;padding:14px;background:linear-gradient(135deg,#36d1dc,#5b86e5);color:white;border:none;">چوونەژوور (Join)</button>
+        </div>
+    </div>
+    <hr style="border:0;height:1px;background:rgba(0,0,0,0.1);margin:20px 0;">
+    <div class="how-to-play-link" onclick="showHowToPlayOptions()">چەوا دێ یاریی کەی؟ 📖</div>
+    <a href="imposter.html" style="display:block;">
+        <button class="btn btn-secondary" style="font-size:0.9rem;padding:10px;width:100%;background:linear-gradient(135deg,#11998e,#38ef7d);color:white;">یاری کرنا ناڤخۆیی (Offline) 📍</button>
+    </a>
+</div>
+
+<!-- NICKNAME -->
+
+<!-- nickname-page removed — nickname comes from auth profile -->
+
+<!-- OFFLINE MODE PICKER -->
+
+<div id="offline-mode-page" class="hidden">
+    <div class="animated-icon" style="margin-bottom:5px;">
+        <img src="assets/image/sikhur.jpg" alt="سیخوڕ" class="game-icon" style="width:100px;">
+    </div>
+    <h2>جۆرێ یاریێ هەلبژێرە 🎮</h2>
+    <p style="color:#666;text-align:center;font-size:1rem;margin-bottom:10px;">کیژ یاریێ دێ کەی؟</p>
+    <div class="mode-pick-pair">
+        <a href="imposter.html" style="flex:1;text-decoration:none;">
+            <button class="mode-pick-big spy" style="width:100%;background:linear-gradient(135deg,#00c853,#2196f3);color:white;border:none;">🕵️<br>سیخوڕ</button>
+        </a>
+        <button class="mode-pick-big diff" onclick="startOfflineSetup(2)" style="flex:1;background:linear-gradient(135deg,#ff3b3b,#ffd93d);color:white;border:none;">🎭<br>پەیڤێن جیاواز</button>
+    </div>
+    <button class="btn btn-red" onclick="showPage('home-page')" style="margin-top:8px;">زڤرین 🔙</button>
+</div>
+
+<!-- ONLINE LOBBY -->
+
+<div id="online-lobby-page" class="hidden">
+    <div class="lobby-top-bar">
+        <h2 id="lobby-title" style="margin-bottom:0;">🏠 ژوورا یاریێ</h2>
+        <button class="leave-btn-small" onclick="leaveRoom()">دەرکەفتن 🚪</button>
+    </div>
+    <div class="room-code-box">
+        <div class="room-code-label">کۆدێ ژوورێ — شەیر بکە دگەل هەڤاڵان 📤</div>
+        <div class="room-code-value" id="room-code-display">------</div>
+        <div class="copy-hint" onclick="copyRoomCode()">📋 کۆدی کۆپی بکە</div>
+    </div>
+    <div class="players-box" id="waiting-players-list">
+        <div class="players-box-title">چاڤەرێی — یارییکەران 👥</div>
+    </div>
+    <div id="host-controls" class="hidden">
+        <p style="text-align:center;color:#0066cc;font-size:1rem;margin:10px 0 6px;">جۆرێ یاریێ هەلبژێرە</p>
+    <div style="margin:8px 0 4px;">
+        <p style="text-align:center;color:#666;font-size:0.85rem;margin-bottom:6px;">جورێ یاریێ دیاری بکە📚</p>
+        <div id="category-btns" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;"></div>
+    </div>
+        <div class="online-mode-row">
+            <button class="online-mode-btn spy selected" id="omBtn1" onclick="setOnlineMode(1)" style="background:linear-gradient(135deg,#00c853,#2196f3);color:white;border:none;">🕵️ سیخوڕ</button>
+            <button class="online-mode-btn diff" id="omBtn2" onclick="setOnlineMode(2)" style="background:linear-gradient(135deg,#ff3b3b,#ffd93d);color:white;border:none;">🎭 پەیڤێن جیاواز</button>
+        </div>
+        <button class="btn btn-blue" id="startGameBtn" onclick="startOnlineGame()" style="margin-top:8px;" disabled>دەستپێکرنی یاریێ 🎬</button>
+    </div>
+    <!-- Ready count visible to ALL players -->
+    <div class="ready-count-msg" id="readyCountMsg">چاڤەرێی هەمی یارییکەران... (0/0 حازرن)</div>
+    <div class="chat-box" id="chatBox"></div>
+    <div class="chat-row">
+        <input type="text" id="chatInput" class="player-input" placeholder="پەیامێ بنڤیسە..." onkeydown="if(event.key==='Enter') sendMsg()">
+        <button class="send-btn" onclick="sendMsg()">➤</button>
+    </div>
+</div>
+
+<!-- SETUP (offline) -->
+
+<div id="setup-page" class="hidden">
+    <h2 id="setup-title">⚙️ ڕێکخستن</h2>
+    <div class="counter-container">
+        <button class="counter-btn" onclick="changePlayerCount(-1)">−</button>
+        <span class="counter-value" id="player-count">5</span>
+        <button class="counter-btn" onclick="changePlayerCount(1)">+</button>
+    </div>
+    <div id="player-inputs-container"></div>
+    <button class="btn btn-blue" onclick="startGame()">دەستپێکرن 🎬</button>
+    <button class="btn btn-red" onclick="goBackToHome()">زڤرین 🔙</button>
+</div>
+
+<!-- GAME PAGE -->
+
+<div id="game-page" class="hidden">
+    <h2 id="game-title">🎴 کارتەکان</h2>
+    <div class="progress" id="game-progress"></div>
+    <div id="card-container"></div>
+    <button class="btn btn-blue hidden" id="next-player-btn" onclick="nextPlayerAction()">یارییکەرێ دویفرا ⏭️</button>
+    <div id="starter-container" class="hidden"></div>
+    <button class="reveal-btn hidden" id="reveal-btn" onclick="goToRevealPage()">🔍 نییشان دانا کەسێ جیاواز</button>
+</div>
+
+<!-- DISCUSSION PAGE (online) -->
+
+<div id="discussion-page" class="hidden">
+    <div class="disc-box">
+        <div class="disc-header">
+            <div class="disc-emoji">🗣️</div>
+            <div class="disc-title">مناقشە — ئاخفتن!</div>
+            <div class="disc-sub">دەستپێکەر:</div>
+            <div class="disc-starter" id="disc-starter-name">—</div>
+        </div>
+        <div class="disc-voice-section">
+            <div class="disc-voice-title">🎙️ ئاخفتن!</div>
+            <div class="disc-voice-players" id="discVoicePlayers"></div>
+            <button class="disc-mic-btn mic-off" id="discMicBtn" onclick="toggleDiscMic()">
+                🎙️ مایکروفونێ چالاک بکە
+            </button>
+        </div>
+        <div class="disc-chat-box" id="discChatBox"></div>
+        <div class="disc-chat-row">
+            <input type="text" id="discChatInput" placeholder="پەیامێ بنڤیسە..." onkeydown="if(event.key==='Enter') sendDiscMsg()">
+            <button class="disc-send-btn" onclick="sendDiscMsg()">➤</button>
+        </div>
+        <button class="disc-vote-btn hidden" id="disc-vote-btn" onclick="hostStartVoting()">🗳️ دەستپێکرنا دەنگدانێ</button>
+        <div class="disc-wait-msg hidden" id="disc-wait-msg">⏳ چاڤەریێ هۆستی بکەن بو دەستپێکرنا دەنگدانێ...</div>
+    </div>
+</div>
+
+<!-- REVEAL PAGE -->
+
+<div id="reveal-page" class="hidden">
+    <h2 id="reveal-title">🕵️ ئاشکراکرن</h2>
+    <div id="reveal-container"></div>
+    <button class="btn btn-blue" onclick="showFinalResults()">دییتنا ئەنجامی 📜</button>
+</div>
+
+<!-- RESULTS PAGE -->
+
+<div id="results-page" class="hidden">
+    <h2>ئەنجام 🏆</h2>
+    <div id="results-container"></div>
+    <button class="btn btn-blue" onclick="playAgain()">دوبارە یارییکرن 🔁</button>
+    <button class="btn btn-yellow" onclick="goToHomePage()">زڤرین بو دەستپێک 🏠</button>
+</div>
+
+<!-- VOTING PAGE (online) -->
+
+<div id="voting-page" class="hidden">
+    <h2>🗳️ دەنگدان</h2>
+    <div class="vote-timer-box">
+        <div class="vote-timer-label">وەختێ مایی</div>
+        <div class="vote-timer-value" id="voteTimerDisplay">30</div>
+    </div>
+    <p style="text-align:center;color:#666;font-size:1rem;margin:8px 0;">تە شک و گومان لسەر کێ هەنە! دەنگێ خو بدە وی!</p>
+    <div class="vote-list" id="voteList"></div>
+    <div class="vote-status-msg" id="voteStatusMsg">دەنگێ خۆ هەلبژێرە</div>
+    <button class="vote-confirm-btn" id="voteConfirmBtn" onclick="submitVote()" disabled>دەنگدانێ خۆ پشتراستبکە ✓</button>
+    <button class="see-results-btn hidden" id="seeResultsBtn" onclick="openOnlineResults()" disabled>دییتنا ئەنجامی 🏆</button>
+</div>
+
+<!-- ONLINE RESULTS PAGE -->
+
+<div id="online-results-page" class="hidden">
+    <h2>ئەنجام 🏆</h2>
+    <div id="online-results-container"></div>
+    <div class="players-box" id="waiting-players-list-results" style="margin:10px 0;"></div>
+    <button class="btn btn-blue" onclick="playAgainOnline()">دوبارە یارییکرن 🔁</button>
+    <button class="btn btn-yellow" onclick="goToHomePage()">زڤرین بو دەستپێک 🏠</button>
+</div>
+
+</div></div></div>
+
+<!-- HOW TO PLAY MODALS -->
+
+<div id="how-to-play-modal" class="how-to-play-modal hidden">
+    <div class="how-to-play-content">
+        <div class="game-modal-icon">📖</div>
+        <h2 style="color:#0066cc;margin-bottom:20px;">چەوا دێ یاریی کەی؟</h2>
+        <button class="how-to-play-option blue" onclick="showHowToPlayInstructions(1)" style="background:linear-gradient(135deg,#00c853,#2196f3);color:white;border:none;">یارییا سیخوڕی 🕵️</button>
+        <button class="how-to-play-option red" onclick="showHowToPlayInstructions(2)" style="background:linear-gradient(135deg,#ff3b3b,#ffd93d);color:white;border:none;">یارییا پەییڤێن جیاواز 🎭</button>
+        <button class="how-to-play-close" onclick="closeHowToPlayOptions()">گرتن</button>
+    </div>
+</div>
+<div id="how-to-play-instructions-modal" class="how-to-play-modal hidden">
+    <div class="how-to-play-content">
+        <div id="instructions-icon" class="game-modal-icon">🕵️</div>
+        <h2 id="instructions-title" style="color:#0066cc;margin-bottom:20px;">یارییا سیخوڕی</h2>
+        <div id="instructions-text" class="game-modal-text" style="text-align:right;"></div>
+        <button class="how-to-play-close" onclick="closeHowToPlayInstructions()">گرتن</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+    // Initialize EmailJS immediately after load
+    (function initEJS() {
+        if (window.emailjs) {
+            window.emailjs.init({ publicKey: 'PfRvK4HLoolZSlHkX' });
+        } else {
+            document.querySelector('script[src*="emailjs"]').addEventListener('load', () => {
+                window.emailjs.init({ publicKey: 'PfRvK4HLoolZSlHkX' });
+            });
+        }
+    })();
+</script>
+
+<script>
+(function() {
+    function loadScript(src, cb) {
+        var s = document.createElement('script');
+        s.src = src; s.onload = cb; s.onerror = cb;
+        document.head.appendChild(s);
+    }
+    var cdns = [
+        'https://cdn.jsdelivr.net/npm/peerjs@1.5.2/dist/peerjs.min.js',
+        'https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js'
+    ];
+    var i = 0;
+    function tryNext() {
+        if (i >= cdns.length) return;
+        loadScript(cdns[i++], function() { if (typeof Peer === 'undefined') tryNext(); });
+    }
+    tryNext();
+})();
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, push, onValue, onChildAdded, remove, update, off }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import {
+    getAuth, onAuthStateChanged,
+    signInWithEmailAndPassword, createUserWithEmailAndPassword,
+    signOut, GoogleAuthProvider, signInWithPopup,
+    browserLocalPersistence, setPersistence
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+    apiKey:"AIzaSyA-ZxdE8YKOBH45EqfylIdRmYF47wmwWI0",
+    authDomain:"sikhur-game.firebaseapp.com",
+    databaseURL:"https://sikhur-game-default-rtdb.firebaseio.com",
+    projectId:"sikhur-game",
+    storageBucket:"sikhur-game.firebasestorage.app",
+    messagingSenderId:"501101971993",
+    appId:"1:501101971993:web:1feea3e49ab43a74187888"
+};
+const fbApp = initializeApp(firebaseConfig);
+const db = getDatabase(fbApp);
+const auth = getAuth(fbApp);
+const googleProvider = new GoogleAuthProvider();
+// Force LOCAL persistence — stays logged in after refresh/close
+setPersistence(auth, browserLocalPersistence).catch(()=>{});
+// myPlayerId is set from auth UID after login
+let myPlayerId = 'p_' + Math.random().toString(36).substr(2,9);
+let currentUser = null; // Firebase Auth user
+let userProfile = null; // { nickname, gamesPlayed, wins }
+
+/* ══════════════════════════════════════════
+   AUTH — email/password + Google
+   Flow A (email):   signup → pick nickname → home
+   Flow B (Google):  first time → pick nickname → home
+                     returning  → load profile  → home
+══════════════════════════════════════════ */
+
+let _pendingNewUser = false;
+
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        currentUser = user;
+        myPlayerId  = user.uid;
+
+        const snap = await get(ref(db, 'users/' + user.uid));
+        if (snap.exists()) {
+            userProfile      = snap.val();
+            gs.myNickname    = userProfile.nickname;
+            _pendingNewUser  = false;
+            updateProfileUI();
+            // Check for invite link first
+            try {
+                const invite = sessionStorage.getItem('sikhur_invite');
+                if(invite) {
+                    sessionStorage.removeItem('sikhur_invite');
+                    const iSnap = await get(ref(db,'rooms/'+invite));
+                    if(iSnap.exists()) {
+                        document.getElementById('join-room-id').value = invite;
+                        showToast('🔗 لینکی دەعوەتێ هاتە دیتن!', false);
+                        await openLobby(false, invite);
+                        return;
+                    }
+                }
+            } catch(e) {}
+            // Check if user was in a room before refresh
+            try {
+                const savedRoom = sessionStorage.getItem('sikhur_room');
+                if (savedRoom) {
+                    const {code, isHost} = JSON.parse(savedRoom);
+                    if (code) {
+                        const roomSnap = await get(ref(db, 'rooms/' + code));
+                        if (roomSnap.exists() && roomSnap.val().status !== 'waiting_end') {
+                            showToast('🔄 ژوورا خۆ دوبارە ڤەدبینیت...', false);
+                            sessionStorage.removeItem('sikhur_room');
+                            await openLobby(false, code);
+                            return;
+                        } else {
+                            sessionStorage.removeItem('sikhur_room');
+                        }
+                    }
+                }
+            } catch(e) { sessionStorage.removeItem('sikhur_room'); }
+            showPage('home-page');
+        } else {
+            // New user — must pick nickname
+            _pendingNewUser = true;
+            _showNicknamePicker();
+        }
+    } else {
+        currentUser     = null;
+        userProfile     = null;
+        _pendingNewUser = false;
+        _resetAuthUI();
+        showPage('auth-page');
+    }
+});
+
+/* ── helpers ── */
+function _resetAuthUI() {
+    // Restore tabs bar
+    const tabsEl = document.querySelector('.auth-tabs');
+    if (tabsEl) tabsEl.style.display = '';
+    document.getElementById('auth-verify-email').classList.add('hidden');
+    switchAuthTab('login');
+    ['login-email','login-password','signup-email','signup-password','signup-nickname'].forEach(id => {
+        const el = document.getElementById(id); if (el) el.value = '';
+    });
+    ['login-error','signup-error','pick-nickname-error'].forEach(id => {
+        const el = document.getElementById(id); if (el) el.textContent = '';
+    });
+}
+
+function _showNicknamePicker() {
+    showPage('auth-page');
+    document.getElementById('auth-login-form').classList.add('hidden');
+    document.getElementById('auth-signup-form').classList.add('hidden');
+    document.getElementById('auth-nickname-picker').classList.remove('hidden');
+    document.getElementById('tab-login').classList.remove('active');
+    document.getElementById('tab-signup').classList.remove('active');
+    const sub = document.getElementById('auth-sub-text');
+    if (sub) sub.textContent = 'ناڤێ یارییکەرێ خۆ هەلبژێرە';
+    setTimeout(() => { const el = document.getElementById('pick-nickname'); if(el) el.focus(); }, 300);
+}
+
+function switchAuthTab(tab) {
+    document.getElementById('tab-login').classList.toggle('active',  tab === 'login');
+    document.getElementById('tab-signup').classList.toggle('active', tab === 'signup');
+    document.getElementById('auth-login-form').classList.toggle('hidden',  tab !== 'login');
+    document.getElementById('auth-signup-form').classList.toggle('hidden', tab !== 'signup');
+    document.getElementById('auth-nickname-picker').classList.add('hidden');
+    ['login-error','signup-error'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=''; });
+}
+
+async function isNicknameTaken(nick) {
+    const snap = await get(ref(db, 'nicknames/' + nick.toLowerCase()));
+    return snap.exists();
+}
+
+/* ── LOGIN (email) ── */
+async function doLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const pass  = document.getElementById('login-password').value;
+    const errEl = document.getElementById('login-error');
+    errEl.textContent = '';
+    if (!email || !pass) { errEl.textContent = '⚠️ ئیمەیڵ و پاسوورد پێویستن'; return; }
+    try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        // onAuthStateChanged handles the rest
+    } catch(e) {
+        const map = {
+            'auth/user-not-found':       '❌ ئەڤ ئیمەیڵە نەهاتە دیتن',
+            'auth/wrong-password':       '❌ پاسوورد یێ خەلەتە',
+            'auth/invalid-credential':   '❌ ئیمەیڵ یان پاسوورد یێ خەلەتە',
+            'auth/invalid-email':        '❌ ئیمەیڵ نڤیسین یێ خەلەتە',
+            'auth/too-many-requests':    '⚠️ زۆر جارا هەوڵ یا بو هاتییە دان —  چاڤەرێ بە',
+        };
+        errEl.textContent = map[e.code] || ('❌ خەلەتە: ' + e.message);
+    }
+}
+
+/* ── SIGNUP (email + password) — with 4-digit code via EmailJS ── */
+let _verifyCode       = null;   // the 4-digit code we generated
+let _verifyEmail      = null;   // email being verified
+let _verifyPollInterval = null;
+let _resendCooldown   = false;
+let _pendingPassword  = null;   // keep password so we can create account after verify
+
+// ─────────────────────────────────────────────
+// EmailJS — go to emailjs.com (free), create account,
+// add Gmail service, create template with vars:
+//   {{to_email}}  {{code}}
+// Then paste your IDs below:
+// ─────────────────────────────────────────────
+const EMAILJS_SERVICE_ID  = 'service_k2p65sg';
+const EMAILJS_TEMPLATE_ID = 'template_5nye00k';
+const EMAILJS_PUBLIC_KEY  = 'PfRvK4HLoolZSlHkX';
+
+function _gen4Code() {
+    return String(Math.floor(1000 + Math.random() * 9000));
+}
+
+async function _sendCodeEmail(email, code) {
+    // Store in Firebase with 10-min expiry
+    const key = btoa(email).replace(/[^a-zA-Z0-9]/g,'_');
+    try {
+        await set(ref(db, `verificationCodes/${key}`), {
+            code, createdAt: Date.now(), expiresAt: Date.now() + 10 * 60 * 1000
+        });
+    } catch(e) { console.warn('Firebase store error:', e); }
+    // Send via EmailJS SDK (more reliable than raw fetch)
+    try {
+        if (!window.emailjs) throw new Error('EmailJS not loaded');
+        const result = await window.emailjs.send(
+            EMAILJS_SERVICE_ID,
+            EMAILJS_TEMPLATE_ID,
+            {
+                to_email: email,
+                email:    email,
+                name:     'سیخوڕ یارییکەر',
+                code:     String(code),
+                app_name: 'سیخوڕ | Sikhur'
+            },
+            { publicKey: EMAILJS_PUBLIC_KEY }
+        );
+        console.log('✅ Email sent:', result.status, result.text);
+        return true;
+    } catch(e) {
+        console.warn('❌ EmailJS error:', e);
+        return false;
+    }
+}
+
+async function doSignup() {
+    const email = document.getElementById('signup-email').value.trim();
+    const pass  = document.getElementById('signup-password').value;
+    const errEl = document.getElementById('signup-error');
+    errEl.textContent = '';
+    if (!email)        { errEl.textContent = '⚠️ ئیمەیڵ یێ پێویستە';               return; }
+    if (pass.length<6) { errEl.textContent = '⚠️ پاسوورد ب کێمی 6 پیت لازمە'; return; }
+
+    errEl.textContent = '⏳ کۆد یێ دهێتە هنارتن...';
+    _verifyEmail    = email;
+    _pendingPassword = pass;
+    _verifyCode     = _gen4Code();
+
+    errEl.textContent = '📨 کۆد دهێتە هنارتن...';
+    const sent = await _sendCodeEmail(email, _verifyCode);
+    errEl.textContent = '';
+    _showVerifyScreen(email);
+    if (!sent) {
+        const statusEl = document.getElementById('verify-status-msg');
+        if (statusEl) {
+            statusEl.innerHTML = `
+                <div style="background:#fff3cd;border:2px solid #ffc107;border-radius:16px;padding:12px 16px;margin-bottom:4px;">
+                    <div style="font-size:0.8rem;color:#856404;margin-bottom:6px;">📧 ئیمەیڵ نەچوو —  :</div>
+                    <div style="font-size:2.4rem;font-weight:bold;letter-spacing:10px;color:#0066cc;">${_verifyCode}</div>
+                </div>`;
+            statusEl.style.color = '';
+        }
+    }
+}
+
+function _setupVcBoxes() {
+    // Attach events once — called from _showVerifyScreen
+    [0,1,2,3].forEach(idx => {
+        const box = document.getElementById('vc'+idx);
+        if (!box || box._vcReady) return;
+        box._vcReady = true;
+
+        box.addEventListener('keydown', e => {
+            // Backspace — clear current and go back
+            if (e.key === 'Backspace') {
+                if (box.value.length === 0 && idx > 0) {
+                    const prev = document.getElementById('vc'+(idx-1));
+                    if (prev) { prev.value = ''; prev.focus(); }
+                } else {
+                    box.value = '';
+                }
+                e.preventDefault();
+            }
+        });
+
+        box.addEventListener('input', e => {
+            // Strip non-digits, keep only last char
+            box.value = box.value.replace(/[^0-9]/g,'').slice(-1);
+            // Highlight active box
+            [0,1,2,3].forEach(i => {
+                const b = document.getElementById('vc'+i);
+                if(b) b.style.borderColor = '#ddd';
+            });
+            if (box.value) {
+                box.style.borderColor = '#0066cc';
+                if (idx < 3) {
+                    document.getElementById('vc'+(idx+1)).focus();
+                } else {
+                    // Last digit — auto submit
+                    setTimeout(submitVerifyCode, 100);
+                }
+            }
+        });
+
+        box.addEventListener('focus', () => {
+            box.style.borderColor = '#0066cc';
+            box.select();
+        });
+        box.addEventListener('blur', () => {
+            if (!box.value) box.style.borderColor = '#ddd';
+        });
+
+        // Handle paste on any box — fill all 4
+        box.addEventListener('paste', e => {
+            e.preventDefault();
+            const text = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g,'');
+            [...text.slice(0,4)].forEach((ch, i) => {
+                const b = document.getElementById('vc'+i);
+                if (b) { b.value = ch; b.style.borderColor = '#0066cc'; }
+            });
+            const filled = Math.min(text.length, 4);
+            const focusBox = document.getElementById('vc'+ Math.min(filled, 3));
+            if (focusBox) focusBox.focus();
+            if (text.length >= 4) setTimeout(submitVerifyCode, 100);
+        });
+    });
+}
+
+async function submitVerifyCode() {
+    const digits = [0,1,2,3].map(i => {
+        const el = document.getElementById('vc'+i);
+        return el ? el.value.trim() : '';
+    });
+    const entered = digits.join('');
+    const statusEl = document.getElementById('verify-status-msg');
+
+    if (entered.length < 4) {
+        if (statusEl) { statusEl.textContent = '⚠️ کودێ 4 ژمارەیی بنڤیسە'; statusEl.style.color = '#cc6600'; }
+        return;
+    }
+    if (statusEl) { statusEl.textContent = '⏳ چاڤەرێ بە...'; statusEl.style.color = '#888'; }
+
+    // Check against Firebase (extra security — prevents old codes)
+    try {
+        const key = btoa(_verifyEmail).replace(/[^a-zA-Z0-9]/g,'_');
+        const snap = await get(ref(db, `verificationCodes/${key}`));
+        if (!snap.exists()) {
+            if (statusEl) { statusEl.textContent = '❌ کۆد یێ بسەرڤە چووی — دووبارە پنێرە'; statusEl.style.color = '#cc0000'; }
+            return;
+        }
+        const stored = snap.val();
+        if (Date.now() > stored.expiresAt) {
+            if (statusEl) { statusEl.textContent = '❌ کۆد یێ بسەرڤە چووی (10 دەقە) — دووبارە پنێرە'; statusEl.style.color = '#cc0000'; }
+            return;
+        }
+        if (entered !== stored.code && entered !== _verifyCode) {
+            // Shake the boxes
+            [0,1,2,3].forEach(i => {
+                const b = document.getElementById('vc'+i);
+                if (b) { b.style.borderColor='#ff4444'; setTimeout(()=>b.style.borderColor='#ddd',1000); }
+            });
+            if (statusEl) { statusEl.textContent = '❌ کۆد یێ خەلەتە — دووبارە هەولێ بو بدە'; statusEl.style.color = '#cc0000'; }
+            return;
+        }
+    } catch(e) {
+        // Firebase check failed — fall back to in-memory code
+        if (entered !== _verifyCode) {
+            if (statusEl) { statusEl.textContent = '❌ کۆد یێ خەلەتە'; statusEl.style.color = '#cc0000'; }
+            return;
+        }
+    }
+
+    // Code correct ✅
+    if (statusEl) { statusEl.textContent = '✅ هاتە پشتراستکرن! هەژمارا نوی دروست دبیت...'; statusEl.style.color = '#00994d'; }
+    // Clean up code from Firebase
+    remove(ref(db, `verificationCodes/${btoa(_verifyEmail).replace(/[^a-zA-Z0-9]/g,'_')}`)).catch(()=>{});
+
+    // Now create the Firebase Auth account
+    try {
+        await createUserWithEmailAndPassword(auth, _verifyEmail, _pendingPassword);
+        // onAuthStateChanged fires → no profile → _showNicknamePicker()
+    } catch(e) {
+        const map = {
+            'auth/email-already-in-use': '❌ ئەڤ ئیمەیڵە یێ هاتییە بکارئینان',
+            'auth/weak-password':        '⚠️ پاسوورد یێ لاوازە',
+        };
+        if (statusEl) { statusEl.textContent = map[e.code] || ('❌ ' + e.message); statusEl.style.color = '#cc0000'; }
+    }
+}
+window.submitVerifyCode = submitVerifyCode;
+
+async function resendVerificationEmail() {
+    if (_resendCooldown) { showToast('⏳ 60 سانییا چاڤەرێ بە', true); return; }
+    if (!_verifyEmail)   return;
+    const btn = document.getElementById('resendBtn');
+    _verifyCode = _gen4Code();
+    const sent = await _sendCodeEmail(_verifyEmail, _verifyCode);
+    if (sent) showToast('📨 کۆدێ نوی هاتە هنارتن!', false);
+    else { showToast('⚠️ ئیمەیڵ نەچوو — دووبارە هەولێ بو بدە', true); }
+    // Clear boxes
+    [0,1,2,3].forEach(i=>{ const b=document.getElementById('vc'+i); if(b) b.value=''; });
+    document.getElementById('vc0')?.focus();
+    const statusEl = document.getElementById('verify-status-msg');
+    if (statusEl) { statusEl.textContent = ''; }
+    // 60s cooldown
+    _resendCooldown = true;
+    if (btn) btn.style.opacity = '0.4';
+    setTimeout(() => { _resendCooldown = false; if (btn) btn.style.opacity = '1'; }, 60000);
+}
+window.resendVerificationEmail = resendVerificationEmail;
+
+function cancelVerification() {
+    clearInterval(_verifyPollInterval);
+    _verifyCode = null; _verifyEmail = null; _pendingPassword = null;
+    // Delete partially-created account if exists
+    if (auth.currentUser) auth.currentUser.delete().catch(()=>{});
+    _resetAuthUI();
+    switchAuthTab('signup');
+}
+window.cancelVerification = cancelVerification;
+
+function _showVerifyScreen(email) {
+    document.getElementById('auth-login-form').classList.add('hidden');
+    document.getElementById('auth-signup-form').classList.add('hidden');
+    document.getElementById('auth-nickname-picker').classList.add('hidden');
+    document.getElementById('auth-verify-email').classList.remove('hidden');
+    const tabsEl = document.querySelector('.auth-tabs');
+    if (tabsEl) tabsEl.style.display = 'none';
+    document.getElementById('tab-login').classList.remove('active');
+    document.getElementById('tab-signup').classList.remove('active');
+    const sub = document.getElementById('auth-sub-text');
+    if (sub) sub.textContent = 'کودێ پشتراسکرنێ بنڤیسە';
+    const addrEl = document.getElementById('verify-email-addr');
+    if (addrEl) addrEl.textContent = email;
+    const statusEl = document.getElementById('verify-status-msg');
+    if (statusEl) { statusEl.textContent = ''; }
+    // Reset boxes
+    [0,1,2,3].forEach(i=>{ const b=document.getElementById('vc'+i); if(b){ b.value=''; b.style.borderColor='#ddd'; b._vcReady=false; } });
+    _setupVcBoxes();
+    // Auto-focus first box — shows keyboard immediately on mobile
+    setTimeout(()=>{
+        const b = document.getElementById('vc0');
+        if(b) b.focus();
+    }, 150);
+}
+
+/* ── GOOGLE LOGIN ── */
+async function doGoogleLogin() {
+    try {
+        await signInWithPopup(auth, googleProvider);
+        // onAuthStateChanged handles everything
+    } catch(e) {
+        if (e.code !== 'auth/popup-closed-by-user')
+            showToast('Google داخلبوون سەرنەکەفت ❌', true);
+    }
+}
+
+/* ── NICKNAME PICKER (Google new users) ── */
+async function confirmPickedNickname() {
+    if (!currentUser) return;
+    const nick  = document.getElementById('pick-nickname').value.trim();
+    const errEl = document.getElementById('pick-nickname-error');
+    errEl.textContent = '';
+    if (!nick || nick.length < 2) { errEl.textContent = '⚠️ کێمی 2 پیت پێویستە'; return; }
+    if (nick.length > 20)         { errEl.textContent = '⚠️ زێدەتر ل 20 پیت نابیت'; return; }
+    // Check special characters
+    if (!/^[\w\u0600-\u06FF\s\-_.]+$/.test(nick)) { errEl.textContent = '⚠️ ناڤ پیتێن جیاواز تێدایە'; return; }
+    errEl.textContent = '⏳ چاڤەرێ  بە...';
+    errEl.style.color = '#888';
+    try {
+        // Check if taken — if Firebase blocks the read, just proceed
+        let taken = false;
+        try { taken = await isNicknameTaken(nick); } catch(e) { taken = false; }
+        if (taken) { errEl.textContent = '❌ ئەڤ ناڤە یێ هاتییە بکارئینان — ناڤێ دیکە هەلبژێرە'; errEl.style.color = '#e53e3e'; return; }
+        const avatarIdx = assignAvatar();
+        const profile = { nickname: nick, gamesPlayed: 0, wins: 0,
+                          email: currentUser.email || '', photoURL: currentUser.photoURL || '', avatarIdx };
+        await set(ref(db, 'users/'     + currentUser.uid), profile);
+        await set(ref(db, 'nicknames/' + nick.toLowerCase()), currentUser.uid);
+        userProfile   = profile;
+        gs.myNickname = nick;
+        _pendingNewUser = false;
+        updateProfileUI();
+        showPage('home-page');
+    } catch(e) {
+        errEl.textContent = '❌ خەلەتیەک پەیدا بوو — دوبارە هەولێ بو بدە';
+        errEl.style.color = '#e53e3e';
+        console.error('confirmPickedNickname error:', e);
+    }
+}
+
+/* ── SIGN OUT ── */
+async function doSignOut() {
+    await signOut(auth);
+    // onAuthStateChanged fires → shows auth page
+}
+
+/* ── PROFILE UI ── */
+function updateProfileUI() {
+    if (!userProfile) return;
+    const nick    = userProfile.nickname || '?';
+    const initial = nick.charAt(0).toUpperCase();
+    const photo   = userProfile.photoURL || '';
+
+    // Header bar (home page top)
+    const av = getAvatarForIndex(userProfile.avatarIdx ?? 0);
+    const btn = document.getElementById('homeProfileBtn');
+    if (btn) {
+        btn.style.background = av.c;
+        btn.style.fontSize   = '1.6rem';
+        btn.textContent      = av.e;
+    }
+    const nameEl = document.getElementById('homeProfileName');
+    if (nameEl) nameEl.textContent = nick;
+    // Profile page big avatar
+    const bigAv = document.getElementById('profile-avatar-big');
+    if (bigAv) {
+        bigAv.style.background = av.c;
+        bigAv.style.padding    = '0';
+        bigAv.style.fontSize   = '2.8rem';
+        bigAv.textContent      = av.e;
+    }
+    const nickEl  = document.getElementById('profile-nickname-display'); if(nickEl)  nickEl.textContent  = nick;
+    const emailEl = document.getElementById('profile-email-display');    if(emailEl) emailEl.textContent = currentUser?.email || '';
+    // Stats
+    const games = userProfile.gamesPlayed || 0;
+    const wins  = userProfile.wins        || 0;
+    const rate  = games > 0 ? Math.round((wins/games)*100) : 0;
+    const sg = document.getElementById('stat-games'); if(sg) sg.textContent = games;
+    const sw = document.getElementById('stat-wins');  if(sw) sw.textContent = wins;
+    const sr = document.getElementById('stat-rate');  if(sr) sr.textContent = rate + '%';
+    // Badge
+    const badge = document.getElementById('profile-badge-role');
+    if (badge) {
+        if      (wins >= 50) badge.textContent = '👑 لیگی امپراتور';
+        else if (wins >= 20) badge.textContent = '🏆 یارییکەرێ اسطورە';
+        else if (wins >= 10) badge.textContent = '⭐ یارییکەرێ باش';
+        else                 badge.textContent = '🎭 یارییکەرێ نوی';
+    }
+}
+
+async function recordGameResult(won, word) { // word param dropped — history removed for simplicity
+    if (!currentUser || !userProfile) return;
+    userProfile.gamesPlayed = (userProfile.gamesPlayed || 0) + 1;
+    if (won) userProfile.wins = (userProfile.wins || 0) + 1;
+    await update(ref(db, 'users/' + currentUser.uid), {
+        gamesPlayed: userProfile.gamesPlayed, wins: userProfile.wins
+    });
+    updateProfileUI();
+}
+
+/* ══════════════════════════════════════════
+   AVATAR SYSTEM
+   40 unique characters assigned at signup.
+   Stored in Firebase profile, never changes.
+══════════════════════════════════════════ */
+const AVATARS = [
+    {e:'🦊',c:'#FF6B35'},{e:'🐺',c:'#6B7280'},{e:'🦁',c:'#F59E0B'},{e:'🐯',c:'#EF4444'},
+    {e:'🦝',c:'#8B5CF6'},{e:'🐻',c:'#92400E'},{e:'🐼',c:'#374151'},{e:'🦄',c:'#EC4899'},
+    {e:'🐸',c:'#10B981'},{e:'🐧',c:'#3B82F6'},{e:'🦋',c:'#A78BFA'},{e:'🦅',c:'#B45309'},
+    {e:'🐉',c:'#DC2626'},{e:'🦖',c:'#65A30D'},{e:'🦈',c:'#0284C7'},{e:'🐙',c:'#DB2777'},
+    {e:'🦊',c:'#EA580C'},{e:'🦦',c:'#0369A1'},{e:'🐨',c:'#4B5563'},{e:'🦘',c:'#C2410C'},
+    {e:'🦩',c:'#BE185D'},{e:'🦚',c:'#047857'},{e:'🦜',c:'#B91C1C'},{e:'🐬',c:'#0891B2'},
+    {e:'🦞',c:'#DC2626'},{e:'🦀',c:'#EA580C'},{e:'🐊',c:'#15803D'},{e:'🦕',c:'#7C3AED'},
+    {e:'🧸',c:'#B45309'},{e:'🤖',c:'#0F172A'},{e:'👾',c:'#7C3AED'},{e:'🎭',c:'#0066cc'},
+    {e:'🎩',c:'#1E293B'},{e:'🕵️',c:'#374151'},{e:'🧙',c:'#6D28D9'},{e:'🥷',c:'#111827'},
+    {e:'🦸',c:'#1D4ED8'},{e:'🦹',c:'#7C2D12'},{e:'🤴',c:'#B45309'},{e:'👸',c:'#BE185D'},
+];
+
+function getAvatarForIndex(idx) {
+    return AVATARS[idx % AVATARS.length];
+}
+
+function assignAvatar() {
+    // Random index 0-39
+    return Math.floor(Math.random() * AVATARS.length);
+}
+
+function renderAvatarCircle(avatarIdx, size='') {
+    const av = getAvatarForIndex(avatarIdx ?? 0);
+    return `<div class="avatar-circle ${size}" style="background:${av.c};">${av.e}</div>`;
+}
+
+
+setTimeout(() => { const t=document.getElementById('welcomeToast'); if(t) t.remove(); }, 5000);
+
+function showToast(msg, isError=false) {
+    document.querySelectorAll('.welcome-notification').forEach(e=>e.remove());
+    const d = document.createElement('div');
+    d.className = 'welcome-notification';
+    if (isError) d.style.background = 'linear-gradient(135deg,#cc0000,#ff4444)';
+    d.textContent = msg;
+    d.onclick = () => d.remove();
+    document.body.appendChild(d);
+    setTimeout(() => d.remove(), 5000);
+}
+
+// BUG FIX 1: All wordPairs objects now have commas between them
+const wordPairs = [
+    {normal:"بریانی", different:"کوفتە"},
+    {normal:"ئاوی پرتەقاڵ", different:"دۆی مێو"},
+    {normal:"سامسۆنگ", different:"ئایفۆن"},
+    {normal:"نایکی", different:"ئەدیداس"},
+    {normal:"تۆیۆتا", different:"بێنز"},
+    {normal:"ئینستاگرام", different:"فیسبوک"},
+    {normal:"مەسی", different:"ڕۆناڵدۆ"},
+    {normal:"ڕۆناڵدینیۆ", different:"کاکا"},
+    {normal:"ماست", different:"دۆ"},
+    {normal:"گۆگ", different:"بالۆن"},
+    {normal:"تاکسی", different:"پاسکیل"},
+    {normal:"ئێمباپێ", different:"ڕۆدری"},
+    {normal:"بێڵینگهام", different:"کاماوینگا"},
+    {normal:"چیپس", different:"پەپکی خوێ"},
+    {normal:"نانی", different:"ئارد"},
+    {normal:"شامپۆ", different:"کۆندیشنەر"},
+    {normal:"زیرەک", different:"شارەزا"},
+    {normal:"دۆ", different:"شیر"},
+    {normal:"پاییز", different:"زستان"},
+    {normal:"کڵۆچە", different:"پیت"},
+    {normal:"کۆلێژ", different:"زانکۆ"},
+    {normal:"شەکر", different:"خێ"}
+];
+
+const kurdishWords = [
+"مەلا مصطفی بارزانی","ئازادی","ستالین","سەدام","دلو ژیر","مەیدان 🏟️","خورما",
+"هنار","کۆمەڵ","پرادو","ئەکسنت","مازدا","BMW","محەمەد عەلی","دەریا",
+"بوق","کول","گەلی","کورنیش دهوک","دەنگ دهوکێ","Zakho FC","ئەڤین",
+"دیگو مارادۆنا 🐐","کیلیان مباپی","کەریم بنزیمە","محمد صلاح","گۆڵ","تۆپ",
+"مۆبایل","کۆمپیوتەر","ئێلان ماسک","جۆ بایدەن","شی جینپینگ","ئەوروپا",
+"دهوک","نەجار","ئەندازیار","ئەبو حەمزە","ئەبو عومەر","ئەلا",
+"پشیل","روباه","چیتا","گاو","میرشک","مۆز","پرتەقال","Google","دەف",
+"فرچە 🪮","ماکینە حەلاقەت","تووتن","قلیان","دار","باران","زۆز","باڵندە","گوڵ",
+"دڵشاد","مال","فۆتۆ","سەیارە بچووک","شەربەت","پێک","پەنیر","مەڕ","مانگ",
+"بازاڕ","جووتیار"
+];
+
+const gs = {
+    players:[], spies:[], secretWord:"", differentWord:"",
+    gameMode:1, currentPlayerIndex:0, gameOver:false,
+    playerNames:[], starterPlayer:null,
+    myNickname:"", pendingFlow:"",
+    isHost:false, roomCode:"", onlineMode:1, onlinePlayers:[],
+    isOnlineGame:false, myPlayerIndex:-1, hostPlayerId:'',
+    eliminatedPlayers:[], currentRound:1, spiesEliminated:0, totalSpies:1,
+};
+let currentPlayerCount = 5;
+
+let fbListeners = [];
+function fbListen(path, cb) { fbListeners.push(path); onValue(ref(db,path), cb); }
+function fbListenChild(path, cb) { fbListeners.push(path); onChildAdded(ref(db,path), cb); }
+function detachAll() { fbListeners.forEach(p=>off(ref(db,p))); fbListeners=[]; }
+function genCode() { return String(Math.floor(100000+Math.random()*900000)); }
+
+let voteListeners = [];
+function detachVoteListeners() { voteListeners.forEach(p=>off(ref(db,p))); voteListeners=[]; }
+function fbVoteListen(path, cb) { voteListeners.push(path); onValue(ref(db,path), cb); }
+
+const PAGES = ['auth-page','home-page','profile-page','leaderboard-page','offline-mode-page','online-lobby-page',
+               'setup-page','game-page','discussion-page','reveal-page','results-page',
+               'voting-page','online-results-page','leaderboard-page'];
+
+function showPage(id) {
+    PAGES.forEach(p => document.getElementById(p).classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');
+    if (id==='setup-page') initSetupPage();
+    if (id==='reveal-page') document.getElementById('reveal-title').textContent = gs.gameMode===1?'🕵️ سیخوڕ':'🎭 کەسێ جیاواز';
+}
+function goBackToHome() { showPage('home-page'); }
+function goToHomePage()  { showPage('home-page'); }
+
+async function joinRoomClick() {
+    const input = document.getElementById('join-room-id');
+    const code = input.value.trim();
+    if (!code) { showToast('کۆدێ ژوورێ بنڤیسە! ⌨️',true); input.style.borderColor='#ff4444'; setTimeout(()=>{input.style.borderColor='';},2000); return; }
+    if (!gs.myNickname && userProfile) gs.myNickname = userProfile.nickname;
+    if (!gs.myNickname) { showToast(' داخل ببە! ❌',true); showPage('auth-page'); return; }
+    try {
+        const snap = await get(ref(db,`rooms/${code}`));
+        if (!snap.exists()) { showToast('کۆد یێ خەلەتە! ❌',true); input.style.borderColor='#ff4444'; setTimeout(()=>{input.style.borderColor='';},2000); return; }
+        input.style.borderColor='';
+        openLobby(false, code);
+    } catch(e) { showToast('خەلەتی!',true); }
+}
+
+function goToNickname(flow) {
+    if (!gs.myNickname && userProfile) gs.myNickname = userProfile.nickname;
+    if (!gs.myNickname) { showToast(' پێشتر داخلبە! ❌', true); showPage('auth-page'); return; }
+    if (flow === 'create') openLobby(true, null);
+    else if (flow === 'join') openLobby(false, document.getElementById('join-room-id').value.trim());
+}
+function confirmNickname() {
+    if (!gs.myNickname && userProfile) gs.myNickname = userProfile.nickname;
+    if (gs.pendingFlow==='create') openLobby(true,null);
+    else if (gs.pendingFlow==='join') openLobby(false, document.getElementById('join-room-id').value.trim());
+}
+
+function startOfflineSetup(mode) {
+    gs.gameMode=mode; gs.isOnlineGame=false;
+    document.getElementById('setup-title').textContent = mode===1?'⚙️ ڕێکخستنا سیخوڕی 🕵️':'⚙️ ڕێکخستنا پەیڤێن جیاواز 🎭';
+    showPage('setup-page');
+}
+
+function changePlayerCount(delta) { currentPlayerCount=Math.min(10,Math.max(3,currentPlayerCount+delta)); document.getElementById('player-count').textContent=currentPlayerCount; updatePlayerInputs(); }
+function updatePlayerInputs() {
+    let html='';
+    for(let i=1;i<=currentPlayerCount;i++) html+=`<div style="margin:8px 0;"><input type="text" class="player-input" id="pname-${i}" placeholder="یارییکەرێ ${i}"></div>`;
+    document.getElementById('player-inputs-container').innerHTML=html;
+}
+function initSetupPage() { document.getElementById('player-count').textContent=currentPlayerCount; updatePlayerInputs(); }
+function startGame() {
+    const players=[];
+    for(let i=1;i<=currentPlayerCount;i++){const el=document.getElementById(`pname-${i}`);players.push(el&&el.value.trim()?el.value.trim():`یارییکەرێ ${i}`);}
+    gs.playerNames=[...players]; startNewGame(players);
+}
+
+function startNewGame(players) {
+    let secretWord,differentWord='',spyIndices=[];
+    if(gs.gameMode===1){
+        let spyCount=1;
+        if(currentPlayerCount>=6&&currentPlayerCount<=8)spyCount=2;
+        if(currentPlayerCount>=9)spyCount=3;
+        while(spyIndices.length<spyCount){const r=Math.floor(Math.random()*currentPlayerCount);if(!spyIndices.includes(r))spyIndices.push(r);}
+        secretWord=kurdishWords[Math.floor(Math.random()*kurdishWords.length)];
+    } else {
+        spyIndices=[Math.floor(Math.random()*currentPlayerCount)];
+        const pair=wordPairs[Math.floor(Math.random()*wordPairs.length)];
+        secretWord=pair.normal; differentWord=pair.different;
+    }
+    gs.players=players.map((name,i)=>({id:i+1,name,isSpy:gs.gameMode===1?spyIndices.includes(i):false,hasDifferentWord:gs.gameMode===2?spyIndices.includes(i):false}));
+    gs.spies=spyIndices.map(i=>i+1); gs.secretWord=secretWord; gs.differentWord=differentWord;
+    gs.currentPlayerIndex=0; gs.gameOver=false; gs.starterPlayer=null;
+    showPage('game-page'); showNextCard();
+}
+function selectStarterPlayer() { const r=Math.floor(Math.random()*gs.players.length); gs.starterPlayer=gs.players[r]||{name:"یاریکەر"}; return gs.starterPlayer; }
+
+function revealOfflineCard(playerId) {
+    const player=gs.players.find(p=>p.id===playerId);
+    const container=document.getElementById('card-container');
+    const nextBtn=document.getElementById('next-player-btn');
+    if(!player)return;
+    if(gs.gameMode===1){
+        if(player.isSpy){
+            const allSpies=gs.players.filter(p=>p.isSpy);
+            let coHtml='';
+            if(allSpies.length>1){
+                const coSpies=allSpies.filter(p=>p.id!==playerId);
+                if(coSpies.length>0) coHtml='<div style="margin-top:14px;background:rgba(0,0,0,0.18);border-radius:20px;padding:12px 16px;border:2px solid #ffcc00;"><div style="font-size:0.9rem;color:#ffcc00;margin-bottom:6px;">🤝 هەڤالێ تەیێ سیخور:</div>'+coSpies.map(s=>'<div style="font-size:1.4rem;font-weight:bold;color:#fff;">🕵️ '+s.name+'</div>').join('')+'</div>';
+            }
+            container.innerHTML='<div class="card-spy-revealed card-revealed"><div class="role-icon">🕵️</div><div style="color:#FF0000;font-size:2rem;margin-bottom:12px;">تۆ سیخوڕی!</div><div style="font-size:1rem;color:#000;">تۆ پەیڤێ نزانی، هەوڵبدە پەییڤێ بزانی</div><div style="margin-top:10px;color:#000;font-size:1rem;">خۆ دگەل مەدەنییا بگونجینە!</div>'+coHtml+'</div>';
+        } else {
+            container.innerHTML='<div class="card-civilian-revealed card-revealed"><div class="role-icon">👨‍🌾</div><div style="color:#000;font-size:2rem;margin-bottom:12px;">تۆ مەدەنی</div><div style="font-size:1rem;color:#000;">هەوڵبدە سیخوڕی بگری!</div><div class="word-display">'+gs.secretWord+'</div></div>';
+        }
+    } else {
+        const word=player.hasDifferentWord?gs.differentWord:gs.secretWord;
+        container.innerHTML='<div class="card-white-revealed card-revealed"><div class="word-display">'+word+'</div></div>';
+    }
+    nextBtn.classList.remove('hidden');
+}
+
+function showNextCard() {
+    const container=document.getElementById('card-container');
+    const progress=document.getElementById('game-progress');
+    const nextBtn=document.getElementById('next-player-btn');
+    const revealBtn=document.getElementById('reveal-btn');
+    const starterCont=document.getElementById('starter-container');
+    const current=gs.players[gs.currentPlayerIndex];
+
+    if(!current){
+        const starter=selectStarterPlayer();
+        progress.textContent=`${gs.players.length}/${gs.players.length} - تەمام`;
+        container.innerHTML=`<div class="card" style="cursor:default;background:#f0f7ff;border:2px solid #0066cc;"><div class="role-icon">🎯</div><div style="color:#0066cc;font-size:1.1rem;">هەمی کارت هاتتنە دیتن</div></div>`;
+        starterCont.innerHTML=`<div class="starter-box"><div class="starter-message">🎤 دەستپێ بکە!</div><div class="starter-name">${starter.name}</div><div>🧠 مێشکێ خۆ بکاربیینە، هزر بکە پاشی باخڤە!</div><div style="margin-top:18px;"><div style="font-size:0.95rem;color:rgba(255,255,255,0.8);margin-bottom:6px;">ئاشکراکرن دەستپێدکات لە:</div><div id="disc-countdown-num" style="font-size:3.5rem;font-weight:bold;color:#ffcc00;line-height:1;">6</div></div></div>`;
+        starterCont.classList.remove('hidden');
+        nextBtn.classList.add('hidden');
+        revealBtn.classList.add('hidden');
+        // BUG FIX 2: Use -- (decrement) not – (em-dash)
+        let _cdSec2 = 6;
+        clearInterval(window._cdInterval);
+        window._cdInterval = setInterval(() => {
+            _cdSec2–;
+            const el = document.getElementById('disc-countdown-num');
+            if (el) el.textContent = _cdSec2;
+            if (_cdSec2 <= 0) { clearInterval(window._cdInterval); goToRevealPage(); }
+        }, 1000);
+        return;
+    }
+    starterCont.classList.add('hidden');
+    progress.textContent=`یارییکەرێ ${gs.currentPlayerIndex+1} / ${gs.players.length}`;
+    const cardEl = document.createElement('div');
+    cardEl.className = 'card-face-down';
+    const offAv = getAvatarForIndex(Math.abs(current.id * 7 + 3) % AVATARS.length);
+    cardEl.innerHTML = `<div style="width:70px;height:70px;border-radius:50%;background:${offAv.c};display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 8px;border:3px solid #ffcc00;box-shadow:0 4px 16px rgba(0,0,0,0.3);">${offAv.e}</div><div class="card-fd-name">${current.name}</div><div class="card-fd-hint">👆 کلیک بکە بۆ بینینا رولێ خۆ</div>`;
+    const capturedId = current.id;
+    cardEl.onclick = function(){ revealOfflineCard(capturedId); };
+    container.innerHTML = '';
+    container.appendChild(cardEl);
+    nextBtn.classList.add('hidden');
+    revealBtn.classList.add('hidden');
+}
+
+function nextPlayerOffline() { gs.currentPlayerIndex++; showNextCard(); }
+
+function showOnlineTurnScreen(gameData, turnIndex, revealedArr) {
+    const container=document.getElementById('card-container');
+    const progress=document.getElementById('game-progress');
+    const nextBtn=document.getElementById('next-player-btn');
+    const revealBtn=document.getElementById('reveal-btn');
+    const starterCont=document.getElementById('starter-container');
+
+    starterCont.classList.add('hidden'); nextBtn.classList.add('hidden'); revealBtn.classList.add('hidden');
+
+    const players=gameData.playerNames;
+    const totalPlayers=players.length;
+    const myIdx=gs.myPlayerIndex;
+    progress.textContent=`یارییکەرێ ${turnIndex+1} / ${totalPlayers}`;
+
+    if(turnIndex>=totalPlayers){
+        const starterName=players[gameData.starterIndex!==undefined?gameData.starterIndex:0];
+        progress.textContent=`${totalPlayers}/${totalPlayers} - تەمام`;
+        container.innerHTML=`<div class="card" style="cursor:default;background:#f0f7ff;border:2px solid #0066cc;"><div class="role-icon">🎯</div><div style="color:#0066cc;font-size:1.1rem;">هەمی کارت هاتتنە دیتن</div><div style="color:#666;margin-top:10px;font-size:0.95rem;">دەستپێکرنا مناقشێ... 🗣️</div></div>`;
+        starterCont.innerHTML=`<div class="starter-box"><div class="starter-message">🎤 دەستپێ بکە!</div><div class="starter-name">${starterName}</div><div>🧠 مێشکێ خۆ بکاربیینە، هزر بکە پاشی باخڤە!</div><div id="disc-countdown-box" style="margin-top:18px;"><div style="font-size:0.95rem;color:rgba(255,255,255,0.8);margin-bottom:6px;">مناقشە دەستپێدکات لە:</div><div id="disc-countdown-num" style="font-size:3.5rem;font-weight:bold;color:#ffcc00;line-height:1;">6</div></div></div>`;
+        starterCont.classList.remove('hidden');
+        revealBtn.classList.add('hidden');
+        let _cdSec = 6;
+        clearInterval(window._cdInterval);
+        window._cdInterval = setInterval(() => {
+            _cdSec--;
+            const el = document.getElementById('disc-countdown-num');
+            if (el) el.textContent = _cdSec;
+            if (_cdSec <= 0) {
+                clearInterval(window._cdInterval);
+                openDiscussionPage(gameData);
+            }
+        }, 1000);
+        return;
+    }
+
+    const activePlayerName=players[turnIndex];
+    if(myIdx===turnIndex){
+        window._onlineRevealData=gameData;
+        window._onlineRevealIndex=turnIndex;
+        window._onlineRevealMyCard=function(){ onlineRevealMyCard(window._onlineRevealData, window._onlineRevealIndex); };
+        const myAv2 = getAvatarForIndex((gameData.playerAvatars||[])[myIdx]??0);
+        const cardEl = document.createElement('div');
+        cardEl.className = 'card-face-down';
+        cardEl.innerHTML = `<div style="width:70px;height:70px;border-radius:50%;background:${myAv2.c};display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 8px;border:3px solid #ffcc00;box-shadow:0 4px 16px rgba(0,0,0,0.3);">${myAv2.e}</div><div class="card-fd-name">${activePlayerName}</div><div class="card-fd-hint">👆 کلیک بکە بۆ بینینا رولێ خۆ</div>`;
+        cardEl.onclick = window._onlineRevealMyCard;
+        container.innerHTML = '';
+        container.appendChild(cardEl);
+    } else {
+        const wAv = getAvatarForIndex((gameData.playerAvatars||[])[turnIndex]??0);
+        container.innerHTML=`<div class="waiting-turn-box">
+            <div style="width:64px;height:64px;border-radius:50%;background:${wAv.c};display:flex;align-items:center;justify-content:center;font-size:2.2rem;margin:0 auto 12px;border:3px solid #0066cc;">${wAv.e}</div>
+            <div class="wt-name">${activePlayerName}</div>
+            <div class="wt-msg">رولێ خۆ دبینیت... ⏳</div>
+        </div>`;
+    }
+}
+
+function onlineRevealMyCard(gameData, myIdx) {
+    const container=document.getElementById('card-container');
+    const nextBtn=document.getElementById('next-player-btn');
+    const isSpy=gameData.mode===1&&gameData.spyIndices.includes(myIdx);
+    const hasDiffWord=gameData.mode===2&&gameData.spyIndices.includes(myIdx);
+    const spyIndices=gameData.spyIndices||[];
+    const names=gameData.playerNames||[];
+    const multiSpy=spyIndices.length>1;
+
+    if(gameData.mode===1){
+        if(isSpy){
+            let coSpyHtml='';
+            if(multiSpy){
+                const coSpies=spyIndices.filter(i=>i!==myIdx).map(i=>names[i]).filter(Boolean);
+                if(coSpies.length>0) coSpyHtml='<div style="margin-top:14px;background:rgba(0,0,0,0.18);border-radius:20px;padding:12px 16px;border:2px solid #ffcc00;"><div style="font-size:0.9rem;color:#ffcc00;margin-bottom:6px;">🤝 هەڤالێ تەیێ سیخوڕ:</div>'+coSpies.map(n=>'<div style="font-size:1.4rem;font-weight:bold;color:#fff;">🕵️ '+n+'</div>').join('')+'</div>';
+            }
+            container.innerHTML='<div class="card-spy-revealed card-revealed"><div class="role-icon">🕵️</div><div style="color:#FF0000;font-size:2rem;margin-bottom:10px;">تۆ سیخوڕی!</div><div style="font-size:1rem;color:#000;">تۆ پەیڤێ نزانی، هەوڵبدە پەییڤێ بزانی</div><div style="margin-top:10px;color:#000;font-size:1rem;">خۆ دگەل مەدەنییا بگونجینە!</div>'+coSpyHtml+'</div>';
+        } else {
+            container.innerHTML='<div class="card-civilian-revealed card-revealed"><div class="role-icon">👨‍🌾</div><div style="color:#000;font-size:2rem;margin-bottom:15px;">تۆ مەدەنی</div><div style="font-size:1.1rem;color:#000;">هەوڵبدە سیخوڕی بگری!</div><div class="word-display">'+gameData.secretWord+'</div></div>';
+        }
+    } else {
+        const word=hasDiffWord?gameData.differentWord:gameData.secretWord;
+        container.innerHTML='<div class="card-white-revealed card-revealed"><div class="word-display">'+word+'</div></div>';
+    }
+    update(ref(db,`rooms/${gs.roomCode}/gameState`),{[`revealed/${myIdx}`]:true});
+    nextBtn.textContent='یارییکەرێ دیڤدا ⏭️';
+    nextBtn.classList.remove('hidden');
+    nextBtn.onclick=()=>onlineNextTurn(gameData);
+}
+
+function onlineNextTurn(gameData) {
+    const nextIdx=(gameData._currentTurn||0)+1;
+    update(ref(db,`rooms/${gs.roomCode}/gameState`),{turnIndex:nextIdx});
+}
+function nextPlayerAction() { if(!gs.isOnlineGame) nextPlayerOffline(); }
+
+/* ══════════════════════════════════════════
+   VOICE CHAT (PeerJS)
+   Rules:
+   - Everyone creates a peer on discussion start → can RECEIVE calls (hear others).
+   - Mic ON  → call all other players (they hear you).
+   - Mic OFF → stop sending only. Peer stays alive → you still HEAR everyone.
+   - Peer ID: sikhur_{roomCode}_{playerId}
+══════════════════════════════════════════ */
+let _discPeer       = null;
+let _discStream     = null;
+let _discVoiceOn    = false;
+let _discCalls      = {};    // outgoing: peerId → MediaConnection
+let _discIncoming   = {};    // incoming: peerId → MediaConnection
+let _discGameData   = null;
+let _discChatAttached = false;
+window._discSpeaking  = {};
+
+function discPeerId(uid) { return 'sikhur_' + gs.roomCode + '_' + uid; }
+
+function _playRemoteStream(stream, pid) {
+    const old = document.getElementById('discAudio_' + pid);
+    if (old) old.remove();
+    const audio = document.createElement('audio');
+    audio.id = 'discAudio_' + pid;
+    audio.autoplay = true; audio.playsInline = true;
+    audio.srcObject = stream;
+    document.body.appendChild(audio);
+    _watchVolume(stream, pid);
+}
+
+function _watchVolume(stream, uid) {
+    try {
+        const ctx  = new (window.AudioContext || window.webkitAudioContext)();
+        const src  = ctx.createMediaStreamSource(stream);
+        const anal = ctx.createAnalyser();
+        anal.fftSize = 512;
+        src.connect(anal);
+        const buf = new Uint8Array(anal.frequencyBinCount);
+        const tick = () => {
+            anal.getByteFrequencyData(buf);
+            const avg = buf.reduce((a,b)=>a+b,0) / buf.length;
+            const speaking = avg > 8;
+            if (speaking !== !!window._discSpeaking[uid]) {
+                window._discSpeaking[uid] = speaking;
+                setPlayerSpeaking(uid, speaking);
+            }
+            requestAnimationFrame(tick);
+        };
+        tick();
+    } catch(e) {}
+}
+
+function setPlayerSpeaking(uid, speaking) {
+    const el = document.getElementById('vp_' + uid);
+    if (!el) return;
+    el.classList.toggle('speaking', speaking);
+    const bars = el.querySelector('.vp-bars');
+    if (bars) bars.style.display = speaking ? 'flex' : 'none';
+}
+
+function _ensurePeer(onReady) {
+    if (_discPeer && !_discPeer.destroyed && _discPeer.open) { onReady(); return; }
+    if (_discPeer && !_discPeer.destroyed) { _discPeer.on('open', () => onReady()); return; }
+    const myPid = discPeerId(myPlayerId);
+    const peer  = new Peer(myPid, {
+        host:'0.peerjs.com', port:443, path:'/', secure:true,
+        config:{ iceServers:[
+            {urls:'stun:stun.l.google.com:19302'},
+            {urls:'stun:stun1.l.google.com:19302'}
+        ]}
+    });
+    _discPeer = peer;
+    peer.on('open', () => { onReady(); });
+    // Answer all incoming calls — even with mic off (listener mode)
+    peer.on('call', call => {
+        const pid = call.peer;
+        // Answer with mic stream if on, otherwise answer with empty stream to establish connection
+        call.answer(_discStream || undefined);
+        call.on('stream', stream => { _discIncoming[pid] = call; _playRemoteStream(stream, pid); });
+        call.on('close',  () => { delete _discIncoming[pid]; });
+        call.on('error',  () => { delete _discIncoming[pid]; });
+    });
+    peer.on('error', e => {
+        if (e.type === 'unavailable-id') {
+            // Another tab has this peer — destroy and try again with suffix
+            if (_discPeer === peer) _discPeer = null;
+            try { peer.destroy(); } catch(_) {}
+            setTimeout(() => _ensurePeer(onReady), 1000);
+        }
+    });
+    peer.on('disconnected', () => { try { peer.reconnect(); } catch(_) {} });
+}
+
+function _startListenerPeer() { _ensurePeer(() => {}); }
+
+async function toggleDiscMic() {
+    if (_discVoiceOn) {
+        // MIC OFF — stop sending, keep peer alive to keep receiving
+        _discVoiceOn = false;
+        if (_discStream) { _discStream.getTracks().forEach(t => t.stop()); _discStream = null; }
+        Object.entries(_discCalls).forEach(([pid, call]) => { try { call.close(); } catch(e) {} });
+        _discCalls = {};
+        setPlayerSpeaking(myPlayerId, false);
+        const btn = document.getElementById('discMicBtn');
+        if (btn) { btn.className='disc-mic-btn mic-off'; btn.textContent='🎙️ مایکروفونێ چالاک بکە'; }
+        renderVoicePlayers();
+        return;
+    }
+    // MIC ON — get microphone and call all players
+    try {
+        _discStream = await navigator.mediaDevices.getUserMedia({
+            audio:{ echoCancellation:true, noiseSuppression:true, autoGainControl:true }
+        });
+    } catch(e) {
+        showToast('مایکرۆفۆن نەهاتە دیتن ❌', true); return;
+    }
+    _discVoiceOn = true;
+    const btn = document.getElementById('discMicBtn');
+    if (btn) { btn.className='disc-mic-btn mic-on'; btn.textContent='🔴 مایکرۆفۆن یا چالاکە — کلیک بکە بۆ بێدەنگکرنێ'; }
+    _watchVolume(_discStream, myPlayerId);
+    renderVoicePlayers();
+    _ensurePeer(() => {
+        gs.onlinePlayers.forEach(p => {
+            if (p.id === myPlayerId) return;
+            const pid = discPeerId(p.id);
+            if (_discCalls[pid] && _discCalls[pid].open) return;
+            try {
+                const call = _discPeer.call(pid, _discStream);
+                if (!call) return;
+                call.on('stream', stream => _playRemoteStream(stream, pid));
+                call.on('close',  () => { delete _discCalls[pid]; });
+                call.on('error',  () => { delete _discCalls[pid]; });
+                _discCalls[pid] = call;
+            } catch(e) {}
+        });
+    });
+}
+
+function stopDiscMic() {
+    _discVoiceOn = false;
+    if (_discStream) { _discStream.getTracks().forEach(t => t.stop()); _discStream = null; }
+    [...Object.values(_discCalls), ...Object.values(_discIncoming)].forEach(c => { try { c.close(); } catch(e) {} });
+    _discCalls = {}; _discIncoming = {};
+    if (_discPeer) { try { _discPeer.destroy(); } catch(e) {} _discPeer = null; }
+    document.querySelectorAll('[id^="discAudio_"]').forEach(a => a.remove());
+    setPlayerSpeaking(myPlayerId, false);
+    window._discSpeaking = {};
+    const btn = document.getElementById('discMicBtn');
+    if (btn) { btn.className='disc-mic-btn mic-off'; btn.textContent='🎙️ مایکرۆفۆنێ چالاک بکە'; }
+    renderVoicePlayers();
+}
+
+
+function renderVoicePlayers() {
+    const box = document.getElementById('discVoicePlayers');
+    if (!box) return;
+    box.innerHTML = '';
+    gs.onlinePlayers.forEach(p => {
+        const av = getAvatarForIndex(p.avatarIdx ?? 0);
+        const speaking = !!window._discSpeaking[p.id];
+        const isMeVoice = p.id === myPlayerId && _discVoiceOn;
+        const div = document.createElement('div');
+        div.className = 'disc-voice-player' + (speaking ? ' speaking' : '');
+        div.id = 'vp_' + p.id;
+        div.innerHTML =
+            `<div class="vp-avatar" style="background:${av.c};border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;">${av.e}</div>` +
+            `<div class="vp-name">${p.name}</div>` +
+            `<div class="vp-bars" style="display:${speaking?'flex':'none'}">` +
+                `<div class="vp-bar"></div><div class="vp-bar"></div><div class="vp-bar"></div>` +
+            `</div>` +
+            (!isMeVoice && p.id === myPlayerId ? `<div class="vp-mute-icon">🔇</div>` : '');
+        box.appendChild(div);
+    });
+}
+
+
+function openDiscussionPage(gameData) {
+    _discGameData = gameData;
+    window._discSpeaking = {};
+    // Reset mic state (don't stop peer — we want to receive immediately)
+    _discVoiceOn = false;
+    if (_discStream) { _discStream.getTracks().forEach(t => t.stop()); _discStream = null; }
+    _discCalls = {};
+    showPage('discussion-page');
+    const starterName = gameData.playerNames[gameData.starterIndex ?? 0] || '—';
+    document.getElementById('disc-starter-name').textContent = starterName;
+    document.getElementById('discChatBox').innerHTML = '';
+    _discChatAttached = false;
+    renderVoicePlayers();
+    const btn = document.getElementById('discMicBtn');
+    if (btn) { btn.className = 'disc-mic-btn mic-off'; btn.textContent = '🎙️ مایکرۆفۆنێ چالاک بکە'; }
+    const voteBtn = document.getElementById('disc-vote-btn');
+    const waitMsg = document.getElementById('disc-wait-msg');
+    if (gs.isHost) { voteBtn.classList.remove('hidden'); waitMsg.classList.add('hidden'); }
+    else { voteBtn.classList.add('hidden'); waitMsg.classList.remove('hidden'); }
+    // Start listener peer FIRST so we can receive calls immediately
+    _startListenerPeer();
+    fbVoteListen(`rooms/${gs.roomCode}/discussionDone`, snap=>{
+        if(snap.val()===true){ stopDiscMic(); startVotingPhase(_discGameData); }
+    });
+    if(!_discChatAttached){
+        _discChatAttached=true;
+        fbListenChild(`rooms/${gs.roomCode}/discussionChat`, snap=>{
+            const msg=snap.val();
+            const box=document.getElementById('discChatBox');
+            if(!box)return;
+            const d=document.createElement('div');
+            d.className='dbubble '+(msg.senderId===myPlayerId?'me':'other');
+            d.innerHTML='<div class="bname">'+msg.name+'</div>'+msg.text;
+            box.appendChild(d); box.scrollTop=box.scrollHeight;
+        });
+    }
+}
+
+function sendDiscMsg() {
+    const inp=document.getElementById('discChatInput');
+    const txt=inp.value.trim();
+    if(!txt||!gs.roomCode)return;
+    inp.value='';
+    push(ref(db,`rooms/${gs.roomCode}/discussionChat`),{senderId:myPlayerId,name:gs.myNickname,text:txt,ts:Date.now()});
+}
+
+function hostStartVoting() {
+    if(!gs.isHost)return;
+    set(ref(db,`rooms/${gs.roomCode}/discussionDone`),true);
+}
+
+function goToRevealPage() {
+    showPage('reveal-page');
+    const container=document.getElementById('reveal-container');
+    if(gs.gameMode===1){
+        const spies=gs.players.filter(p=>p.isSpy);
+        if(spies.length===1){
+            container.innerHTML=`<div class="reveal-card"><div class="role-icon">🕵️</div><div style="color:#ffcc00;">سیخوڕ =</div><div class="person-name">${spies[0].name}</div><div style="background:#333;padding:15px;border-radius:30px;margin-top:20px;border:1px solid #ffcc00;"><div style="font-size:1.1rem;color:#ffcc00;">پەییڤا مەدەنییا =</div><div style="font-size:2rem;font-weight:500;margin-top:5px;color:white;">${gs.secretWord}</div></div></div>`;
+        } else {
+            let sh='<div style="margin:15px 0;">';
+            spies.forEach(s=>{sh+=`<div style="font-size:1.8rem;margin:10px 0;background:#333;padding:12px;border-radius:30px;border:1px solid #ffcc00;color:#ffcc00;">${s.name}</div>`;});
+            sh+='</div>';
+            container.innerHTML=`<div class="reveal-card"><div class="role-icon">🕵️🕵️</div><div style="color:#ffcc00;">سیخوڕ ئەڤەنە!</div>${sh}<div style="background:#333;padding:15px;border-radius:30px;margin-top:20px;border:1px solid #ffcc00;"><div style="font-size:1.1rem;color:#ffcc00;">پەیڤاتە:</div><div style="font-size:2rem;font-weight:500;margin-top:5px;color:white;">${gs.secretWord}</div></div></div>`;
+        }
+    } else {
+        const diff=gs.players.find(p=>p.hasDifferentWord);
+        container.innerHTML=`<div class="reveal-card"><div class="role-icon">🎭</div><div style="color:#ffcc00;">کەسێ جیاواز ئەڤەیە!</div><div class="person-name">${diff.name}</div><div style="background:#333;padding:15px;border-radius:30px;margin-top:20px;border:1px solid #ffcc00;"><div style="font-size:1.1rem;color:#ffcc00;">پەییڤا ئاسایی:</div><div style="font-size:1.8rem;font-weight:500;color:white;">${gs.secretWord}</div><div style="font-size:1.1rem;color:#ffcc00;margin-top:15px;">پەییڤا جیاواز:</div><div style="font-size:1.8rem;font-weight:500;color:#ff6b6b;">${gs.differentWord}</div></div></div>`;
+    }
+}
+function showFinalResults() {
+    showPage('results-page');
+    const container=document.getElementById('results-container');
+    let html='<div class="results-container">';
+    if(gs.gameMode===1){
+        gs.players.forEach(p=>{html+=`<div class="player-result"><span>${p.name}</span>${p.isSpy?'<span class="spy-badge">سیخوڕ</span>':'<span class="civilian-badge">مەدەنی</span>'}</div>`;});
+        html+='</div>';
+        container.innerHTML=html+`<div class="word-box"><div class="word-value">${gs.secretWord}</div></div>`;
+    } else {
+        gs.players.forEach(p=>{html+=`<div class="player-result"><span>${p.name}</span>${p.hasDifferentWord?'<span class="different-badge">جیاواز</span>':'<span class="normal-badge">ئاسایی</span>'}</div>`;});
+        html+='</div>';
+        container.innerHTML=html+`<div class="word-box"><div class="word-value">${gs.secretWord}</div></div><div class="word-box"><div class="word-value-different">${gs.differentWord}</div></div>`;
+    }
+}
+function playAgain() { startNewGame(gs.playerNames); }
+
+let voteTimerInterval=null,myVoteChoice=null,voteSubmitted=false,voteGameData=null;
+
+function startVotingPhase(gameData) {
+    voteGameData=gameData; myVoteChoice=null; voteSubmitted=false;
+    detachVoteListeners();
+    showPage('voting-page');
+    document.getElementById('voteConfirmBtn').disabled=true;
+    document.getElementById('voteTimerDisplay').textContent='30';
+    document.getElementById('voteTimerDisplay').className='vote-timer-value';
+    document.getElementById('voteStatusMsg').textContent='دەنگێ خۆ بدە!';
+    const seeBtn=document.getElementById('seeResultsBtn');
+    if(gs.isHost){seeBtn.classList.remove('hidden');seeBtn.disabled=true;}else{seeBtn.classList.add('hidden');}
+    if(gs.isHost) set(ref(db,`rooms/${gs.roomCode}/votes`),null);
+    renderVoteList(gameData,{});
+    fbVoteListen(`rooms/${gs.roomCode}/votes`,snap=>{const votes=snap.val()||{};renderVoteList(gameData,votes);checkVotingComplete(gameData,votes);});
+    fbVoteListen(`rooms/${gs.roomCode}/votingRound`,snap=>{if(!snap.exists()||!snap.val()||gs.isHost)return;const round=snap.val();if(round>(gs.currentRound||1)){gs.currentRound=round;if(voteGameData)startVotingPhase(voteGameData);}});
+    fbVoteListen(`rooms/${gs.roomCode}/voteResult`,snap=>{if(!snap.exists()||!snap.val())return;showOnlineVoteResults(snap.val());});
+    let timeLeft=30;
+    clearInterval(voteTimerInterval);
+    voteTimerInterval=setInterval(()=>{
+        timeLeft--;
+        const el=document.getElementById('voteTimerDisplay');
+        if(el){el.textContent=timeLeft;if(timeLeft<=10)el.className='vote-timer-value urgent';}
+        if(timeLeft<=0){
+            clearInterval(voteTimerInterval);
+            const te=document.getElementById('voteTimerDisplay');if(te){te.textContent='⏰';te.className='vote-timer-value urgent';}
+            voteSubmitted=true;
+            const cb=document.getElementById('voteConfirmBtn');if(cb)cb.disabled=true;
+            document.querySelectorAll('.vote-row').forEach(r=>{r.style.pointerEvents='none';r.style.opacity='0.6';});
+            if(gs.isHost){const rb=document.getElementById('seeResultsBtn');if(rb)rb.disabled=false;}
+            else{const vs=document.getElementById('voteStatusMsg');if(vs)vs.textContent='⏰ دەم خلاس بو!';}
+        }
+    },1000);
+}
+function renderVoteList(gameData,votes){
+    const list=document.getElementById('voteList');if(!list)return;
+    const names=gameData.playerNames;const eliminated=gameData._eliminatedPlayers||gs.eliminatedPlayers||[];
+    const tally={};Object.values(votes).forEach(v=>{tally[v]=(tally[v]||0)+1;});
+    list.innerHTML='';
+    names.forEach((name,idx)=>{
+        if(eliminated.includes(idx))return;
+        const isSelected=myVoteChoice===idx;
+        const div=document.createElement('div');
+        const vAv=getAvatarForIndex((gameData.playerAvatars||[])[idx]??idx);
+        div.className='vote-row'+(isSelected?' selected':'');
+        div.innerHTML=`<div class="avatar-circle sm" style="background:${vAv.c};flex-shrink:0;">${vAv.e}</div><span class="vote-name">${name}</span>`;
+        if(!voteSubmitted)div.onclick=()=>selectVoteCandidate(idx,gameData,votes);
+        list.appendChild(div);
+    });
+}
+function selectVoteCandidate(idx,gameData,votes){
+    if(voteSubmitted)return;myVoteChoice=idx;
+    document.getElementById('voteConfirmBtn').disabled=false;
+    renderVoteList(gameData,votes);
+    document.getElementById('voteStatusMsg').textContent=`✅ ${gameData.playerNames[idx]} — هەلبژێرە`;
+}
+function submitVote(){
+    if(myVoteChoice===null||voteSubmitted)return;voteSubmitted=true;
+    document.getElementById('voteConfirmBtn').disabled=true;
+    document.getElementById('voteStatusMsg').textContent='✅ دەنگێ تە هاتە دان!';
+    update(ref(db,`rooms/${gs.roomCode}/votes`),{[myPlayerId]:myVoteChoice});
+}
+function checkVotingComplete(gameData,votes){
+    const activePlayers=gameData.playerNames.length-(gs.eliminatedPlayers||[]).length;
+    const totalVotes=Object.keys(votes).length;
+    const voteStatus=document.getElementById('voteStatusMsg');
+    if(voteStatus){if(voteSubmitted)voteStatus.textContent=`✅ دەنگێ تە هاتە تومارکرن! (${totalVotes}/${activePlayers})`;else voteStatus.textContent=`${totalVotes}/${activePlayers} دەنگێن دای`;}
+    if(totalVotes>=activePlayers&&gs.isHost){clearInterval(voteTimerInterval);const te=document.getElementById('voteTimerDisplay');if(te){te.textContent='✓';te.className='vote-timer-value';}const seeBtn=document.getElementById('seeResultsBtn');if(seeBtn)seeBtn.disabled=false;}
+}
+function openOnlineResults(){
+    if(!gs.isHost)return;clearInterval(voteTimerInterval);
+    get(ref(db,`rooms/${gs.roomCode}/votes`)).then(snap=>{
+        const votes=snap.val()||{};const gameData=voteGameData;const names=gameData.playerNames;
+        const spyIndices=gameData.spyIndices;
+        // Use _eliminatedPlayers if set (carries over from previous rounds)
+        const eliminated=gameData._eliminatedPlayers||gs.eliminatedPlayers||[];
+        gs.eliminatedPlayers=eliminated;
+        const tally={};Object.values(votes).forEach(v=>{tally[v]=(tally[v]||0)+1;});
+        let maxVotes=0,chosenIdx=-1;
+        Object.entries(tally).forEach(([idx,cnt])=>{if(!eliminated.includes(parseInt(idx))&&cnt>maxVotes){maxVotes=cnt;chosenIdx=parseInt(idx);}});
+        const chosenName=chosenIdx>=0?names[chosenIdx]:'—';const chosenIsSpy=spyIndices.includes(chosenIdx);
+        const newEliminated=[...eliminated,chosenIdx];gs.eliminatedPlayers=newEliminated;
+        let outcome='';
+        if(chosenIsSpy){gs.spiesEliminated=(gs.spiesEliminated||0)+1;const rem=spyIndices.filter(i=>!newEliminated.includes(i)).length;outcome=rem===0?'civils_win':'spy_out_continue';}
+        else outcome='civil_out';
+        const spyNames=spyIndices.map(i=>names[i]).join(', ');
+        const tally2={};Object.values(votes).forEach(v=>{tally2[v]=(tally2[v]||0)+1;});
+        set(ref(db,`rooms/${gs.roomCode}/voteResult`),{chosenIdx,chosenName,chosenIsSpy,outcome,spyNames,maxVotes,tally:tally2,eliminatedPlayers:newEliminated,playerNames:names,spyIndices,secretWord:gameData.secretWord,differentWord:gameData.differentWord||'',mode:gameData.mode,playerAvatars:gameData.playerAvatars||[]});
+    });
+}
+function showOnlineVoteResults(result){
+    const{chosenIdx,chosenName,chosenIsSpy,outcome,spyNames,maxVotes,tally,eliminatedPlayers,playerNames,spyIndices,secretWord,differentWord,mode}=result;
+    gs.eliminatedPlayers=eliminatedPlayers||[];
+    // Update voteGameData eliminatedPlayers so next round excludes them
+    if(voteGameData) voteGameData._eliminatedPlayers = gs.eliminatedPlayers;
+
+    showPage('online-results-page');
+    const container=document.getElementById('online-results-container');
+    let html='';
+
+    if(outcome==='civils_win'){
+        playSound('win');
+        // FINAL: show everything including spy identity
+        html=`<div class="result-win-card"><div class="result-big-icon">🎉</div><div class="result-big-title">مەدەنیا سیخوڕ گرت!</div><div style="font-size:1.1rem;color:#333;margin:8px 0;">هەمی سیخوڕ هاتنە دیتن! 🏆</div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:10px;"><div style="font-size:0.9rem;color:#555;">هەلبژارتی</div><div style="font-size:1.8rem;font-weight:bold;color:#00994d;">${chosenName} 🕵️</div></div></div>`;
+        html+='<div class="results-container">';
+        playerNames.forEach((name,idx)=>{const cnt=tally[idx]||0;const isSpy=spyIndices.includes(idx);const isElim=eliminatedPlayers.includes(idx);const rAv=getAvatarForIndex((result.playerAvatars||[])[idx]??idx);html+=`<div class="player-result" style="${isElim?'opacity:0.5;':''}"><div class="avatar-circle sm" style="background:${rAv.c};flex-shrink:0;">${rAv.e}</div><span>${isElim?'❌ ':''}${name}</span><span style="display:flex;align-items:center;gap:8px;"><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span>${isSpy?'<span class="spy-badge">سیخوڕ</span>':'<span class="civilian-badge">مەدەنی</span>'}</span></div>`;});
+        html+=`</div><div class="word-box"><div class="word-value">${secretWord}</div></div>`;
+    }
+    else if(outcome==='spy_out_continue'){
+        // PARTIAL: one spy kicked — DON'T reveal remaining spies!
+        html=`<div class="result-win-card" style="border-color:#ffcc00;"><div class="result-big-icon">✅</div><div class="result-big-title" style="color:#cc8800;">سیخوڕەک هاتە دەرکەفتن!</div><div style="font-size:1.1rem;color:#333;margin:8px 0;">یارییا بەردەوامە — سیخوڕ هێشتا مایە! ⚠️</div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:10px;"><div style="font-size:0.9rem;color:#555;">دەرکەفتی</div><div style="font-size:1.8rem;font-weight:bold;color:#cc8800;">${chosenName} 🕵️</div></div><div style="font-size:0.9rem;color:#666;margin-top:8px;">دەنگدانەکا دی پێویستە!</div></div>`;
+        // Show vote counts but NO spy/civilian badges (would reveal remaining spy)
+        html+='<div class="results-container">';
+        playerNames.forEach((name,idx)=>{const cnt=tally[idx]||0;const isElim=eliminatedPlayers.includes(idx);html+=`<div class="player-result" style="${isElim?'opacity:0.5;':''}"><span>${isElim?'❌ ':''}${name}</span><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span></div>`;});
+        html+='</div>';
+        // Host button to start next round
+        if(gs.isHost) html+=`<button class="btn btn-blue" onclick="startNextVotingRound()" style="margin-top:10px;">🗳️ دەنگدانەکا دی دەستپێبکە</button>`;
+        else html+=`<div style="text-align:center;padding:16px;color:#666;background:#f5f9ff;border-radius:30px;margin-top:10px;">⏳ چاڤەریێ هۆستێ بکەن بو دەنگدانەکا دی...</div>`;
+    }
+    else{
+        // FINAL: civilian kicked — reveal all spies
+        html=`<div class="result-lose-card"><div class="result-big-icon">💀</div><div class="result-big-title">مەدەنی هاتە دەرکەفتن!</div><div style="font-size:1.1rem;color:#333;margin:8px 0;">سیخوڕ هێشتا مایە! 🕵️</div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:10px;"><div style="font-size:0.9rem;color:#555;">هەلبژارتی (مەدەنی بوو)</div><div style="font-size:1.8rem;font-weight:bold;color:#cc0000;">${chosenName}</div></div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:8px;"><div style="font-size:0.9rem;color:#555;">سیخوڕ ئەڤانە : </div><div style="font-size:1.8rem;font-weight:bold;color:#cc0000;">${spyNames}</div></div></div>`;
+        html+='<div class="results-container">';
+        playerNames.forEach((name,idx)=>{const cnt=tally[idx]||0;const isSpy=spyIndices.includes(idx);const isElim=eliminatedPlayers.includes(idx);const rAv=getAvatarForIndex((result.playerAvatars||[])[idx]??idx);html+=`<div class="player-result" style="${isElim?'opacity:0.5;':''}"><div class="avatar-circle sm" style="background:${rAv.c};flex-shrink:0;">${rAv.e}</div><span>${isElim?'❌ ':''}${name}</span><span style="display:flex;align-items:center;gap:8px;"><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span>${isSpy?'<span class="spy-badge">سیخوڕ</span>':'<span class="civilian-badge">مەدەنی</span>'}</span></div>`;});
+        html+=`</div><div class="word-box"><div class="word-value">${secretWord}</div></div>`;
+    }
+
+    container.innerHTML=html;
+    // DON'T null voteResult immediately — let all clients read it first
+    // Host nulls it only when starting next round
+}
+
+function startNextVotingRound(){
+    if(!gs.isHost) return;
+    // Clear voteResult FIRST before starting new round to prevent re-triggering
+    set(ref(db,`rooms/${gs.roomCode}/voteResult`), null).then(() => {
+        gs.currentRound = (gs.currentRound||1) + 1;
+        // Pass eliminatedPlayers into next round
+        if(voteGameData) voteGameData._eliminatedPlayers = gs.eliminatedPlayers;
+        update(ref(db,`rooms/${gs.roomCode}`),{votingRound: gs.currentRound});
+        startVotingPhase(voteGameData);
+    });
+}
+
+async function playAgainOnline(){
+    clearInterval(voteTimerInterval);gs.eliminatedPlayers=[];gs.currentRound=1;gs.spiesEliminated=0;
+    try { sessionStorage.removeItem('sikhur_room'); } catch(e){}
+    if(!gs.roomCode)return;
+    await update(ref(db,`rooms/${gs.roomCode}/players/${myPlayerId}`),{wantPlayAgain:true,ready:false});
+    const snap=await get(ref(db,`rooms/${gs.roomCode}/players`));
+    let total=0,wantCount=0;snap.forEach(c=>{total++;if(c.val().wantPlayAgain)wantCount++;});
+    if(wantCount>=total&&gs.isHost){
+        try{
+            await update(ref(db,`rooms/${gs.roomCode}`),{status:'waiting',gameData:null,gameState:null,votes:null,voteResult:null,votingRound:null,discussionDone:null,discussionChat:null,webrtc:null,voiceState:null});
+            const snapP=await get(ref(db,`rooms/${gs.roomCode}/players`));
+            if(snapP.exists()){const updates={};snapP.forEach(child=>{updates[`${child.key}/ready`]=false;updates[`${child.key}/wantPlayAgain`]=false;});await update(ref(db,`rooms/${gs.roomCode}/players`),updates);}
+        }catch(e){}
+    }
+}
+function returnToLobbyAfterGame(){
+    stopDiscMic();
+    document.getElementById('lobby-title').textContent='🏠 ژوورا یاریێ';
+    document.getElementById('room-code-display').textContent=gs.roomCode;
+    document.getElementById('host-controls').classList.toggle('hidden',!gs.isHost);
+    document.getElementById('chatBox').innerHTML='';
+    showPage('online-lobby-page');
+    sysMsg('🔁 هەمی ئامادەن! یارییەکا نو دەستپێدکات...');
+}
+
+async function openLobby(isHost, code){
+    detachAll(); // clear all previous listeners before re-entering lobby
+    gs.isHost = isHost;
+    gs.roomCode = isHost ? genCode() : code;
+    gs.isOnlineGame = true;
+    gs.onlinePlayers = [];
+    try { sessionStorage.setItem('sikhur_room', JSON.stringify({code:gs.roomCode,isHost})); } catch(e){}
+    document.getElementById('room-code-display').textContent = gs.roomCode;
+    document.getElementById('lobby-title').textContent = '🏠 ژوورا یاریێ';
+    document.getElementById('host-controls').classList.toggle('hidden', !isHost);
+    document.getElementById('chatBox').innerHTML = '';
+    if(isHost) setTimeout(renderCategoryBtns, 100);
+    showPage('online-lobby-page');
+    const roomRef = `rooms/${gs.roomCode}`;
+    const myAvatarIdx = userProfile?.avatarIdx ?? 0;
+    if(isHost){
+        gs.hostPlayerId = myPlayerId;
+        await set(ref(db, roomRef), {
+            host: myPlayerId, hostId: myPlayerId,
+            mode: 1, status: 'waiting',
+            createdAt: Date.now(), expiresAt: Date.now()+(2*60*60*1000)
+        });
+        push(ref(db,`${roomRef}/chat`),{senderId:'system',name:'سیستەم',
+            text:`🏠 ${gs.myNickname} ژوور دروست کر — کۆدی شەیر بکە دگەل هەڤاڵان 📤`,type:'system',ts:Date.now()});
+    } else {
+        const roomSnap = await get(ref(db, roomRef));
+        if(!roomSnap.exists()){ showToast('ژوور نەدۆزرایەوە ❌',true); showPage('home-page'); return; }
+        gs.hostPlayerId = roomSnap.val().hostId || roomSnap.val().host || '';
+        push(ref(db,`${roomRef}/chat`),{senderId:'system',name:'سیستەم',
+            text:`👋 خێر هاتی ${gs.myNickname}!`,type:'system',ts:Date.now()});
+    }
+    // Write my player node
+    await set(ref(db,`${roomRef}/players/${myPlayerId}`),{
+        name: gs.myNickname, joinedAt: Date.now(), ready: false, avatarIdx: myAvatarIdx
+    });
+    // Host marks ready after player node is written
+    if(isHost) setTimeout(()=>markReady(), 800);
+    // Players listener — fires for EVERY player change on ALL clients
+    fbListen(`${roomRef}/players`, snap=>{
+        gs.onlinePlayers = [];
+        snap.forEach(child=>{
+            const v = child.val();
+            gs.onlinePlayers.push({
+                id: child.key, name: v.name||'?',
+                ready: !!(v.ready), wantPlayAgain: v.wantPlayAgain||false, avatarIdx: v.avatarIdx??0
+            });
+        });
+        // Host migration if original host left
+        if(gs.onlinePlayers.length > 0 && !gs.onlinePlayers.find(p=>p.id===gs.hostPlayerId)){
+            const newHost = gs.onlinePlayers[0];
+            gs.hostPlayerId = newHost.id;
+            if(newHost.id === myPlayerId){
+                gs.isHost = true;
+                document.getElementById('host-controls').classList.remove('hidden');
+                update(ref(db,`rooms/${gs.roomCode}`),{hostId:newHost.id});
+                showToast('👑 تۆ بویتە هۆست!', false);
+            }
+        }
+        renderPlayers();
+        updateReadyStatus();
+        // Always ensure host-controls visibility is correct
+        if(gs.isHost) document.getElementById('host-controls').classList.remove('hidden');
+    });
+    fbListen(`${roomRef}/mode`, snap=>{
+        if(snap.val()){
+            gs.onlineMode=snap.val();
+            document.getElementById('omBtn1').classList.toggle('selected',gs.onlineMode===1);
+            document.getElementById('omBtn2').classList.toggle('selected',gs.onlineMode===2);
+        }
+    });
+    fbListen(`${roomRef}/hostId`, snap=>{
+        if(snap.exists()){
+            gs.hostPlayerId = snap.val();
+            if(gs.hostPlayerId === myPlayerId){
+                gs.isHost = true;
+                document.getElementById('host-controls').classList.remove('hidden');
+            }
+        }
+    });
+    fbListen(`${roomRef}/status`, snap=>{
+        if(snap.val()==='waiting'){
+            clearInterval(voteTimerInterval);myVoteChoice=null;voteSubmitted=false;
+            gs.eliminatedPlayers=[];gs.currentRound=1;
+            gs.onlinePlayers.forEach(p=>{p.ready=false;p.wantPlayAgain=false;});
+            renderPlayers();updateReadyStatus();returnToLobbyAfterGame();
+        }
+        if(snap.val()==='started'){
+            get(ref(db,`${roomRef}/gameData`)).then(gSnap=>{
+                if(!gSnap.exists())return;
+                const gd=gSnap.val();
+                gs.gameMode=gd.mode;gs.secretWord=gd.secretWord;gs.differentWord=gd.differentWord||'';
+                const names=gd.playerNames;currentPlayerCount=names.length;gs.playerNames=[...names];
+                gs.players=names.map((name,i)=>({id:i+1,name,
+                    isSpy:gd.mode===1?gd.spyIndices.includes(i):false,
+                    hasDifferentWord:gd.mode===2?gd.spyIndices.includes(i):false}));
+                gs.spies=gd.spyIndices.map(i=>i+1);gs.currentPlayerIndex=0;
+                gs.gameOver=false;gs.starterPlayer=null;
+                gs.myPlayerIndex=names.indexOf(gs.onlinePlayers.find(p=>p.id===myPlayerId)?.name);
+                showPage('game-page');listenGameState(gd);
+            });
+        }
+    });
+    fbListenChild(`${roomRef}/chat`, snap=>{
+        const msg=snap.val(); if(!msg) return;
+        const box=document.getElementById('chatBox'); if(!box) return;
+        const d=document.createElement('div');
+        d.className=msg.type==='system'?'bubble system':(msg.senderId===myPlayerId?'bubble me':'bubble other');
+        if(msg.type==='system') d.textContent=msg.text;
+        else d.innerHTML=`<div class="bname">${msg.name}</div>${msg.text}`;
+        box.appendChild(d); box.scrollTop=box.scrollHeight;
+    });
+}
+
+function renderPlayers(){
+    const box=document.getElementById('waiting-players-list');
+    if(!box) return;
+    let html=`<div class="players-box-title">یارییکەر: (${gs.onlinePlayers.length}) 👥</div>`;
+    gs.onlinePlayers.forEach(p=>{
+        const isMe   = p.id === myPlayerId;
+        const isHostP= p.id === gs.hostPlayerId;
+        const av     = getAvatarForIndex(p.avatarIdx ?? 0);
+        // Green dot if ready, red dot if not
+        const dot = p.ready
+            ? `<span style="display:inline-block;width:13px;height:13px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;flex-shrink:0;"></span>`
+            : `<span style="display:inline-block;width:13px;height:13px;border-radius:50%;background:#ef4444;box-shadow:0 0 6px #ef4444;flex-shrink:0;"></span>`;
+        // Avatar — crown sits on top of avatar for host
+        const avatarHtml = isHostP
+            ? `<div style="position:relative;flex-shrink:0;width:42px;height:42px;">
+                <div class="avatar-circle sm" style="background:${av.c};width:42px;height:42px;line-height:42px;">${av.e}</div>
+                <span style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:1rem;line-height:1;pointer-events:none;">👑</span>
+               </div>`
+            : `<div class="avatar-circle sm" style="background:${av.c};flex-shrink:0;">${av.e}</div>`;
+        // Right side: ready button only for me if not yet ready
+        let right = '';
+        if(!p.ready && isMe){
+            right = `<button id="myReadyBtn" style="background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:30px;padding:8px 18px;font-size:0.95rem;font-weight:bold;cursor:pointer;white-space:nowrap;">حازرم ✅</button>`;
+        }
+        html += `<div style="display:flex;align-items:center;gap:10px;padding:10px 8px;border-bottom:1px solid #f0f0f0;">
+            ${avatarHtml}
+            <span style="flex:1;font-size:1rem;font-weight:${isMe?'bold':'normal'};color:#222;">
+                ${p.name}${isMe?' (تۆ)':''}
+            </span>
+            ${dot}
+            ${right}
+        </div>`;
+    });
+    box.innerHTML = html;
+    const btn = document.getElementById('myReadyBtn');
+    if(btn){
+        btn.onclick = function(){
+            btn.textContent = '⏳';
+            btn.disabled = true;
+            markReady();
+        };
+    }
+}
+
+function markReady(){
+    if(!gs.roomCode || !myPlayerId) return;
+    set(ref(db, `rooms/${gs.roomCode}/players/${myPlayerId}/ready`), true)
+        .catch(()=>{});
+}
+window.markReady = markReady;
+
+function updateReadyStatus(){
+    const total  = gs.onlinePlayers.length;
+    const readyN = gs.onlinePlayers.filter(p=>!!p.ready).length;
+    const allReady = total >= 2 && readyN === total;
+    const msg = document.getElementById('readyCountMsg');
+    const btn = document.getElementById('startGameBtn');
+    if(msg){
+        if(allReady){
+            msg.innerHTML = `✅ هەمی ئامادەن! &nbsp;<strong>(${readyN}/${total})</strong>`;
+            msg.style.cssText = 'display:block;color:#15803d;font-weight:bold;background:#dcfce7;border:2px solid #22c55e;border-radius:30px;padding:10px 18px;text-align:center;margin:10px 0;font-size:1rem;';
+        } else {
+            msg.innerHTML = `چاوەڕوانی یارییکەران... &nbsp;<strong>(${readyN}/${total} حازرن)</strong>`;
+            msg.style.cssText = 'display:block;color:#92400e;background:#fef3c7;border:2px solid #f59e0b;border-radius:30px;padding:10px 18px;text-align:center;margin:10px 0;font-size:1rem;';
+        }
+    }
+    if(btn) btn.disabled = !allReady;
+}
+
+function listenGameState(gameData){
+    fbListen(`rooms/${gs.roomCode}/gameState`,snap=>{
+        // Save phase for reconnection
+        if(snap.exists()) {
+            try { sessionStorage.setItem('sikhur_phase', snap.val().phase||'lobby'); } catch(e){}
+        }
+        if(!snap.exists())return;
+        const state=snap.val();
+        const turnIndex=state.turnIndex??0;
+        const revealedArr=state.revealed??[];
+        gameData._currentTurn=turnIndex;
+        if(turnIndex>=gameData.playerNames.length) showOnlineTurnScreen(gameData,gameData.playerNames.length,revealedArr);
+        else showOnlineTurnScreen(gameData,turnIndex,revealedArr);
+    });
+}
+
+
+function copyRoomCode(){
+    navigator.clipboard.writeText(gs.roomCode).then(()=>{
+        const el=document.querySelector('.copy-hint');el.textContent='✅ هاتە کوپیکرن!';
+        setTimeout(()=>{el.textContent='📋 کۆپیکرن';},2000);
+    }).catch(()=>alert('کۆد: '+gs.roomCode));
+}
+function setOnlineMode(mode){ gs.onlineMode=mode; update(ref(db,`rooms/${gs.roomCode}`),{mode}); }
+
+let selectedCategory = 'هەمی';
+function renderCategoryBtns() {
+    const box = document.getElementById('category-btns');
+    if(!box) return;
+    const cats = ['هەمی', ...categoryNames];
+    box.innerHTML = cats.map(cat =>
+        `<button onclick="selectCategory('${cat}')" id="catBtn_${cat.replace(/[^a-zA-Z]/g,'_')}"
+        style="padding:6px 12px;border-radius:20px;border:2px solid ${selectedCategory===cat?'#0066cc':'#ddd'};
+        background:${selectedCategory===cat?'#e8f0fe':'white'};font-size:0.85rem;cursor:pointer;
+        font-family:inherit;color:${selectedCategory===cat?'#0066cc':'#555'};">${cat}</button>`
+    ).join('');
+}
+function selectCategory(cat) {
+    selectedCategory = cat;
+    renderCategoryBtns();
+    update(ref(db,`rooms/${gs.roomCode}`),{category: cat});
+    showToast('📚 بابەت: ' + cat, false);
+}
+
+async function startOnlineGame(){
+    const names=gs.onlinePlayers.map(p=>p.name);
+    if(names.length<3){showToast('پێویستە ب کێمی 3 یارییکەر بن! ❌',true);return;}
+    const mode=gs.onlineMode;
+    let secretWord,differentWord='',spyIndices=[];
+    if(mode===1){
+        let spyCount=1;
+        if(names.length>=6&&names.length<=8)spyCount=2;
+        if(names.length>=9)spyCount=3;
+        while(spyIndices.length<spyCount){const r=Math.floor(Math.random()*names.length);if(!spyIndices.includes(r))spyIndices.push(r);}
+        secretWord=kurdishWords[Math.floor(Math.random()*kurdishWords.length)];
+    } else {
+        spyIndices=[Math.floor(Math.random()*names.length)];
+        // Use category selected by host
+        const roomSnap2 = await get(ref(db,`rooms/${gs.roomCode}`));
+        const cat = roomSnap2.exists() ? (roomSnap2.val().category||'هەمی') : 'هەمی';
+        const activePairs = getWordPairsByCategory(cat);
+        const pair=activePairs[Math.floor(Math.random()*activePairs.length)];
+        secretWord=pair.normal;differentWord=pair.different;
+    }
+    await update(ref(db,`rooms/${gs.roomCode}`),{
+        status:'started',
+        gameData:{mode,secretWord,differentWord,spyIndices,playerNames:names,
+            starterIndex:Math.floor(Math.random()*names.length),
+            playerAvatars:gs.onlinePlayers.map(p=>p.avatarIdx??0)},
+        gameState:{turnIndex:0,revealed:names.map(()=>false),currentPhase:'revealing'}
+    });
+}
+
+async function leaveRoom(){
+    // Confirm before leaving
+    const confirmed = await showConfirmModal(
+        'دەرکەفتن 🚪',
+        'ئایا دڵنیایتی دەتەوێ ژوور بچووتە دەرەوە؟',
+        'بەلێ، دەرکەفتن',
+        'نەخێر، بمێنەوە'
+    );
+    if (!confirmed) return;
+    detachAll();
+    try{await remove(ref(db,`rooms/${gs.roomCode}/players/${myPlayerId}`));if(gs.isHost)await remove(ref(db,`rooms/${gs.roomCode}`));}catch(e){}
+    gs.roomCode='';gs.isOnlineGame=false;
+    try { sessionStorage.removeItem('sikhur_room'); } catch(e){}
+    showPage('home-page');
+}
+
+function showConfirmModal(title, message, confirmText, cancelText) {
+    return new Promise(resolve => {
+        // Remove any existing modal
+        const old = document.getElementById('confirmModal');
+        if (old) old.remove();
+        const modal = document.createElement('div');
+        modal.id = 'confirmModal';
+        modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
+        modal.innerHTML = `
+            <div style="background:white;border-radius:32px;padding:28px 24px;max-width:340px;width:100%;text-align:center;border:3px solid #ffcc00;box-shadow:0 20px 60px rgba(0,0,0,0.4);animation:modalPop 0.25s ease;">
+                <div style="font-size:2.5rem;margin-bottom:10px;">🚪</div>
+                <div style="font-size:1.3rem;font-weight:bold;color:#1a1a2e;margin-bottom:10px;">${title}</div>
+                <div style="font-size:1rem;color:#555;margin-bottom:22px;line-height:1.5;">${message}</div>
+                <div style="display:flex;gap:10px;">
+                    <button id="confirmNo"  style="flex:1;padding:14px;border-radius:30px;border:2px solid #ccc;background:white;color:#555;font-size:1rem;cursor:pointer;font-family:inherit;">${cancelText}</button>
+                    <button id="confirmYes" style="flex:1;padding:14px;border-radius:30px;border:none;background:linear-gradient(135deg,#ff4444,#cc0000);color:white;font-size:1rem;cursor:pointer;font-family:inherit;box-shadow:0 4px 0 #990000;">${confirmText}</button>
+                </div>
+            </div>`;
+        document.body.appendChild(modal);
+        modal.querySelector('#confirmYes').onclick = () => { modal.remove(); resolve(true);  };
+        modal.querySelector('#confirmNo').onclick  = () => { modal.remove(); resolve(false); };
+        modal.onclick = e => { if(e.target === modal) { modal.remove(); resolve(false); } };
+    });
+}
+
+function sysMsg(text){
+    const box=document.getElementById('chatBox');
+    const d=document.createElement('div');d.className='bubble system';d.textContent=text;
+    box.appendChild(d);box.scrollTop=box.scrollHeight;
+}
+function sendMsg(){
+    const inp=document.getElementById('chatInput');const txt=inp.value.trim();
+    if(!txt||!gs.roomCode)return;inp.value='';
+    push(ref(db,`rooms/${gs.roomCode}/chat`),{senderId:myPlayerId,name:gs.myNickname,text:txt,type:'chat',ts:Date.now()});
+}
+
+function showHowToPlayOptions(){ document.getElementById('how-to-play-modal').classList.remove('hidden'); }
+function closeHowToPlayOptions(){ document.getElementById('how-to-play-modal').classList.add('hidden'); }
+function showHowToPlayInstructions(mode){
+    closeHowToPlayOptions();
+    const icon=document.getElementById('instructions-icon');
+    const title=document.getElementById('instructions-title');
+    const text=document.getElementById('instructions-text');
+    if(mode===1){
+        icon.textContent='';title.textContent='یارییا سیخوڕی ';title.style.color='#0066cc';
+        text.innerHTML=`<strong>🎯 ئارمانج:</strong> سیخوڕی بگرن!<br><strong>📋 چەوا دێ یاریێ کەی؟:</strong><br>- سیخوڕ پەیڤێ نزانیت، لێ دێ هەولدەت ل تشتێن مەدەنیا پەیڤێ بزانیت.<br>- نابیت پەیڤ بخو بهێتە گوتن لێ تشتێن ب پەیڤێ ڤە گرێدایی و نزیک درستن.<br>- ب گشتی راوند (فەرە) بدلێ هنگو نە، و هەر فەرێ تە ئێک کەلیمە یاهەی نە زێدەتر!!<br>- نابیت مناقشە بهێتە کرن، دناڤ راوندا (فەر)ا دا.!`;
+    } else {
+        icon.textContent='';title.textContent='یارییا پەییڤێن جیاواز 🎭';title.style.color='#cc0000';
+        text.innerHTML=`<strong>🎯 ئارمانج:</strong> کەسێ جیاواز بگرن!<br><strong>📋 چەوا دێ یاریێ کەی؟:</strong><br>- بتنێ ئێک نەفەر پەیڤا جیاواز یا هەی کو ئەوژی نزانیت ئەو یێ جیاوازە.<br>- نموونە وەک [تەیارە، عەلیکوپتەر] گەلەک تشتا ڤە وەکی ئێکن!<br>- ب گشتی راوند (فەرە) بدلێ هنگو نە، و هەر فەرێ تە ئێک کەلیمە یاهەی نە زێدەتر!!<br>- نابیت مناقشە بهێتە کرن، دناڤ راوندا (فەر)ا دا.!`;
+    }
+    document.getElementById('how-to-play-instructions-modal').classList.remove('hidden');
+}
+function closeHowToPlayInstructions(){ document.getElementById('how-to-play-instructions-modal').classList.add('hidden'); }
+
+
+let _leaderboardFrom = "home-page";
+async function openLeaderboard(from) {
+    _leaderboardFrom = from || "home-page";
+    showPage('leaderboard-page');
+    const container = document.getElementById('leaderboard-container');
+    container.innerHTML = '<div style="text-align:center;padding:30px;color:#999;">⏳ چاوەڕوان بە...</div>';
+    try {
+        // Get top players ordered by wins
+        const snap = await get(ref(db, 'users'));
+        if(!snap.exists()) { container.innerHTML='<p style="text-align:center;color:#999;">هێشتا کەس نییە 😅</p>'; return; }
+        const players = [];
+        snap.forEach(child => {
+            const d = child.val();
+            if(d.nickname && d.gamesPlayed > 0) players.push({...d, uid: child.key});
+        });
+        players.sort((a,b) => (b.wins||0) - (a.wins||0));
+        const top = players.slice(0,10);
+        const medals = ['🥇','🥈','🥉'];
+        const rowClass = ['gold','silver','bronze'];
+        let html = '';
+        top.forEach((p,i) => {
+            const av = getAvatarForIndex(p.avatarIdx??0);
+            const rate = p.gamesPlayed > 0 ? Math.round((p.wins/p.gamesPlayed)*100) : 0;
+            const isMe = currentUser && p.uid === currentUser.uid;
+            html += `<div class="leaderboard-row ${rowClass[i]||''}" style="${isMe?'border-color:#0066cc;box-shadow:0 0 0 2px rgba(0,102,204,0.2);':''}">
+                <div class="lb-rank">${medals[i]||('#'+(i+1))}</div>
+                <div class="avatar-circle sm" style="background:${av.c};">${av.e}</div>
+                <div style="flex:1;">
+                    <div class="lb-name">${p.nickname}${isMe?' (تۆ)':''}</div>
+                    <div class="lb-games">${p.gamesPlayed} یاری · ${rate}% بردن</div>
+                </div>
+                <div class="lb-wins">🏆 ${p.wins||0}</div>
+            </div>`;
+        });
+        container.innerHTML = html || '<p style="text-align:center;color:#999;">هێشتا کەس نییە 😅</p>';
+    } catch(e) {
+        container.innerHTML = '<p style="text-align:center;color:#cc0000;">❌ هەڵە ڕووی دا</p>';
+    }
+}
+
+// Register service worker for PWA
+if('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(()=>{});
+    });
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+    showPage('auth-page'); // onAuthStateChanged will redirect if logged in
+    // Auto-join via invite link ?room=XXXXXX
+    const urlParams = new URLSearchParams(window.location.search);
+    const inviteCode = urlParams.get('room');
+    if(inviteCode) {
+        sessionStorage.setItem('sikhur_invite', inviteCode);
+        // Clean URL without reload
+        window.history.replaceState({}, '', window.location.pathname);
+    }
+    document.getElementById('how-to-play-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeHowToPlayOptions();});
+    document.getElementById('how-to-play-instructions-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeHowToPlayInstructions();});
+});
+
+function goBackFromLeaderboard() { showPage(_leaderboardFrom || 'home-page'); }
+
+Object.assign(window,{
+    switchAuthTab,doLogin,doSignup,doGoogleLogin,doSignOut,confirmPickedNickname,
+    submitVerifyCode,resendVerificationEmail,cancelVerification,
+    openLeaderboard,goBackFromLeaderboard,selectCategory,renderCategoryBtns,
+    joinRoomClick,goToNickname,confirmNickname,
+    showPage,goBackToHome,goToHomePage,
+    startOfflineSetup,changePlayerCount,startGame,
+    copyRoomCode,setOnlineMode,startOnlineGame,leaveRoom,markReady,
+    nextPlayerAction,revealOfflineCard,goToRevealPage,showFinalResults,playAgain,
+    submitVote,openOnlineResults,playAgainOnline,startNextVotingRound,returnToLobbyAfterGame,
+    sendDiscMsg,hostStartVoting,toggleDiscMic,
+    showHowToPlayOptions,closeHowToPlayOptions,showHowToPlayInstructions,closeHowToPlayInstructions,
+    sendMsg,
+});
+</script>
+
+</body>
+</html>

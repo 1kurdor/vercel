@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+
+<html lang="ckb">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>سیخوڕ | Sikhur</title>
+    <link rel="icon" type="image/png" href="assets/image/sikhur.jpg">
+    <style>
+        @font-face {
+            font-family: 'Rabar';
+            src: url('assets/fonts/Rabar.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Rabar';
+            src: url('assets/fonts/Rabar-bold.ttf') format('truetype');
+            font-weight: bold;
+            font-style: normal;
+            font-display: swap;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-user-select:none; -moz-user-select:none; user-select:none; }
+        input, textarea { -webkit-user-select:text; -moz-user-select:text; user-select:text; }
+
+
+    body {
+        font-family: 'Rabar', 'Arial Unicode MS', 'Segoe UI', sans-serif;
+        background: linear-gradient(145deg, #e6f0ff 0%, #f0f7ff 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        direction: rtl;
+        padding: 12px;
+        position: relative;
+    }
+
+    .game-container {
+        width: 100%;
+        max-width: 420px;
+        background: rgba(255,255,255,0.85);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-radius: 36px;
+        padding: 24px 20px 20px 20px;
+        box-shadow: 0 15px 30px rgba(0,100,255,0.1), 0 5px 15px rgba(255,200,0,0.1);
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255,215,0,0.2);
+        margin-bottom: 10px;
+    }
+    .game-container::before {
+        content:""; position:absolute; top:-50px; right:-50px; width:200px; height:200px;
+        background:radial-gradient(circle,rgba(0,150,255,0.1),transparent 70%);
+        border-radius:50%; z-index:0;
+    }
+    .game-container::after {
+        content:""; position:absolute; bottom:-50px; left:-50px; width:200px; height:200px;
+        background:radial-gradient(circle,rgba(255,215,0,0.1),transparent 70%);
+        border-radius:50%; z-index:0;
+    }
+    .content { position:relative; z-index:2; }
+
+    h1 { font-size:2.2rem; font-weight:bold; text-align:center; margin-bottom:8px;
+         background:linear-gradient(135deg,#0066cc,#0099ff); -webkit-background-clip:text;
+         -webkit-text-fill-color:transparent; background-clip:text; }
+    h2 { font-size:1.6rem; text-align:center; margin-bottom:18px; color:#0066cc;
+         position:relative; padding-bottom:8px; font-weight:500; }
+    h2::after { content:""; position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+                width:50px; height:2px; background:linear-gradient(90deg,#0066cc,#ffcc00); border-radius:2px; }
+
+    .animated-icon { text-align:center; margin:10px 0 20px 0; }
+    .animated-icon img { width:300px; height:auto; display:inline-block; }
+    .game-icon { width:300px; height:auto; animation:gentlePulse 2.5s infinite ease-in-out;
+                 filter:drop-shadow(0 8px 15px rgba(0,102,204,0.4)); border-radius:30px;
+                 transition:all 0.3s ease; cursor:pointer; }
+    .game-icon:hover { animation:none; transform:scale(1.05); filter:drop-shadow(0 0 20px #ffcc00); }
+    @keyframes gentlePulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+
+    .how-to-play-link { text-align:center; margin:5px 0 15px 0; font-size:1rem; color:#666;
+                        cursor:pointer; text-decoration:underline; transition:color 0.2s ease; }
+    .how-to-play-link:hover { color:#0066cc; }
+
+    .btn { width:100%; padding:16px 20px; border:none; border-radius:40px; font-size:1.2rem;
+           font-weight:500; cursor:pointer; transition:all 0.2s ease; margin:10px 0;
+           font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif;
+           box-shadow:0 4px 10px rgba(0,102,204,0.1); }
+    .btn-blue { background:linear-gradient(135deg,#0066cc,#0099ff); color:white; box-shadow:0 4px 0 #003366; }
+    .btn-blue:hover { transform:translateY(-2px); box-shadow:0 6px 0 #003366; }
+    .btn-red { background:linear-gradient(135deg,#ff4444,#cc0000); color:white; box-shadow:0 4px 0 #990000; }
+    .btn-red:hover { transform:translateY(-2px); box-shadow:0 6px 0 #990000; }
+    .btn-yellow { background:linear-gradient(135deg,#ffcc00,#ffaa00); color:#1a2a3a; box-shadow:0 4px 0 #996600; }
+    .btn-yellow:hover { transform:translateY(-2px); box-shadow:0 6px 0 #996600; }
+    .btn-secondary { background:white; color:#0066cc; border:1px solid #ffcc00; }
+
+    .counter-container { display:flex; justify-content:center; align-items:center; gap:15px;
+                         margin:20px 0; background:white; padding:12px; border-radius:50px;
+                         box-shadow:0 4px 10px rgba(0,102,204,0.05); border:1px solid rgba(255,204,0,0.2); }
+    .counter-btn { width:45px; height:45px; border-radius:25px;
+                   background:linear-gradient(135deg,#0066cc,#0099ff); border:none;
+                   font-size:1.8rem; font-weight:500; color:white; cursor:pointer;
+                   box-shadow:0 4px 8px rgba(0,102,204,0.2); transition:all 0.2s ease;
+                   display:flex; justify-content:center; align-items:center; }
+    .counter-btn:active { transform:scale(0.95); }
+    .counter-value { font-size:2.5rem; font-weight:500; color:#0066cc; min-width:60px; text-align:center; }
+
+    .player-input { width:100%; padding:14px 18px; margin:8px 0;
+                    border:1px solid rgba(0,102,204,0.2); border-radius:40px; background:white;
+                    font-size:1rem; text-align:right; direction:rtl;
+                    font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif;
+                    transition:all 0.2s ease; box-shadow:0 2px 5px rgba(0,0,0,0.02); }
+    .player-input:focus { outline:none; border-color:#ffcc00; box-shadow:0 0 0 3px rgba(255,204,0,0.1); }
+    .player-input::placeholder { color:#99b8d9; font-size:0.95rem; }
+
+    /* ── CARD FACE DOWN (new animated style) ── */
+    .card-facedown {
+        position: relative;
+        border-radius: 32px;
+        padding: 0;
+        margin: 18px 0;
+        cursor: pointer;
+        overflow: hidden;
+        height: 260px;
+        background: linear-gradient(135deg, #0a1f4e 0%, #0066cc 50%, #003d7a 100%);
+        border: 2px solid #ffcc00;
+        box-shadow: 0 12px 35px rgba(0,102,204,0.45), 0 0 0 0 rgba(255,204,0,0.5);
+        animation: cardBreath 2.2s ease-in-out infinite;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+    }
+    @keyframes cardBreath {
+        0%,100% { box-shadow: 0 12px 35px rgba(0,102,204,0.45), 0 0 0 0 rgba(255,204,0,0.4); transform: scale(1); }
+        50% { box-shadow: 0 18px 45px rgba(0,102,204,0.6), 0 0 0 10px rgba(255,204,0,0); transform: scale(1.012); }
+    }
+    .card-facedown::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 18px,
+            rgba(255,255,255,0.04) 18px,
+            rgba(255,255,255,0.04) 36px
+        );
+        border-radius: 30px;
+    }
+    .card-facedown::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 85%;
+        height: 80%;
+        transform: translate(-50%,-50%);
+        border: 2px solid rgba(255,204,0,0.25);
+        border-radius: 24px;
+    }
+    .card-facedown-name {
+        font-size: 2rem;
+        color: #ffcc00;
+        font-weight: bold;
+        position: relative;
+        z-index: 1;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+    .card-facedown-hint {
+        font-size: 0.95rem;
+        color: rgba(255,255,255,0.75);
+        background: rgba(255,255,255,0.1);
+        padding: 8px 22px;
+        border-radius: 30px;
+        position: relative;
+        z-index: 1;
+        border: 1px solid rgba(255,255,255,0.15);
+    }
+    .card-facedown-icon {
+        font-size: 3.5rem;
+        position: relative;
+        z-index: 1;
+        filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+    }
+    .card-facedown:active { transform: scale(0.97) !important; animation: none !important; }
+
+    /* ── REVEALED CARD POP ── */
+    .card-reveal-anim {
+        animation: revealPop 0.45s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    }
+    @keyframes revealPop {
+        0% { opacity:0; transform:scale(0.8) rotate(-2deg); }
+        100% { opacity:1; transform:scale(1) rotate(0deg); }
+    }
+
+    /* ── SPY / CIVILIAN revealed cards ── */
+    .card-spy-revealed {
+        background: linear-gradient(145deg,rgba(255,68,68,0.25),rgba(204,0,0,0.25));
+        border: 2px solid #ffcc00;
+        box-shadow: 0 15px 30px rgba(255,0,0,0.15);
+        cursor: default; padding: 40px 20px; border-radius: 32px; text-align: center;
+        backdrop-filter: blur(2px);
+    }
+    .card-civilian-revealed {
+        background: linear-gradient(145deg,rgba(0,204,102,0.25),rgba(0,153,77,0.25));
+        border: 2px solid #ffcc00;
+        box-shadow: 0 15px 30px rgba(0,204,0,0.15);
+        cursor: default; padding: 40px 20px; border-radius: 32px; text-align: center;
+        backdrop-filter: blur(2px);
+    }
+    .card-white-revealed {
+        background: white; color:#333; border:2px solid #0066cc;
+        box-shadow:0 15px 30px rgba(0,102,204,0.1);
+        cursor:default; padding:40px 20px; border-radius:32px; text-align:center;
+    }
+    .card-white-revealed .word-display { background:#f0f7ff; color:#00FF00; border:2px solid #ffcc00; }
+
+    /* co-spy box inside revealed card */
+    .cospy-box {
+        margin-top: 14px;
+        background: rgba(0,0,0,0.18);
+        border: 2px solid #ffcc00;
+        border-radius: 20px;
+        padding: 12px 16px;
+    }
+    .cospy-label { font-size:0.9rem; color:#ffcc00; margin-bottom:6px; }
+    .cospy-name { font-size:1.4rem; font-weight:bold; color:#fff; margin:3px 0; }
+
+    .progress { background:white; padding:12px; border-radius:40px; text-align:center;
+                margin:18px 0; font-size:1rem; color:#0066cc; font-weight:500;
+                border:1px solid rgba(255,204,0,0.2); box-shadow:0 2px 5px rgba(0,102,204,0.05); }
+
+    .role-icon { font-size:4rem; margin-bottom:15px; animation:gentleBounce 0.4s ease; }
+    @keyframes gentleBounce { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+
+    .word-display { font-size:3rem; font-weight:bold; padding:20px 30px; border-radius:40px;
+                    display:inline-block; margin:15px 0; }
+    .card-spy-revealed .word-display, .card-civilian-revealed .word-display {
+        background:rgba(0,0,0,0.2); color:#2E6F40; }
+
+    .starter-box { background:linear-gradient(135deg,#0066cc,#0099ff); color:white;
+                   padding:25px; border-radius:40px; margin:20px 0; text-align:center;
+                   border:3px solid #ffcc00; box-shadow:0 10px 20px rgba(0,102,204,0.3);
+                   animation:gentlePulse 1s ease; }
+    .starter-name { font-size:2.5rem; font-weight:bold; margin:10px 0; color:#ffcc00; }
+    .starter-message { font-size:1.3rem; margin-bottom:10px; }
+
+    .reveal-btn { background:linear-gradient(135deg,#ffcc00,#ffaa00); color:#1a2a3a;
+                  font-size:1.3rem; padding:18px; border-radius:40px; border:none; width:100%;
+                  margin:20px 0; cursor:pointer; box-shadow:0 4px 0 #996600;
+                  transition:all 0.3s ease; font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif; font-weight:bold; }
+    .reveal-btn:hover { transform:translateY(-2px); box-shadow:0 6px 0 #996600; }
+
+    .reveal-card { background:linear-gradient(145deg,#1a1a1a,#333333); border:3px solid #ffcc00;
+                   border-radius:32px; padding:30px 20px; text-align:center;
+                   animation:gentleReveal 0.5s ease; box-shadow:0 20px 40px rgba(0,0,0,0.3); margin:20px 0; }
+    @keyframes gentleReveal { from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)} }
+    .reveal-card .role-icon { font-size:5rem; }
+    .person-name { font-size:2.2rem; margin:15px 0; font-weight:500; color:#ffcc00; }
+
+    .results-container { background:#f8fbff; border-radius:32px; padding:20px; margin:20px 0;
+                         border:1px solid rgba(255,204,0,0.2); }
+    .player-result { display:flex; justify-content:space-between; align-items:center;
+                     padding:14px 18px; margin:6px 0; background:white; border-radius:30px;
+                     font-size:1.1rem; border:1px solid rgba(0,102,204,0.1); }
+    .spy-badge { background:linear-gradient(135deg,#ff4444,#cc0000); color:white;
+                 padding:6px 18px; border-radius:30px; font-size:1rem; }
+    .civilian-badge { background:linear-gradient(135deg,#00cc66,#00994d); color:white;
+                      padding:6px 18px; border-radius:30px; font-size:1rem; }
+    .different-badge { background:linear-gradient(135deg,#ff4444,#cc0000); color:white;
+                       padding:6px 18px; border-radius:30px; font-size:1rem; }
+    .normal-badge { background:linear-gradient(135deg,#0066cc,#0099ff); color:white;
+                    padding:6px 18px; border-radius:30px; font-size:1rem; }
+
+    .hidden { display:none !important; }
+
+    .welcome-text { color:#4a5a6a; text-align:center; margin:15px 0 25px 0;
+                    font-size:1.1rem; line-height:1.5; }
+    .word-box { background:white; border:2px solid #ffcc00; border-radius:32px;
+                padding:20px; margin:15px 0; text-align:center; }
+    .word-label { color:#0066cc; font-size:1.1rem; margin-bottom:5px; }
+    .word-value { color:#333; font-size:2.5rem; font-weight:bold; }
+    .word-value-different { color:#cc0000; font-size:2.5rem; font-weight:bold; }
+
+    .game-modal { position:fixed; top:0; left:0; right:0; bottom:0; width:100vw; height:100vh;
+                  background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); z-index:10000;
+                  display:flex; justify-content:center; align-items:center; padding:20px; }
+    .game-modal-content { background:white; border-radius:48px; padding:35px 25px;
+                          max-width:380px; width:100%; text-align:center;
+                          box-shadow:0 30px 60px rgba(0,0,0,0.5); border:3px solid #ffcc00;
+                          animation:modalPop 0.3s ease; }
+    @keyframes modalPop { from{opacity:0;transform:scale(0.8)} to{opacity:1;transform:scale(1)} }
+    .game-modal-icon { font-size:5rem; margin-bottom:15px; }
+    .game-modal-title { font-size:2rem; font-weight:bold; margin-bottom:20px; }
+    .game-modal-title.blue { color:#0066cc; }
+    .game-modal-title.red { color:#cc0000; }
+    .game-modal-text { font-size:1.3rem; line-height:1.6; color:#333; margin:20px 0;
+                       padding:15px; background:#f5f9ff; border-radius:30px;
+                       border:1px solid #ffcc00; text-align:right; }
+    .game-modal-buttons { display:flex; gap:10px; margin-top:20px; }
+    .game-modal-btn { flex:1; padding:16px; border:none; border-radius:40px; font-size:1.2rem;
+                      font-weight:500; cursor:pointer; transition:all 0.2s ease;
+                      font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif; }
+    .game-modal-btn.confirm { background:linear-gradient(135deg,#00cc66,#00994d); color:white; box-shadow:0 4px 0 #006633; }
+    .game-modal-btn.confirm:hover { transform:translateY(-2px); box-shadow:0 6px 0 #006633; }
+    .game-modal-btn.cancel { background:white; color:#666; border:2px solid #ccc; box-shadow:0 4px 0 #999; }
+    .game-modal-btn.cancel:hover { transform:translateY(-2px); box-shadow:0 6px 0 #999; }
+
+    .how-to-play-modal { position:fixed; top:0; left:0; right:0; bottom:0; width:100vw; height:100vh;
+                         background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); z-index:10001;
+                         display:flex; justify-content:center; align-items:center; padding:20px; }
+    .how-to-play-content { background:white; border-radius:48px; padding:30px 25px; max-width:380px;
+                           width:100%; text-align:center; box-shadow:0 30px 60px rgba(0,0,0,0.5);
+                           border:3px solid #ffcc00; animation:modalPop 0.3s ease; }
+    .how-to-play-option { width:100%; padding:20px; margin:10px 0; border:none; border-radius:40px;
+                          font-size:1.3rem; font-weight:500; cursor:pointer; transition:all 0.2s ease;
+                          font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif; }
+    .how-to-play-option.blue { background:linear-gradient(135deg,#0066cc,#0099ff); color:white; box-shadow:0 4px 0 #003366; }
+    .how-to-play-option.red { background:linear-gradient(135deg,#ff4444,#cc0000); color:white; box-shadow:0 4px 0 #990000; }
+    .how-to-play-option:hover { transform:translateY(-2px); }
+    .how-to-play-close { margin-top:15px; padding:12px; background:#f0f0f0; border:none;
+                         border-radius:40px; font-size:1.1rem; cursor:pointer; width:100%;
+                         font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif; }
+
+    .welcome-notification{
+    position: fixed;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    background: linear-gradient(135deg,#0f4c81,#1976d2);
+    color: #ffffff;
+    
+    padding: 12px 20px;
+    border-radius: 14px;
+    
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: center;
+    direction: rtl;
+
+    max-width: 85%;
+    white-space: nowrap;
+
+    box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+    border: 1px solid rgba(255,255,255,0.25);
+
+    backdrop-filter: blur(6px);
+
+    z-index: 20000;
+    cursor: pointer;
+    pointer-events: auto;
+
+    animation: slideDown 0.45s ease, fadeOut 0.45s ease 4.5s forwards;
+}
+
+@keyframes slideDown{
+    from{
+        top:-60px;
+        opacity:0;
+        transform:translateX(-50%) scale(0.95);
+    }
+    to{
+        top:18px;
+        opacity:1;
+        transform:translateX(-50%) scale(1);
+    }
+}
+
+@keyframes fadeOut{
+    to{
+        opacity:0;
+        transform:translateX(-50%) translateY(-10px);
+        visibility:hidden;
+    }
+}
+</style>
+
+
+</head>
+<body>
+    <a href="https://kurdor.is-a.dev" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;">
+        <div id="welcomeToast" class="welcome-notification">📰- هاتییە دروستکرن ژلایێ رەشید فەرهاد. </div>
+    </a>
+
+
+<div style="display:flex;flex-direction:column;align-items:center;width:100%;">
+    <div class="game-container">
+        <div class="content" id="app">
+
+            <!-- HOME -->
+            <div id="home-page">
+                <div class="animated-icon">
+                    <img src="assets/image/sikhur.jpg" alt="سیخوڕ" class="game-icon" onclick="alert('Developed By Rashid Farhad')">
+                </div>
+                <p class="welcome-text">یارییەک بو بوراندنا دەمێن خوش دگەل هەڤاڵان<br>Offline</p>
+                <button class="btn btn-blue" onclick="showGameDescription(1)" style="background: linear-gradient(135deg, #00c853, #2196f3); color:white; border:none;">
+یارییا سیخوڕی 🎮
+</button>
+                <button class="btn btn-red" onclick="showGameDescription(2)" style="background: linear-gradient(135deg, #ff3b3b, #ffd93d); color:white; border:none;"">یارییا پەییڤێن جیاواز 🎭</button>
+                <hr style="border:0;height:1px;background:rgba(0,0,0,0.1);margin:20px 0;">
+                <div class="how-to-play-link" onclick="showHowToPlayOptions()">چەوا دێ یاریی کەی؟ 📖</div>
+                <a href="index.html" style="display:block;">
+                    <button style="width:100%;padding:10px;border:none;border-radius:40px;background: linear-gradient(135deg, #00c6ff, #0072ff);color:white;font-size:0.9rem;cursor:pointer;font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif;">
+                        یاری کرنا ئۆنلاین (Online) 🌐
+                    </button>
+                </a>
+            </div>
+
+
+            <!-- SETUP -->
+            <div id="setup-page" class="hidden">
+                <h2 id="setup-title">⚙️ ڕێکخستن</h2>
+                <div class="counter-container">
+                    <button class="counter-btn" onclick="changePlayerCount(-1)">−</button>
+                    <span class="counter-value" id="player-count">5</span>
+                    <button class="counter-btn" onclick="changePlayerCount(1)">+</button>
+                </div>
+                <div id="player-inputs-container"></div>
+                <button class="btn btn-blue" onclick="startGame()">دەستپێکرن 🎬</button>
+                <button class="btn btn-red" onclick="goBackToHome()">زڤرین 🔙</button>
+            </div>
+
+            <!-- GAME -->
+            <div id="game-page" class="hidden">
+                <h2 id="game-title">🎴 کارتەکان</h2>
+                <div class="progress" id="game-progress"></div>
+                <div id="card-container"></div>
+                <button class="btn btn-blue hidden" id="next-player-btn" onclick="nextPlayer()">یارییکەرێ دویفرا ⏭️</button>
+                <div id="starter-container" class="hidden"></div>
+                <button class="reveal-btn hidden" id="reveal-btn" onclick="goToRevealPage()">🔍 نییشان دانا کەسێ جیاواز</button>
+            </div>
+
+            <!-- REVEAL -->
+            <div id="reveal-page" class="hidden">
+                <h2 id="reveal-title">🕵️ ئاشکراکرن</h2>
+                <div id="reveal-container"></div>
+                <button class="btn btn-blue" onclick="showFinalResults()">دییتنا ئەنجامی 📜</button>
+            </div>
+
+            <!-- RESULTS -->
+            <div id="results-page" class="hidden">
+                <h2>ئەنجام 🏆</h2>
+                <div id="results-container"></div>
+                <button class="btn btn-blue" onclick="playAgain()">دوبارە یارییکرن 🔁</button>
+                <button class="btn btn-yellow" onclick="goToHomePage()">زڤرین بو دەستپێک 🏠</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- MODALS -->
+<div id="game-description-modal" class="game-modal hidden">
+    <div class="game-modal-content">
+        <div id="modal-icon" class="game-modal-icon">🎮</div>
+        <div id="modal-title" class="game-modal-title blue">یاری سیخوڕ</div>
+        <div id="modal-text" class="game-modal-text"></div>
+        <div class="game-modal-buttons">
+            <button class="game-modal-btn confirm" onclick="confirmGame()">باشە</button>
+            <button class="game-modal-btn cancel" onclick="closeGameDescription()">زڤرین</button>
+        </div>
+    </div>
+</div>
+
+<div id="how-to-play-modal" class="how-to-play-modal hidden">
+    <div class="how-to-play-content">
+        <div class="game-modal-icon">📖</div>
+        <h2 style="color:#0066cc;margin-bottom:20px;">چەوا دێ یاریی کەی؟</h2>
+        <button class="how-to-play-option blue" onclick="showHowToPlayInstructions(1)" style="background: linear-gradient(135deg, #00c853, #2196f3); color:white; border:none;">یارییا سیخوڕی 🕵️</button>
+        <button class="how-to-play-option red " onclick="showHowToPlayInstructions(2)" style="background: linear-gradient(135deg, #ff3b3b, #ffd93d); color:white; border:none;">یارییا پەییڤێن جیاواز 🎭</button>
+        <button class="how-to-play-close" onclick="closeHowToPlayOptions()">گرتن</button>
+    </div>
+</div>
+
+<div id="how-to-play-instructions-modal" class="how-to-play-modal hidden">
+    <div class="how-to-play-content">
+        <div id="instructions-icon" class="game-modal-icon">🕵️</div>
+        <h2 id="instructions-title" style="color:#0066cc;margin-bottom:20px;">یارییا سیخوڕی</h2>
+        <div id="instructions-text" class="game-modal-text" style="text-align:right;"></div>
+        <button class="how-to-play-close" onclick="closeHowToPlayInstructions()">گرتن</button>
+    </div>
+</div>
+
+<script>
+    setTimeout(() => { const t = document.getElementById('welcomeToast'); if(t) t.remove(); }, 5000);
+
+    const gameState = {
+        players: [], spies: [], secretWord: "", differentWord: "",
+        gameMode: 1, currentPlayerIndex: 0, gameOver: false,
+        playerNames: [], starterPlayer: null, spyIndices: []
+    };
+
+    // BUG FIX 1: All wordPairs objects now have commas between them
+const wordPairs = [
+    {normal:"بریانی", different:"کوفتە"},
+    {normal:"ئاوی پرتەقاڵ", different:"دۆی مێو"},
+    {normal:"سامسۆنگ", different:"ئایفۆن"},
+    {normal:"نایکی", different:"ئەدیداس"},
+    {normal:"تۆیۆتا", different:"بێنز"},
+    {normal:"ئینستاگرام", different:"فیسبوک"},
+    {normal:"مەسی", different:"ڕۆناڵدۆ"},
+    {normal:"ڕۆناڵدینیۆ", different:"کاکا"},
+    {normal:"ماست", different:"دۆ"},
+    {normal:"گۆگ", different:"بالۆن"},
+    {normal:"تاکسی", different:"پاسکیل"},
+    {normal:"ئێمباپێ", different:"ڕۆدری"},
+    {normal:"بێڵینگهام", different:"کاماوینگا"},
+    {normal:"چیپس", different:"پەپکی خوێ"},
+    {normal:"نانی", different:"ئارد"},
+    {normal:"شامپۆ", different:"کۆندیشنەر"},
+    {normal:"زیرەک", different:"شارەزا"},
+    {normal:"دۆ", different:"شیر"},
+    {normal:"پاییز", different:"زستان"},
+    {normal:"کڵۆچە", different:"پیت"},
+    {normal:"کۆلێژ", different:"زانکۆ"},
+    {normal:"شەکر", different:"خێ"}
+];
+
+const kurdishWords = [
+"مەلا مصطفی بارزانی","ئازادی","ستالین","سەدام","دلو ژیر","مەیدان 🏟️","خورما",
+"هنار","کۆمەڵ","پرادو","ئەکسنت","مازدا","BMW","محەمەد عەلی","دەریا",
+"بوق","کول","گەلی","کورنیش دهوک","دەنگ دهوکێ","Zakho FC","ئەڤین",
+"دیگو مارادۆنا 🐐","کیلیان مباپی","کەریم بنزیمە","محمد صلاح","گۆڵ","تۆپ",
+"مۆبایل","کۆمپیوتەر","ئێلان ماسک","جۆ بایدەن","شی جینپینگ","ئەوروپا",
+"دهوک","نەجار","ئەندازیار","ئەبو حەمزە","ئەبو عومەر","ئەلا",
+"پشیل","روباه","چیتا","گاو","میرشک","مۆز","پرتەقال","Google","دەف",
+"فرچە 🪮","ماکینە حەلاقەت","تووتن","قلیان","دار","باران","زۆز","باڵندە","گوڵ",
+"دڵشاد","مال","فۆتۆ","سەیارە بچووک","شەربەت","پێک","پەنیر","مەڕ","مانگ",
+"بازاڕ","جووتیار"
+];
+
+
+    /* ── HOW TO PLAY ── */
+    function showHowToPlayOptions() { document.getElementById('how-to-play-modal').classList.remove('hidden'); }
+    function closeHowToPlayOptions() { document.getElementById('how-to-play-modal').classList.add('hidden'); }
+    function closeHowToPlayInstructions() { document.getElementById('how-to-play-instructions-modal').classList.add('hidden'); }
+
+    function showHowToPlayInstructions(mode) {
+        closeHowToPlayOptions();
+        const modal = document.getElementById('how-to-play-instructions-modal');
+        const icon = document.getElementById('instructions-icon');
+        const title = document.getElementById('instructions-title');
+        const text = document.getElementById('instructions-text');
+        if (mode === 1) {
+            icon.textContent = '';
+            title.textContent = 'یارییا سیخوڕی';
+            title.style.color = '#0066cc';
+            text.innerHTML = '<strong>🎯 ئارمانج:</strong>  سیخوڕی بگرن!<br><strong>📋 چەوا دێ یاریێ کەی؟:</strong><br>- سیخوڕ وشێ نزانیت، لێ دێ هەولدەت ل تشتێن مەدەنیا وشێ بزانیت. <br>- نابیت وشە بخو بهێتە گوتن لێ تشتێن ب وشێ ڤە گرێدایی و نزیک درستن.<br>- ب گشتی راوند (فەرە) بدلێ هنگو نە، و هەر فەرێ تە ئێک کەلیمە یاهەی نە زێدەتر!!<br>- نابیت مناقشە بهێتە کرن!';
+        } else {
+            icon.textContent = '';
+            title.textContent = 'یارییا پەییڤێن جیاواز';
+            title.style.color = '#cc0000';
+            text.innerHTML = '<strong>🎯 ئارمانج:</strong> کەسێ جیاواز بگرن!<br><strong>📋 چەوا دێ یاریێ کەی؟:</strong><br>- بتنێ ئێک نەفەر وشەییا جیاواز یا هەی کو ئەوژی نزانیت ئەو یێ جیاوازە، لێ تشت هند نێزیکی ئێکن دێ یاپ زەحمەت بیتن هەتا دبینن، مناقشە نابیت بهێتە کرن.<br>نموونە وەک [تەیارە، عەلیکوپتەر] گەلەک تشتا ڤە وەکی ئێکن!<br>- ب گشتی راوند (فەرە) بدلێ هنگو نە، و هەر فەرێ تە ئێک کەلیمە یاهەی نە زێدەتر!!';
+        }
+        modal.classList.remove('hidden');
+    }
+
+    /* ── GAME DESCRIPTION ── */
+    function showGameDescription(mode) {
+        gameState.gameMode = mode;
+        const modal = document.getElementById('game-description-modal');
+        const icon = document.getElementById('modal-icon');
+        const title = document.getElementById('modal-title');
+        const text = document.getElementById('modal-text');
+        if (mode === 1) {
+            icon.textContent = '🕵️'; title.textContent = 'یارییا سیخوڕی';
+            title.className = 'game-modal-title blue';
+            text.textContent = 'ڤێ یاریێ سیخوڕ یێ تێدا! سیخور دزانیت کو ئەو سیخورە. دڤێت سیخور بهێتە کەشف کرن!';
+        } else {
+            icon.textContent = '🎭'; title.textContent = 'پەیڤێن جیاواز';
+            title.className = 'game-modal-title red';
+            text.textContent = 'دڤێ یارییێدا سیخوڕ نینە! ئێک کەس دێ پەییڤا جیاواز بینیت. دڤێت ئەو کەسە بهێتە کەشفکرن!';
+        }
+        modal.classList.remove('hidden');
+    }
+    function closeGameDescription() { document.getElementById('game-description-modal').classList.add('hidden'); }
+    function confirmGame() {
+        closeGameDescription();
+        document.getElementById('setup-title').textContent = gameState.gameMode === 1
+            ? '⚙️ ڕێکخستنا یارییا سیخوڕی' : '⚙️ ڕێکخستنا یارییا پەیڤێن جیاواز';
+        showPage('setup-page');
+    }
+
+    /* ── PAGE NAV ── */
+    function showPage(pageId) {
+        ['home-page','setup-page','game-page','reveal-page','results-page'].forEach(id => {
+            document.getElementById(id).classList.add('hidden');
+        });
+        document.getElementById(pageId).classList.remove('hidden');
+        if (pageId === 'setup-page') initializeSetupPage();
+        if (pageId === 'reveal-page') {
+            document.getElementById('reveal-title').textContent = gameState.gameMode === 1 ? '🕵️ سیخوڕ' : '🎭 کەسێ جیاواز';
+        }
+    }
+    function goBackToHome() { showPage('home-page'); }
+    function goToHomePage() { showPage('home-page'); }
+
+    /* ── SETUP ── */
+    let currentPlayerCount = 5;
+    function changePlayerCount(delta) {
+        currentPlayerCount = Math.min(10, Math.max(3, currentPlayerCount + delta));
+        document.getElementById('player-count').textContent = currentPlayerCount;
+        updatePlayerInputs();
+    }
+    function updatePlayerInputs() {
+        let html = '';
+        for (let i = 1; i <= currentPlayerCount; i++) {
+            html += '<div style="margin:8px 0;"><input type="text" class="player-input" id="player-name-' + i + '" placeholder="یارییکەرێ ' + i + '"></div>';
+        }
+        document.getElementById('player-inputs-container').innerHTML = html;
+    }
+    function initializeSetupPage() {
+        document.getElementById('player-count').textContent = currentPlayerCount;
+        updatePlayerInputs();
+    }
+    function startGame() {
+        const players = [];
+        for (let i = 1; i <= currentPlayerCount; i++) {
+            const inp = document.getElementById('player-name-' + i);
+            players.push(inp && inp.value.trim() !== '' ? inp.value.trim() : 'یارییکەرێ ' + i);
+        }
+        gameState.playerNames = [...players];
+        startNewGameWithNames(players);
+    }
+
+    /* ── GAME START ── */
+    function startNewGameWithNames(players) {
+        let secretWord, differentWord = '', spyIndices = [];
+        const count = players.length;
+
+        if (gameState.gameMode === 1) {
+            let spyCount = 1;
+            if (count >= 6 && count <= 8) spyCount = 2;
+            if (count >= 9) spyCount = 3;
+            while (spyIndices.length < spyCount) {
+                const r = Math.floor(Math.random() * count);
+                if (!spyIndices.includes(r)) spyIndices.push(r);
+            }
+            secretWord = kurdishWords[Math.floor(Math.random() * kurdishWords.length)];
+        } else {
+            const di = Math.floor(Math.random() * count);
+            spyIndices = [di];
+            const pair = wordPairs[Math.floor(Math.random() * wordPairs.length)];
+            secretWord = pair.normal; differentWord = pair.different;
+        }
+
+        gameState.players = players.map((name, i) => ({
+            id: i + 1, name,
+            isSpy: gameState.gameMode === 1 ? spyIndices.includes(i) : false,
+            hasDifferentWord: gameState.gameMode === 2 ? spyIndices.includes(i) : false
+        }));
+        gameState.spies = spyIndices.map(i => i + 1);
+        gameState.spyIndices = spyIndices;
+        gameState.secretWord = secretWord;
+        gameState.differentWord = differentWord;
+        gameState.currentPlayerIndex = 0;
+        gameState.gameOver = false;
+        gameState.starterPlayer = null;
+
+        showPage('game-page');
+        showNextCard();
+    }
+
+    function selectStarterPlayer() {
+        const r = Math.floor(Math.random() * gameState.players.length);
+        gameState.starterPlayer = gameState.players[r] || { name: 'یاریکەر' };
+        return gameState.starterPlayer;
+    }
+
+    /* ── SHOW NEXT CARD ── */
+    function showNextCard() {
+        const container = document.getElementById('card-container');
+        const progress = document.getElementById('game-progress');
+        const nextBtn = document.getElementById('next-player-btn');
+        const revealBtn = document.getElementById('reveal-btn');
+        const starterContainer = document.getElementById('starter-container');
+        const currentPlayer = gameState.players[gameState.currentPlayerIndex];
+
+        if (!currentPlayer) {
+            const starter = selectStarterPlayer();
+            starterContainer.innerHTML =
+                '<div class="starter-box">' +
+                '<div class="starter-message">🎤 دەستپێ بکە!</div>' +
+                '<div class="starter-name">' + starter.name + '</div>' +
+                '<div>🧠 مێشکێ خۆ بکاربیینە، هزر بکە پاشی باخڤە!</div>' +
+                '</div>';
+            starterContainer.classList.remove('hidden');
+            container.innerHTML =
+                '<div class="card" style="cursor:default;background:#f0f7ff;">' +
+                '<div class="role-icon">🎯</div>' +
+                '<div style="color:#0066cc;">هەمی کارت هاتتنە دیتن</div>' +
+                '<div style="color:#666;margin-top:15px;">پشتی فەرێت هەوە خلاس دبن، هین دشێن مناقشێ بکەن! 🗣️</div>' +
+                '</div>';
+            nextBtn.classList.add('hidden');
+            revealBtn.classList.remove('hidden');
+            revealBtn.textContent = gameState.gameMode === 1 ? 'کەشف کرنا سیخوڕی 🔎' : 'کەشف کرنا کەسێ جیاواز 🔎';
+            progress.textContent = gameState.players.length + '/' + gameState.players.length + ' - تەمام';
+            return;
+        }
+
+        starterContainer.classList.add('hidden');
+        progress.textContent = 'یارییکەرێ ' + (gameState.currentPlayerIndex + 1) + ' / ' + gameState.players.length;
+
+        /* ── BEAUTIFUL FACE-DOWN CARD ── */
+        container.innerHTML =
+            '<div class="card-facedown" id="facedown-card" onclick="revealRole(' + currentPlayer.id + ')">' +
+            '<div class="card-facedown-icon">🎴</div>' +
+            '<div class="card-facedown-name">' + currentPlayer.name + '</div>' +
+            '<div class="card-facedown-hint">👆 کلیک بکە — رولێ خۆ ببینە</div>' +
+            '</div>';
+
+        nextBtn.classList.add('hidden');
+        revealBtn.classList.add('hidden');
+    }
+
+    /* ── REVEAL ROLE ── */
+    function revealRole(playerId) {
+        const player = gameState.players.find(p => p.id === playerId);
+        const container = document.getElementById('card-container');
+        const nextBtn = document.getElementById('next-player-btn');
+        if (!player) return;
+
+        const spyIndices = gameState.spyIndices || [];
+        const playerIdx = player.id - 1;
+        const multiSpy = spyIndices.length > 1;
+
+        let html = '';
+
+        if (gameState.gameMode === 1) {
+            if (player.isSpy) {
+                /* ── SPY CARD — show co-spies if 2+ ── */
+                let coSpyHtml = '';
+                if (multiSpy) {
+                    const coSpies = spyIndices
+                        .filter(i => i !== playerIdx)
+                        .map(i => gameState.players[i])
+                        .filter(Boolean);
+                    if (coSpies.length > 0) {
+                        coSpyHtml = '<div class="cospy-box"><div class="cospy-label">هەڤالێ تەیێ سیخور 🃏  ' + (coSpies.length > 1 ? '' : '') + ':</div>';
+                        coSpies.forEach(function(s) {
+                            coSpyHtml += '<div class="cospy-name">🕵️ ' + s.name + '</div>';
+                        });
+                        coSpyHtml += '</div>';
+                    }
+                }
+                html = '<div class="card-spy-revealed card-reveal-anim">' +
+                    '<div class="role-icon">🕵️</div>' +
+                    '<div style="color:#FF0000;font-size:2rem;margin-bottom:12px;">تۆ سیخوڕی!</div>' +
+                    '<div style="font-size:1.05rem;color:#000;">تۆ پەیڤێ نزانی — هەوڵبدە پەییڤێ بزانی</div>' +
+                    '<div style="margin-top:10px;font-size:1rem;color:#000;">خۆ دگەل مەدەنییا بگونجینە!</div>' +
+                    coSpyHtml +
+                    '</div>';
+            } else {
+                html = '<div class="card-civilian-revealed card-reveal-anim">' +
+                    '<div class="role-icon">👨‍🌾</div>' +
+                    '<div style="color:#000;font-size:2rem;margin-bottom:12px;">تۆ مەدەنی</div>' +
+                    '<div style="font-size:1.05rem;color:#000;">هەوڵبدە سیخوڕی بگری!</div>' +
+                    '<div class="word-display">' + gameState.secretWord + '</div>' +
+                    '</div>';
+            }
+        } else {
+            const word = player.hasDifferentWord ? gameState.differentWord : gameState.secretWord;
+            html = '<div class="card-white-revealed card-reveal-anim"><div class="word-display">' + word + '</div></div>';
+        }
+
+        container.innerHTML = html;
+        nextBtn.classList.remove('hidden');
+    }
+
+    /* ── NEXT PLAYER ── */
+    function nextPlayer() {
+        gameState.currentPlayerIndex++;
+        showNextCard();
+    }
+
+    /* ── REVEAL PAGE ── */
+    function goToRevealPage() {
+        showPage('reveal-page');
+        const container = document.getElementById('reveal-container');
+
+        if (gameState.gameMode === 1) {
+            const spies = gameState.players.filter(p => p.isSpy);
+            let spiesHtml = '';
+            spies.forEach(function(spy) {
+                spiesHtml += '<div style="font-size:1.8rem;margin:10px 0;background:#333;padding:12px;border-radius:30px;border:1px solid #ffcc00;color:#ffcc00;">' + spy.name + '</div>';
+            });
+            container.innerHTML =
+                '<div class="reveal-card">' +
+                '<div class="role-icon">' + (spies.length > 1 ? '🕵️🕵️' : '🕵️') + '</div>' +
+                '<div style="color:#ffcc00;">' + (spies.length > 1 ? 'سیخوڕ ئەڤەنە!' : 'سیخوڕ =') + '</div>' +
+                (spies.length === 1 ? '<div class="person-name">' + spies[0].name + '</div>' : spiesHtml) +
+                '<div style="background:#333;padding:15px;border-radius:30px;margin-top:20px;border:1px solid #ffcc00;">' +
+                '<div style="font-size:1.1rem;color:#ffcc00;">پەییڤا مەدەنییا =</div>' +
+                '<div style="font-size:2rem;font-weight:500;margin-top:5px;color:white;">' + gameState.secretWord + '</div>' +
+                '</div></div>';
+        } else {
+            const dp = gameState.players.find(p => p.hasDifferentWord);
+            container.innerHTML =
+                '<div class="reveal-card">' +
+                '<div class="role-icon">🎭</div>' +
+                '<div style="color:#ffcc00;">کەسێ جیاواز ئەڤەیە!</div>' +
+                '<div class="person-name">' + dp.name + '</div>' +
+                '<div style="background:#333;padding:15px;border-radius:30px;margin-top:20px;border:1px solid #ffcc00;">' +
+                '<div style="color:#ffcc00;">پەییڤا ئاسایی:</div>' +
+                '<div style="font-size:1.8rem;color:white;">' + gameState.secretWord + '</div>' +
+                '<div style="color:#ffcc00;margin-top:15px;">پەییڤا جیاواز:</div>' +
+                '<div style="font-size:1.8rem;color:#ff6b6b;">' + gameState.differentWord + '</div>' +
+                '</div></div>';
+        }
+    }
+
+    /* ── RESULTS ── */
+    function showFinalResults() {
+        showPage('results-page');
+        const container = document.getElementById('results-container');
+        let playersHtml = '<div class="results-container">';
+
+        if (gameState.gameMode === 1) {
+            gameState.players.forEach(function(player) {
+                const badge = player.isSpy ? '<span class="spy-badge">سیخوڕ</span>' : '<span class="civilian-badge">مەدەنی</span>';
+                playersHtml += '<div class="player-result"><span>' + player.name + '</span>' + badge + '</div>';
+            });
+            playersHtml += '</div>';
+            container.innerHTML = playersHtml + '<div class="word-box"><div class="word-value">' + gameState.secretWord + '</div></div>';
+        } else {
+            gameState.players.forEach(function(player) {
+                const badge = player.hasDifferentWord ? '<span class="different-badge">جیاواز</span>' : '<span class="normal-badge">ئاسایی</span>';
+                playersHtml += '<div class="player-result"><span>' + player.name + '</span>' + badge + '</div>';
+            });
+            playersHtml += '</div>';
+            container.innerHTML = playersHtml +
+                '<div class="word-box"><div class="word-value">' + gameState.secretWord + '</div></div>' +
+                '<div class="word-box"><div class="word-value-different">' + gameState.differentWord + '</div></div>';
+        }
+    }
+
+    function playAgain() { startNewGameWithNames(gameState.playerNames); }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        showPage('home-page');
+        document.getElementById('game-description-modal').addEventListener('click', function(e) { if(e.target===this) closeGameDescription(); });
+        document.getElementById('how-to-play-modal').addEventListener('click', function(e) { if(e.target===this) closeHowToPlayOptions(); });
+        document.getElementById('how-to-play-instructions-modal').addEventListener('click', function(e) { if(e.target===this) closeHowToPlayInstructions(); });
+    });
+</script>
+
+</body>
+</html>
