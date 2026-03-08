@@ -622,7 +622,8 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
 <div class="content" id="app"><!-- AUTH PAGE --><div id="auth-page">
     <div class="auth-page">
         <div class="auth-title">سیخوڕ 🕵️</div>
-        <div class="auth-sub" id="auth-sub-text">چوونەژوور یان هەژمارەکا نوی دروستبکە</div>
+        <div class="auth-sub" id="auth-sub-text">لازمە تە هەژمار هەبیت بو یاری کرنێ! 
+<br>هەژمارێ دروست بکە یان داخل ببە ب ئێکیش رێکان.</div>
 
 <!-- TABS -->
 <div class="auth-tabs">
@@ -645,7 +646,7 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
             onkeydown="if(event.key==='Enter')doLogin()">
     </div>
     <div class="auth-error" id="login-error"></div>
-    <button class="btn btn-blue" onclick="doLogin()" style="margin-top:4px;">چوونەژوور 🔑</button>
+    <button class="btn btn-blue" onclick="doLogin()" style="margin-top:4px;">🔑 چوونەژوور</button>
     <button class="btn-google" onclick="doGoogleLogin()">
         <svg style="width:22px;height:22px;flex-shrink:0;" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -674,7 +675,7 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
             onkeydown="if(event.key==='Enter')doSignup()">
     </div>
     <div class="auth-error" id="signup-error"></div>
-    <button class="btn btn-blue" onclick="doSignup()" style="margin-top:4px;">دروستکرنا هەژمارا نوی ✅</button>
+    <button class="btn btn-blue" onclick="doSignup()" style="margin-top:4px;">✅ دروستکرنا هەژمارا نوی</button>
     <button class="btn-google" onclick="doGoogleLogin()">
         <svg style="width:22px;height:22px;flex-shrink:0;" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -2487,9 +2488,9 @@ async function leaveRoom(){
     // Confirm before leaving
     const confirmed = await showConfirmModal(
         'دەرکەفتن 🚪',
-        'ئایا دڵنیایتی دەتەوێ ژوور بچووتە دەرەوە؟',
-        'بەلێ، دەرکەفتن',
-        'نەخێر، بمێنەوە'
+        ' تەئکیدی تە دڤێت ژ ژوورێ دەرکەڤی؟',
+        'بەلێ، دێ دەرکەڤم',
+        'نەخێر، دێ مینم'
     );
     if (!confirmed) return;
     detachAll();
@@ -2590,7 +2591,7 @@ async function openLeaderboard(from) {
         });
         container.innerHTML = html || '<p style="text-align:center;color:#999;">هێشتا کەس نییە 😅</p>';
     } catch(e) {
-        container.innerHTML = '<p style="text-align:center;color:#cc0000;">❌ هەڵە ڕووی دا</p>';
+        container.innerHTML = '<p style="text-align:center;color:#cc0000;">❌ خەلەتی ڕووی دا</p>';
     }
 }
 
