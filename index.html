@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-title" content="سیخوڕ">
     <link rel="apple-touch-icon" href="assets/image/sikhur.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Sikhur | سیخوڕ</title>
+    <title>سیخوڕ | Sikhur</title>
     <link rel="icon" type="image/png" href="assets/image/sikhur.jpg">
     <style>
         @font-face {
@@ -92,6 +92,27 @@ box-shadow:0 4px 10px rgba(0,102,204,0.1);
 .btn-yellow{ background:linear-gradient(135deg,#ffcc00,#ffaa00); color:#1a2a3a; box-shadow:0 4px 0 #996600; }
 .btn-yellow:hover{ transform:translateY(-2px); box-shadow:0 6px 0 #996600; }
 .btn-secondary { background:white; color:#0066cc; border:1px solid #ffcc00; }
+.btn-pink-purple {
+    background: linear-gradient(135deg, #ff69b4, #9b59b6);
+    color: white;
+    box-shadow: 0 4px 0 #8e44ad;
+}
+.btn-pink-purple:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #8e44ad;
+}
+.forgot-password-link {
+    text-align: center;
+    margin: 5px 0 15px 0;
+    font-size: 0.9rem;
+    color: #0066cc;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+.forgot-password-link:hover {
+    color: #ff69b4;
+}
 .counter-container {
 display:flex; justify-content:center; align-items:center; gap:15px;
 margin:20px 0; background:white; padding:12px; border-radius:50px;
@@ -614,25 +635,108 @@ border:1px solid rgba(255,204,0,0.3); min-width:80px;
 display:inline-block; background:rgba(255,204,0,0.2); border:1px solid #ffcc00;
 border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-top:8px;
 }
-</style></head>
-<body><a href="https://kurdor.is-a.dev" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;">
+
+/* NEW ROOM CODE BOXES */
+.room-code-container {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin: 20px 0;
+    direction: ltr;
+}
+.room-code-box-input {
+    width: 50px;
+    height: 60px;
+    border-radius: 12px;
+    border: 2.5px solid #ddd;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.2s;
+    background: #fafafa;
+    color: #0066cc;
+}
+.room-code-box-input:focus {
+    border-color: #ffcc00;
+    box-shadow: 0 0 0 3px rgba(255,204,0,0.2);
+}
+.join-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 15px;
+    justify-content: flex-end;
+}
+.join-button {
+    padding: 14px 30px;
+    border: none;
+    border-radius: 40px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    cursor: pointer;
+    background: linear-gradient(135deg, #ff69b4, #9b59b6);
+    color: white;
+    box-shadow: 0 4px 0 #8e44ad;
+    transition: all 0.2s;
+    white-space: nowrap;
+    font-family: 'Rabar', 'Arial Unicode MS', 'Segoe UI', sans-serif;
+}
+.join-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #8e44ad;
+}
+
+/* Forgot Password Modal */
+.reset-code-container {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin: 20px 0;
+    direction: ltr;
+}
+.reset-code-box {
+    width: 50px;
+    height: 60px;
+    border-radius: 12px;
+    border: 2.5px solid #ddd;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.2s;
+    background: #fafafa;
+    color: #0066cc;
+}
+.reset-code-box:focus {
+    border-color: #ff69b4;
+    box-shadow: 0 0 0 3px rgba(255,105,180,0.2);
+}
+</style>
+</head>
+<body>
+<a href="https://kurdor.is-a.dev" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;">
     <div id="welcomeToast" class="welcome-notification">📰- هاتییە دروستکرن ژلایێ رەشید فەرهاد. </div>
-</a><div style="display:flex;flex-direction:column;align-items:center;width:100%;">
+</a>
+<div style="display:flex;flex-direction:column;align-items:center;width:100%;">
 <div class="game-container">
-<div class="content" id="app"><!-- AUTH PAGE --><div id="auth-page">
+<div class="content" id="app">
+
+<!-- AUTH PAGE -->
+<div id="auth-page">
     <div class="auth-page">
         <div class="auth-title">سیخوڕ 🕵️</div>
-        <div class="auth-sub" id="auth-sub-text">لەزمە بەری یاریکرنێ داخل ببی!
-<br>
-برێکا چوونەژوور - هەژمارا نوی.</div>
+        <div class="auth-sub" id="auth-sub-text">چوونەژوور یان هەژمارەکا نوی دروستبکە</div>
 
 <!-- TABS -->
 <div class="auth-tabs">
-    <button class="auth-tab active" id="tab-login"  onclick="switchAuthTab('login')">چوونەژوور (Login)</button>
-    <button class="auth-tab"        id="tab-signup" onclick="switchAuthTab('signup')">هەژمارا نوی (Signup)</button>
+    <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">چوونەژوور</button>
+    <button class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">هەژمارا نوی</button>
 </div>
 
-<!-- ── LOGIN ── -->
+<!-- LOGIN FORM -->
 <div id="auth-login-form">
     <div class="auth-input-group">
         <label class="auth-input-label">ئیمەیڵ 📧</label>
@@ -646,8 +750,9 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
             placeholder="••••••" autocomplete="current-password"
             onkeydown="if(event.key==='Enter')doLogin()">
     </div>
+    <div class="forgot-password-link" onclick="showForgotPasswordModal()">پاسووردت لەبیر چووە؟</div>
     <div class="auth-error" id="login-error"></div>
-    <button class="btn btn-blue" onclick="doLogin()" style="margin-top:4px;">🔑 چوونەژوور</button>
+    <button class="btn btn-blue" onclick="doLogin()" style="margin-top:4px;">چوونەژوور 🔑</button>
     <button class="btn-google" onclick="doGoogleLogin()">
         <svg style="width:22px;height:22px;flex-shrink:0;" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -659,10 +764,11 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
     </button>
 </div>
 
-<!-- ── SIGNUP — email + password only ── -->
+<!-- SIGNUP FORM -->
 <div id="auth-signup-form" class="hidden">
     <div style="background:#f0f7ff;border-radius:20px;padding:12px 14px;margin-bottom:14px;border:1px solid rgba(0,102,204,0.12);font-size:0.88rem;color:#555;text-align:right;direction:rtl;">
-        📝 هەژمارا نوی پێویستی ب تەئکید کرنێ هەیە، برێکا کۆدی.       </div>
+        📝 هەژمارا نوی پێویستی ب تەئکید کرنێ هەیە، برێکا کۆدی.
+    </div>
     <div class="auth-input-group">
         <label class="auth-input-label">ئیمەیڵ 📧</label>
         <input type="email" id="signup-email" class="auth-input"
@@ -676,7 +782,7 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
             onkeydown="if(event.key==='Enter')doSignup()">
     </div>
     <div class="auth-error" id="signup-error"></div>
-    <button class="btn btn-blue" onclick="doSignup()" style="margin-top:4px;">✅ دروستکرنا هەژمارا نوی</button>
+    <button class="btn btn-blue" onclick="doSignup()" style="margin-top:4px;">دروستکرنا هەژمارا نوی ✅</button>
     <button class="btn-google" onclick="doGoogleLogin()">
         <svg style="width:22px;height:22px;flex-shrink:0;" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -684,34 +790,27 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
             <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
             <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
         </svg>
-      برێکا Google خۆ تومار بکە
+        برێکا Google خۆ تومار بکە
     </button>
 </div>
 
-<!-- ── 4-DIGIT CODE VERIFICATION ── -->
+<!-- VERIFICATION CODE SCREEN -->
 <div id="auth-verify-email" class="hidden">
     <div style="text-align:center;padding:8px 0 4px;">
         <div style="font-size:3.5rem;margin-bottom:6px;">📨</div>
         <div style="font-size:1.25rem;font-weight:bold;color:#0066cc;margin-bottom:6px;">کودی پشتراستبکە</div>
         <div id="verify-email-addr" style="font-size:0.85rem;color:#555;background:#f0f7ff;padding:7px 14px;border-radius:20px;margin-bottom:12px;border:1px solid rgba(0,102,204,0.15);word-break:break-all;direction:ltr;"></div>
         <div style="font-size:0.9rem;color:#555;margin-bottom:16px;direction:rtl;line-height:1.5;">
-            کۆدێ 4 ژماڕەیی بو ئیمەیلێ تە هاتە هنارتن!<br>سەرەدانا ئێمیلێ خو بکە!
+            کۆدێ 4 ژمارەیی بو ئیمەیلێ تە هاتە هنارتن!<br>سەرەدانا ئێمیلێ خو بکە!
         </div>
-        <!-- 4 separate digit boxes — LTR, each auto-advances -->
         <div id="vc-boxes" style="display:flex;gap:12px;justify-content:center;margin-bottom:16px;direction:ltr;">
-            <input id="vc0" type="tel" inputmode="numeric" maxlength="1" dir="ltr" autocomplete="off"
-                style="width:60px;height:68px;border-radius:18px;border:2.5px solid #ddd;font-size:2.2rem;font-weight:bold;text-align:center;font-family:inherit;outline:none;transition:all 0.2s;background:#fafafa;color:#0066cc;">
-            <input id="vc1" type="tel" inputmode="numeric" maxlength="1" dir="ltr" autocomplete="off"
-                style="width:60px;height:68px;border-radius:18px;border:2.5px solid #ddd;font-size:2.2rem;font-weight:bold;text-align:center;font-family:inherit;outline:none;transition:all 0.2s;background:#fafafa;color:#0066cc;">
-            <input id="vc2" type="tel" inputmode="numeric" maxlength="1" dir="ltr" autocomplete="off"
-                style="width:60px;height:68px;border-radius:18px;border:2.5px solid #ddd;font-size:2.2rem;font-weight:bold;text-align:center;font-family:inherit;outline:none;transition:all 0.2s;background:#fafafa;color:#0066cc;">
-            <input id="vc3" type="tel" inputmode="numeric" maxlength="1" dir="ltr" autocomplete="off"
-                style="width:60px;height:68px;border-radius:18px;border:2.5px solid #ddd;font-size:2.2rem;font-weight:bold;text-align:center;font-family:inherit;outline:none;transition:all 0.2s;background:#fafafa;color:#0066cc;">
+            <input id="vc0" type="tel" inputmode="numeric" maxlength="1" class="room-code-box-input" style="width:60px;height:68px;">
+            <input id="vc1" type="tel" inputmode="numeric" maxlength="1" class="room-code-box-input" style="width:60px;height:68px;">
+            <input id="vc2" type="tel" inputmode="numeric" maxlength="1" class="room-code-box-input" style="width:60px;height:68px;">
+            <input id="vc3" type="tel" inputmode="numeric" maxlength="1" class="room-code-box-input" style="width:60px;height:68px;">
         </div>
         <div id="verify-status-msg" style="font-size:0.9rem;min-height:22px;margin-bottom:10px;"></div>
-        <button class="btn btn-blue" onclick="submitVerifyCode()" style="margin-bottom:8px;">
-            ✅ پشتراستکرن
-        </button>
+        <button class="btn btn-blue" onclick="submitVerifyCode()" style="margin-bottom:8px;">✅ پشتراستکرن</button>
         <button onclick="resendVerificationEmail()" id="resendBtn"
             style="width:100%;padding:12px;border:none;border-radius:30px;background:#f0f0f0;color:#555;font-size:0.95rem;cursor:pointer;font-family:inherit;margin-bottom:4px;">
             📨 دووبارە پنێرە
@@ -723,11 +822,11 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
     </div>
 </div>
 
-<!-- ── NICKNAME PICKER (after Google login, first time) ── -->
+<!-- NICKNAME PICKER -->
 <div id="auth-nickname-picker" class="hidden">
     <div style="background:#f0f7ff;border-radius:24px;padding:18px 16px;border:2px solid rgba(0,102,204,0.15);margin:4px 0;">
-        <p style="color:#0066cc;font-size:1.05rem;margin-bottom:8px;text-align:center;font-weight:bold;">🎭 ناڤێ یارییکەرێ خۆ دیاری بکە </p>
-        <p style="color:#888;font-size:0.82rem;margin-bottom:14px;text-align:center;"> ناڤ یان ناسناڤەکێ بخۆ چێکە، نەشێی بگوهری یەڤە!</p>
+        <p style="color:#0066cc;font-size:1.05rem;margin-bottom:8px;text-align:center;font-weight:bold;">🎭 ناڤێ یارییکەرێ خۆ دیاری بکە</p>
+        <p style="color:#888;font-size:0.82rem;margin-bottom:14px;text-align:center;">ناڤ یان ناسناڤەکێ بخۆ چێکە، نەشێی بگوهری یەڤە!</p>
         <input type="text" id="pick-nickname" class="auth-input"
             placeholder="ناڤێ خۆ..." maxlength="20"
             oninput="this.value=this.value.replace(/\s/g,'')"
@@ -737,50 +836,74 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
     </div>
 </div>
 
+<!-- FORGOT PASSWORD MODAL -->
+<div id="forgot-password-modal" class="how-to-play-modal hidden">
+    <div class="how-to-play-content">
+        <div style="font-size:3rem;margin-bottom:10px;">🔐</div>
+        <h2 style="color:#0066cc;margin-bottom:10px;">پاسووردت لەبیر چووە؟</h2>
+        <div style="font-size:0.9rem;color:#666;margin-bottom:20px;">ئیمەیڵەکەت بنڤیسە بۆ وەرگرتنی کۆدی ڕێست کردنەوە</div>
+        
+        <div id="fp-step-1">
+            <input type="email" id="fp-email" class="auth-input" placeholder="ئیمەیڵەکەت لێرە بنڤیسە..." style="margin-bottom:15px;">
+            <div id="fp-error" style="color:#cc0000;font-size:0.85rem;margin-bottom:10px;min-height:20px;"></div>
+            <button class="btn btn-pink-purple" onclick="sendResetCode()" style="margin-bottom:8px;">📨 کۆدی ڕێست کردنەوە بنێرە</button>
+            <button onclick="closeForgotPasswordModal()" style="width:100%;padding:10px;border:none;background:none;color:#aaa;font-size:0.85rem;cursor:pointer;">← گەڕانەوە</button>
+        </div>
+        
+        <div id="fp-step-2" class="hidden">
+            <p style="color:#555;font-size:0.9rem;margin-bottom:10px;" id="fp-email-display"></p>
+            <div class="reset-code-container">
+                <input type="tel" inputmode="numeric" maxlength="1" class="reset-code-box" id="rc0" data-index="0">
+                <input type="tel" inputmode="numeric" maxlength="1" class="reset-code-box" id="rc1" data-index="1">
+                <input type="tel" inputmode="numeric" maxlength="1" class="reset-code-box" id="rc2" data-index="2">
+                <input type="tel" inputmode="numeric" maxlength="1" class="reset-code-box" id="rc3" data-index="3">
+            </div>
+            <input type="password" id="fp-new-password" class="auth-input" placeholder="پاسووردی نوێ (بە کەمی ٦ پیت)" style="margin:15px 0;">
+            <input type="password" id="fp-confirm-password" class="auth-input" placeholder="پاسووردی نوێ دووبارە بنڤیسە" style="margin-bottom:15px;">
+            <div id="fp-reset-error" style="color:#cc0000;font-size:0.85rem;margin-bottom:10px;min-height:20px;"></div>
+            <button class="btn btn-pink-purple" onclick="resetPassword()" style="margin-bottom:8px;">✅ پاسووردەکەم ڕێست بکە</button>
+            <button onclick="closeForgotPasswordModal()" style="width:100%;padding:10px;border:none;background:none;color:#aaa;font-size:0.85rem;cursor:pointer;">← گەڕانەوە</button>
+        </div>
+    </div>
+</div>
 
-</div></div><!-- PROFILE PAGE --><div id="profile-page" class="hidden">
+</div></div><!-- PROFILE PAGE -->
+<div id="profile-page" class="hidden">
     <div class="profile-card">
         <div class="profile-avatar-big" id="profile-avatar-big" style="font-size:3rem;width:90px;height:90px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;border:4px solid #ffcc00;box-shadow:0 8px 24px rgba(0,0,0,0.3);">?</div>
         <div class="profile-nickname" id="profile-nickname-display">—</div>
         <div class="profile-email" id="profile-email-display" style="font-size:0.8rem;color:rgba(255,255,255,0.5);margin-bottom:4px;">—</div>
         <div class="profile-badge" id="profile-badge-role" style="margin-bottom:16px;">🎭 یارییکەرێ نوی</div>
         <div class="profile-stats">
-            <div class="stat-box">
-                <div class="stat-num" id="stat-games">0</div>
-                <div class="stat-label">🎮 یاری</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-num" id="stat-wins">0</div>
-                <div class="stat-label">🏆 برنەڤە</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-num" id="stat-rate">0%</div>
-                <div class="stat-label">📊 ڕێژە</div>
-            </div>
+            <div class="stat-box"><div class="stat-num" id="stat-games">0</div><div class="stat-label">🎮 یاری</div></div>
+            <div class="stat-box"><div class="stat-num" id="stat-wins">0</div><div class="stat-label">🏆 برنەڤە</div></div>
+            <div class="stat-box"><div class="stat-num" id="stat-rate">0%</div><div class="stat-label">📊 ڕێژە</div></div>
         </div>
         <div style="margin-top:12px;background:rgba(255,255,255,0.08);border-radius:14px;padding:8px 14px;font-size:0.78rem;color:rgba(255,255,255,0.5);direction:rtl;">
-            داتا و زانییاریێن تە دپاراستی نە - رەشید فەرهاد        </div>
+            داتا و زانییاریێن تە دپاراستی نە - رەشید فەرهاد
+        </div>
     </div>
     <button class="btn btn-blue" style="margin-top:10px;" onclick="showPage('home-page')">یاریکرن 🎮</button>
     <button class="btn btn-blue" style="margin-top:6px;background:linear-gradient(135deg,#cc8800,#ffaa00);" onclick="openLeaderboard('profile-page')">باشترین یارییکەر 🏆</button>
     <button class="btn btn-red" onclick="doSignOut()">دەرکەڤتن ل هەژمارێ (Sign Out) 🚪</button>
 </div>
+
 <!-- LEADERBOARD PAGE -->
 <div id="leaderboard-page" class="hidden">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
         <button onclick="goBackFromLeaderboard()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;padding:4px;">←</button>
-        <h2 style="margin:0;flex:1;text-align:center;"> باشترین یارییکەر 🏆</h2>
+        <h2 style="margin:0;flex:1;text-align:center;">باشترین یارییکەر 🏆</h2>
     </div>
-    <div id="leaderboard-container">
-        <div style="text-align:center;padding:30px;color:#999;">⏳ چاڤەرێ بە...</div>
-    </div>
-</div><!-- HOME --><div id="home-page" class="hidden">
-    <!-- PROFILE HEADER BAR -->
+    <div id="leaderboard-container"><div style="text-align:center;padding:30px;color:#999;">⏳ چاڤەرێ بە...</div></div>
+</div>
+
+<!-- HOME PAGE -->
+<div id="home-page" class="hidden">
     <div class="profile-header-bar" onclick="showPage('profile-page')" id="homeProfileBar">
         <div class="phb-avatar" id="homeProfileBtn" style="background:#0066cc;">?</div>
         <div class="phb-info">
             <div class="phb-name" id="homeProfileName">...</div>
-            <div class="phb-sub">👤 پروفایلێ تە (کلیک بکە بو دیتنا زانیاریێن خو)</div>
+            <div class="phb-sub">👤 پروفایلێ تە (کلیک بکە)</div>
         </div>
         <div class="phb-arrow">‹</div>
     </div>
@@ -790,9 +913,18 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
     <p class="welcome-text">یارییەک بو بوراندنا دەمێن خوش دگەل هەڤاڵان.<br>Online</p>
     <div style="margin-bottom:20px;">
         <button class="btn btn-blue" onclick="goToNickname('create')" style="background:linear-gradient(135deg,#56ab2f,#a8e063);">دروستکرنا ژوورێ (Create Room) 🏠</button>
-        <div style="display:flex;gap:10px;margin-top:10px;">
-            <input type="text" id="join-room-id" class="player-input" placeholder="کۆدێ ژوورێ [XXX-XXX]" style="margin:0;flex:2;" inputmode="text" onkeydown="if(event.key==='Enter') joinRoomClick()" oninput="formatRoomCodeInput(this)">
-            <button class="btn btn-yellow" onclick="joinRoomClick()" style="margin:0;flex:1;padding:14px;background:linear-gradient(135deg,#36d1dc,#5b86e5);color:white;border:none;">چوونەژوور (Join)</button>
+        <div style="margin-top:15px;">
+            <div class="room-code-container" id="room-code-boxes">
+                <input type="tel" inputmode="numeric" maxlength="1" class="room-code-box-input" id="rc0">
+                <input type="tel" inputmode="numeric" maxlength="1" class="room-code-box-input" id="rc1">
+                <input type="tel" inputmode="numeric" maxlength="1" class="room-code-box-input" id="rc2">
+                <input type="tel" inputmode="numeric" maxlength="1" class="room-code-box-input" id="rc3">
+                <input type="tel" inputmode="numeric" maxlength="1" class="room-code-box-input" id="rc4">
+                <input type="tel" inputmode="numeric" maxlength="1" class="room-code-box-input" id="rc5">
+            </div>
+            <div class="join-row">
+                <button class="join-button" onclick="joinRoomClick()" style="flex:1;">چوونەژوور</button>
+            </div>
         </div>
     </div>
     <hr style="border:0;height:1px;background:rgba(0,0,0,0.1);margin:20px 0;">
@@ -800,7 +932,10 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
     <a href="imposter.html" style="display:block;">
         <button class="btn btn-secondary" style="font-size:0.9rem;padding:10px;width:100%;background:linear-gradient(135deg,#11998e,#38ef7d);color:white;">یاری کرنا ناڤخۆیی (Offline) 📍</button>
     </a>
-</div><!-- NICKNAME --><!-- nickname-page removed — nickname comes from auth profile --><!-- OFFLINE MODE PICKER --><div id="offline-mode-page" class="hidden">
+</div>
+
+<!-- OFFLINE MODE PICKER -->
+<div id="offline-mode-page" class="hidden">
     <div class="animated-icon" style="margin-bottom:5px;">
         <img src="assets/image/sikhur.jpg" alt="سیخوڕ" class="game-icon" style="width:100px;">
     </div>
@@ -813,7 +948,10 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
         <button class="mode-pick-big diff" onclick="startOfflineSetup(2)" style="flex:1;background:linear-gradient(135deg,#ff3b3b,#ffd93d);color:white;border:none;">🎭<br>پەیڤێن جیاواز</button>
     </div>
     <button class="btn btn-red" onclick="showPage('home-page')" style="margin-top:8px;">زڤرین 🔙</button>
-</div><!-- ONLINE LOBBY --><div id="online-lobby-page" class="hidden">
+</div>
+
+<!-- ONLINE LOBBY -->
+<div id="online-lobby-page" class="hidden">
     <div class="lobby-top-bar">
         <h2 id="lobby-title" style="margin-bottom:0;">🏠 ژوورا یاریێ</h2>
         <button class="leave-btn-small" onclick="leaveRoom()">دەرکەفتن 🚪</button>
@@ -834,14 +972,15 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
         </div>
         <button class="btn btn-blue" id="startGameBtn" onclick="startOnlineGame()" style="margin-top:8px;" disabled>دەستپێکرنی یاریێ 🎬</button>
     </div>
-    <!-- Ready count visible to ALL players -->
     <div class="ready-count-msg" id="readyCountMsg">چاڤەرێی هەمی یارییکەران... (0/0 حازرن)</div>
     <div class="chat-box" id="chatBox"></div>
     <div class="chat-row">
         <input type="text" id="chatInput" class="player-input" placeholder="پەیامێ بنڤیسە..." onkeydown="if(event.key==='Enter') sendMsg()">
         <button class="send-btn" onclick="sendMsg()">➤</button>
     </div>
-</div><!-- SETUP (offline) --><div id="setup-page" class="hidden">
+</div>
+<!-- SETUP PAGE (offline) -->
+<div id="setup-page" class="hidden">
     <h2 id="setup-title">⚙️ ڕێکخستن</h2>
     <div class="counter-container">
         <button class="counter-btn" onclick="changePlayerCount(-1)">−</button>
@@ -851,14 +990,20 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
     <div id="player-inputs-container"></div>
     <button class="btn btn-blue" onclick="startGame()">دەستپێکرن 🎬</button>
     <button class="btn btn-red" onclick="goBackToHome()">زڤرین 🔙</button>
-</div><!-- GAME PAGE --><div id="game-page" class="hidden">
+</div>
+
+<!-- GAME PAGE -->
+<div id="game-page" class="hidden">
     <h2 id="game-title">🎴 کارتەکان</h2>
     <div class="progress" id="game-progress"></div>
     <div id="card-container"></div>
     <button class="btn btn-blue hidden" id="next-player-btn" onclick="nextPlayerAction()">یارییکەرێ دویفرا ⏭️</button>
     <div id="starter-container" class="hidden"></div>
     <button class="reveal-btn hidden" id="reveal-btn" onclick="goToRevealPage()">🔍 نییشان دانا کەسێ جیاواز</button>
-</div><!-- DISCUSSION PAGE (online) --><div id="discussion-page" class="hidden">
+</div>
+
+<!-- DISCUSSION PAGE (online) -->
+<div id="discussion-page" class="hidden">
     <div class="disc-box">
         <div class="disc-header">
             <div class="disc-emoji">🗣️</div>
@@ -869,9 +1014,7 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
         <div class="disc-voice-section">
             <div class="disc-voice-title">🎙️ ئاخفتن!</div>
             <div class="disc-voice-players" id="discVoicePlayers"></div>
-            <button class="disc-mic-btn mic-off" id="discMicBtn" onclick="toggleDiscMic()">
-                🎙️ مایکروفونێ چالاک بکە
-            </button>
+            <button class="disc-mic-btn mic-off" id="discMicBtn" onclick="toggleDiscMic()">🎙️ مایکروفونێ چالاک بکە</button>
         </div>
         <div class="disc-chat-box" id="discChatBox"></div>
         <div class="disc-chat-row">
@@ -881,16 +1024,25 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
         <button class="disc-vote-btn hidden" id="disc-vote-btn" onclick="hostStartVoting()">🗳️ دەستپێکرنا دەنگدانێ</button>
         <div class="disc-wait-msg hidden" id="disc-wait-msg">⏳ چاڤەریێ هۆستی بکەن بو دەستپێکرنا دەنگدانێ...</div>
     </div>
-</div><!-- REVEAL PAGE --><div id="reveal-page" class="hidden">
+</div>
+
+<!-- REVEAL PAGE -->
+<div id="reveal-page" class="hidden">
     <h2 id="reveal-title">🕵️ ئاشکراکرن</h2>
     <div id="reveal-container"></div>
     <button class="btn btn-blue" onclick="showFinalResults()">دییتنا ئەنجامی 📜</button>
-</div><!-- RESULTS PAGE --><div id="results-page" class="hidden">
+</div>
+
+<!-- RESULTS PAGE -->
+<div id="results-page" class="hidden">
     <h2>ئەنجام 🏆</h2>
     <div id="results-container"></div>
     <button class="btn btn-blue" onclick="playAgain()">دوبارە یارییکرن 🔁</button>
     <button class="btn btn-yellow" onclick="goToHomePage()">زڤرین بو دەستپێک 🏠</button>
-</div><!-- VOTING PAGE (online) --><div id="voting-page" class="hidden">
+</div>
+
+<!-- VOTING PAGE (online) -->
+<div id="voting-page" class="hidden">
     <h2>🗳️ دەنگدان</h2>
     <div class="vote-timer-box">
         <div class="vote-timer-label">وەختێ مایی</div>
@@ -901,13 +1053,19 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
     <div class="vote-status-msg" id="voteStatusMsg">دەنگێ خۆ هەلبژێرە</div>
     <button class="vote-confirm-btn" id="voteConfirmBtn" onclick="submitVote()" disabled>دەنگدانێ خۆ پشتراستبکە ✓</button>
     <button class="see-results-btn hidden" id="seeResultsBtn" onclick="openOnlineResults()" disabled>دییتنا ئەنجامی 🏆</button>
-</div><!-- ONLINE RESULTS PAGE --><div id="online-results-page" class="hidden">
+</div>
+
+<!-- ONLINE RESULTS PAGE -->
+<div id="online-results-page" class="hidden">
     <h2>ئەنجام 🏆</h2>
     <div id="online-results-container"></div>
     <div class="players-box" id="waiting-players-list-results" style="margin:10px 0;"></div>
     <button class="btn btn-blue" onclick="playAgainOnline()">دوبارە یارییکرن 🔁</button>
     <button class="btn btn-yellow" onclick="goToHomePage()">زڤرین بو دەستپێک 🏠</button>
-</div></div></div></div><!-- HOW TO PLAY MODALS --><div id="how-to-play-modal" class="how-to-play-modal hidden">
+</div>
+
+<!-- HOW TO PLAY MODALS -->
+<div id="how-to-play-modal" class="how-to-play-modal hidden">
     <div class="how-to-play-content">
         <div class="game-modal-icon">📖</div>
         <h2 style="color:#0066cc;margin-bottom:20px;">چەوا دێ یاریی کەی؟</h2>
@@ -916,6 +1074,7 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
         <button class="how-to-play-close" onclick="closeHowToPlayOptions()">گرتن</button>
     </div>
 </div>
+
 <div id="how-to-play-instructions-modal" class="how-to-play-modal hidden">
     <div class="how-to-play-content">
         <div id="instructions-icon" class="game-modal-icon">🕵️</div>
@@ -924,11 +1083,13 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
         <button class="how-to-play-close" onclick="closeHowToPlayInstructions()">گرتن</button>
     </div>
 </div>
+
 <!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <script>
 // Initialize EmailJS
 (function() {
@@ -965,6 +1126,11 @@ let _verifyEmail = null;
 let _pendingPassword = null;
 let _resendCooldown = false;
 
+// Forgot Password variables
+let _resetCode = null;
+let _resetEmail = null;
+let _resetCooldown = false;
+
 // EmailJS Configuration
 const EMAILJS_SERVICE_ID = 'service_cxf35pq';
 const EMAILJS_TEMPLATE_ID = 'template_qffo8w2';
@@ -982,8 +1148,6 @@ const gs = {
 };
 
 let currentPlayerCount = 5;
-let fbListeners = [];
-let voteListeners = [];
 let voteTimerInterval = null;
 let myVoteChoice = null;
 let voteSubmitted = false;
@@ -1050,68 +1214,132 @@ function assignAvatar() {
     return Math.floor(Math.random() * AVATARS.length);
 }
 
-// Room code formatting
-function formatRoomCodeInput(input) {
-    let value = input.value.replace(/[^0-9]/g, '');
-    if (value.length > 6) value = value.slice(0, 6);
-    if (value.length >= 4) {
-        input.value = value.slice(0, 3) + '-' + value.slice(3);
-    } else {
-        input.value = value;
+// Room code box functions
+function setupRoomCodeBoxes() {
+    for (let i = 0; i < 6; i++) {
+        const box = document.getElementById('rc' + i);
+        if (!box) continue;
+        
+        box.addEventListener('keyup', function(e) {
+            if (this.value.length === 1 && i < 5) {
+                document.getElementById('rc' + (i + 1)).focus();
+            }
+        });
+        
+        box.addEventListener('keydown', function(e) {
+            if (e.key === 'Backspace' && this.value.length === 0 && i > 0) {
+                document.getElementById('rc' + (i - 1)).focus();
+            }
+        });
+        
+        box.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 1);
+        });
     }
 }
 
-function formatRoomCodeDisplay(code) {
-    if (!code) return '------';
-    const clean = code.replace(/[^0-9]/g, '');
-    if (clean.length === 6) {
-        return clean.slice(0, 3) + '-' + clean.slice(3);
+function getRoomCodeFromBoxes() {
+    let code = '';
+    for (let i = 0; i < 6; i++) {
+        const box = document.getElementById('rc' + i);
+        code += box ? box.value : '';
     }
     return code;
 }
 
-function cleanRoomCode(code) {
-    return code.replace(/[^0-9]/g, '');
-}
-
-// Utility functions
-function showToast(msg, isError = false) {
-    document.querySelectorAll('.welcome-notification').forEach(e => e.remove());
-    const d = document.createElement('div');
-    d.className = 'welcome-notification';
-    if (isError) d.style.background = 'linear-gradient(135deg,#cc0000,#ff4444)';
-    d.textContent = msg;
-    d.onclick = () => d.remove();
-    document.body.appendChild(d);
-    setTimeout(() => d.remove(), 5000);
-}
-
-function genCode() {
-    return String(Math.floor(100000 + Math.random() * 900000));
-}
-
-function _gen4Code() {
-    return String(Math.floor(1000 + Math.random() * 9000));
-}
-
-// Page management
-const PAGES = ['auth-page', 'home-page', 'profile-page', 'leaderboard-page', 'offline-mode-page', 'online-lobby-page',
-    'setup-page', 'game-page', 'discussion-page', 'reveal-page', 'results-page',
-    'voting-page', 'online-results-page'];
-
-function showPage(id) {
-    PAGES.forEach(p => {
-        const el = document.getElementById(p);
-        if (el) el.classList.add('hidden');
-    });
-    const page = document.getElementById(id);
-    if (page) page.classList.remove('hidden');
-    if (id === 'setup-page') initSetupPage();
-    if (id === 'reveal-page') {
-        const title = document.getElementById('reveal-title');
-        if (title) title.textContent = gs.gameMode === 1 ? '🕵️ سیخوڕ' : '🎭 کەسێ جیاواز';
+function clearRoomCodeBoxes() {
+    for (let i = 0; i < 6; i++) {
+        const box = document.getElementById('rc' + i);
+        if (box) box.value = '';
     }
 }
+
+// Verification code box functions
+function setupVerificationBoxes() {
+    for (let i = 0; i < 4; i++) {
+        const box = document.getElementById('vc' + i);
+        if (!box) continue;
+        
+        box.addEventListener('keyup', function(e) {
+            if (this.value.length === 1 && i < 3) {
+                document.getElementById('vc' + (i + 1)).focus();
+            }
+        });
+        
+        box.addEventListener('keydown', function(e) {
+            if (e.key === 'Backspace' && this.value.length === 0 && i > 0) {
+                document.getElementById('vc' + (i - 1)).focus();
+            }
+        });
+        
+        box.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 1);
+        });
+    }
+}
+
+// Forgot Password box functions
+function setupResetCodeBoxes() {
+    for (let i = 0; i < 4; i++) {
+        const box = document.getElementById('rc' + i);
+        if (!box) continue;
+        
+        box.addEventListener('keyup', function(e) {
+            if (this.value.length === 1 && i < 3) {
+                document.getElementById('rc' + (i + 1)).focus();
+            }
+        });
+        
+        box.addEventListener('keydown', function(e) {
+            if (e.key === 'Backspace' && this.value.length === 0 && i > 0) {
+                document.getElementById('rc' + (i - 1)).focus();
+            }
+        });
+        
+        box.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 1);
+        });
+    }
+}
+
+// Call setup on page load
+document.addEventListener('DOMContentLoaded', () => {
+    setupRoomCodeBoxes();
+    setupVerificationBoxes();
+    setupResetCodeBoxes();
+    showPage('auth-page');
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const inviteCode = urlParams.get('room');
+    if (inviteCode) {
+        const cleanInvite = inviteCode.replace(/[^0-9]/g, '');
+        if (cleanInvite.length === 6) {
+            sessionStorage.setItem('sikhur_invite', cleanInvite);
+            for (let i = 0; i < 6; i++) {
+                const box = document.getElementById('rc' + i);
+                if (box) box.value = cleanInvite[i] || '';
+            }
+        }
+        window.history.replaceState({}, '', window.location.pathname);
+    }
+    
+    document.getElementById('how-to-play-modal').addEventListener('click', e => {
+        if (e.target === e.currentTarget) closeHowToPlayOptions();
+    });
+    
+    document.getElementById('how-to-play-instructions-modal').addEventListener('click', e => {
+        if (e.target === e.currentTarget) closeHowToPlayInstructions();
+    });
+    
+    document.getElementById('forgot-password-modal').addEventListener('click', e => {
+        if (e.target === e.currentTarget) closeForgotPasswordModal();
+    });
+    
+    setTimeout(() => {
+        const t = document.getElementById('welcomeToast');
+        if (t) t.remove();
+    }, 5000);
+});
 
 // Auth state observer
 auth.onAuthStateChanged(async (user) => {
@@ -1126,25 +1354,23 @@ auth.onAuthStateChanged(async (user) => {
             _pendingNewUser = false;
             updateProfileUI();
 
-            // Check for invite
             try {
                 const invite = sessionStorage.getItem('sikhur_invite');
                 if (invite) {
                     sessionStorage.removeItem('sikhur_invite');
                     const cleanInvite = invite.replace(/[^0-9]/g, '');
                     if (cleanInvite.length === 6) {
-                        const iSnap = await firebase.database().ref('rooms/' + cleanInvite).get();
-                        if (iSnap.exists()) {
-                            document.getElementById('join-room-id').value = formatRoomCodeDisplay(cleanInvite);
-                            showToast('🔗 لینکی دەعوەتێ هاتە دیتن!', false);
-                            await openLobby(false, cleanInvite);
-                            return;
+                        for (let i = 0; i < 6; i++) {
+                            const box = document.getElementById('rc' + i);
+                            if (box) box.value = cleanInvite[i] || '';
                         }
+                        showToast('🔗 لینکی دەعوەتێ هاتە دیتن!', false);
+                        await openLobby(false, cleanInvite);
+                        return;
                     }
                 }
             } catch (e) { }
 
-            // Check for saved room
             if (!isReconnecting) {
                 try {
                     const savedRoom = sessionStorage.getItem('sikhur_room');
@@ -1187,6 +1413,8 @@ function _resetAuthUI() {
     const tabsEl = document.querySelector('.auth-tabs');
     if (tabsEl) tabsEl.style.display = '';
     document.getElementById('auth-verify-email').classList.add('hidden');
+    document.getElementById('auth-nickname-picker').classList.add('hidden');
+    document.getElementById('forgot-password-modal').classList.add('hidden');
     switchAuthTab('login');
     ['login-email', 'login-password', 'signup-email', 'signup-password'].forEach(id => {
         const el = document.getElementById(id);
@@ -1196,12 +1424,14 @@ function _resetAuthUI() {
         const el = document.getElementById(id);
         if (el) el.textContent = '';
     });
+    clearRoomCodeBoxes();
 }
 
 function _showNicknamePicker() {
     showPage('auth-page');
     document.getElementById('auth-login-form').classList.add('hidden');
     document.getElementById('auth-signup-form').classList.add('hidden');
+    document.getElementById('auth-verify-email').classList.add('hidden');
     document.getElementById('auth-nickname-picker').classList.remove('hidden');
     document.getElementById('tab-login').classList.remove('active');
     document.getElementById('tab-signup').classList.remove('active');
@@ -1218,6 +1448,7 @@ function switchAuthTab(tab) {
     document.getElementById('tab-signup').classList.toggle('active', tab === 'signup');
     document.getElementById('auth-login-form').classList.toggle('hidden', tab !== 'login');
     document.getElementById('auth-signup-form').classList.toggle('hidden', tab !== 'signup');
+    document.getElementById('auth-verify-email').classList.add('hidden');
     document.getElementById('auth-nickname-picker').classList.add('hidden');
     ['login-error', 'signup-error'].forEach(id => {
         const el = document.getElementById(id);
@@ -1225,7 +1456,6 @@ function switchAuthTab(tab) {
     });
 }
 
-// Login functions
 async function doLogin() {
     const email = document.getElementById('login-email').value.trim();
     const pass = document.getElementById('login-password').value;
@@ -1263,11 +1493,15 @@ async function doSignOut() {
     await auth.signOut();
 }
 
-// Email verification functions
-async function _sendCodeEmail(email, code) {
+function _gen4Code() {
+    return String(Math.floor(1000 + Math.random() * 9000));
+}
+
+async function _sendCodeEmail(email, code, isReset = false) {
     const key = btoa(email).replace(/[^a-zA-Z0-9]/g, '_');
+    const type = isReset ? 'resetCodes' : 'verificationCodes';
     try {
-        await firebase.database().ref(`verificationCodes/${key}`).set({
+        await firebase.database().ref(`${type}/${key}`).set({
             code, createdAt: Date.now(), expiresAt: Date.now() + 10 * 60 * 1000
         });
     } catch (e) {
@@ -1276,16 +1510,18 @@ async function _sendCodeEmail(email, code) {
 
     try {
         if (!window.emailjs) throw new Error('EmailJS not loaded');
+        const templateParams = {
+            to_email: email,
+            email: email,
+            name: isReset ? 'Sikhur User' : 'سیخوڕ یارییکەر',
+            code: String(code),
+            app_name: 'سیخوڕ | Sikhur',
+            message: isReset ? 'کودی ڕێست کردنەوەی پاسوورد' : 'کودی پشتراستکرنی هەژمار'
+        };
         const result = await emailjs.send(
             EMAILJS_SERVICE_ID,
             EMAILJS_TEMPLATE_ID,
-            {
-                to_email: email,
-                email: email,
-                name: 'سیخوڕ یارییکەر',
-                code: String(code),
-                app_name: 'سیخوڕ | Sikhur'
-            }
+            templateParams
         );
         console.log('✅ Email sent:', result);
         return true;
@@ -1315,7 +1551,7 @@ async function doSignup() {
     _verifyCode = _gen4Code();
 
     errEl.textContent = '📨 کۆد دهێتە هنارتن...';
-    const sent = await _sendCodeEmail(email, _verifyCode);
+    const sent = await _sendCodeEmail(email, _verifyCode, false);
     errEl.textContent = '';
     _showVerifyScreen(email);
     if (!sent) {
@@ -1347,14 +1583,13 @@ function _showVerifyScreen(email) {
     const statusEl = document.getElementById('verify-status-msg');
     if (statusEl) statusEl.textContent = '';
     
-    // Reset boxes
-    [0, 1, 2, 3].forEach(i => {
+    for (let i = 0; i < 4; i++) {
         const b = document.getElementById('vc' + i);
         if (b) {
             b.value = '';
             b.style.borderColor = '#ddd';
         }
-    });
+    }
     
     setTimeout(() => {
         const b = document.getElementById('vc0');
@@ -1363,10 +1598,11 @@ function _showVerifyScreen(email) {
 }
 
 async function submitVerifyCode() {
-    const digits = [0, 1, 2, 3].map(i => {
+    const digits = [];
+    for (let i = 0; i < 4; i++) {
         const el = document.getElementById('vc' + i);
-        return el ? el.value.trim() : '';
-    });
+        digits.push(el ? el.value.trim() : '');
+    }
     const entered = digits.join('');
     const statusEl = document.getElementById('verify-status-msg');
 
@@ -1379,13 +1615,13 @@ async function submitVerifyCode() {
     }
 
     if (entered !== _verifyCode) {
-        [0, 1, 2, 3].forEach(i => {
+        for (let i = 0; i < 4; i++) {
             const b = document.getElementById('vc' + i);
             if (b) {
                 b.style.borderColor = '#ff4444';
                 setTimeout(() => b.style.borderColor = '#ddd', 1000);
             }
-        });
+        }
         if (statusEl) {
             statusEl.textContent = '❌ کۆد یێ خەلەتە';
             statusEl.style.color = '#cc0000';
@@ -1420,14 +1656,14 @@ async function resendVerificationEmail() {
     if (!_verifyEmail) return;
     const btn = document.getElementById('resendBtn');
     _verifyCode = _gen4Code();
-    const sent = await _sendCodeEmail(_verifyEmail, _verifyCode);
+    const sent = await _sendCodeEmail(_verifyEmail, _verifyCode, false);
     if (sent) showToast('📨 کۆدێ نوی هاتە هنارتن!', false);
     else showToast('⚠️ ئیمەیڵ نەچوو — دووبارە هەولێ بو بدە', true);
     
-    [0, 1, 2, 3].forEach(i => {
+    for (let i = 0; i < 4; i++) {
         const b = document.getElementById('vc' + i);
         if (b) b.value = '';
-    });
+    }
     document.getElementById('vc0')?.focus();
     
     _resendCooldown = true;
@@ -1539,40 +1775,173 @@ function updateProfileUI() {
     if (sr) sr.textContent = rate + '%';
 }
 
-// Room functions
-async function joinRoomClick() {
-    const input = document.getElementById('join-room-id');
-    const rawCode = input.value.trim();
-    const cleanCode = cleanRoomCode(rawCode);
+function showToast(msg, isError = false) {
+    document.querySelectorAll('.welcome-notification').forEach(e => e.remove());
+    const d = document.createElement('div');
+    d.className = 'welcome-notification';
+    if (isError) d.style.background = 'linear-gradient(135deg,#cc0000,#ff4444)';
+    d.textContent = msg;
+    d.onclick = () => d.remove();
+    document.body.appendChild(d);
+    setTimeout(() => d.remove(), 5000);
+}
 
-    if (cleanCode.length !== 6) {
-        showToast('کۆدێ ژوورێ پێویستە 6 ژمارە بێت! ⌨️', true);
-        input.style.borderColor = '#ff4444';
-        setTimeout(() => { input.style.borderColor = ''; }, 2000);
-        return;
-    }
+function genCode() {
+    return String(Math.floor(100000 + Math.random() * 900000));
+}
 
-    if (!gs.myNickname && userProfile) gs.myNickname = userProfile.nickname;
-    if (!gs.myNickname) {
-        showToast(' داخل ببە! ❌', true);
-        showPage('auth-page');
-        return;
-    }
-
-    try {
-        const snap = await firebase.database().ref(`rooms/${cleanCode}`).get();
-        if (!snap.exists()) {
-            showToast('کۆد یێ خەلەتە! ❌', true);
-            input.style.borderColor = '#ff4444';
-            setTimeout(() => { input.style.borderColor = ''; }, 2000);
-            return;
-        }
-        input.style.borderColor = '';
-        openLobby(false, cleanCode);
-    } catch (e) {
-        showToast('خەلەتی!', true);
+// Forgot Password Functions
+function showForgotPasswordModal() {
+    document.getElementById('forgot-password-modal').classList.remove('hidden');
+    document.getElementById('fp-step-1').classList.remove('hidden');
+    document.getElementById('fp-step-2').classList.add('hidden');
+    document.getElementById('fp-email').value = '';
+    document.getElementById('fp-error').textContent = '';
+    document.getElementById('fp-reset-error').textContent = '';
+    document.getElementById('fp-new-password').value = '';
+    document.getElementById('fp-confirm-password').value = '';
+    for (let i = 0; i < 4; i++) {
+        const box = document.getElementById('rc' + i);
+        if (box) box.value = '';
     }
 }
+
+function closeForgotPasswordModal() {
+    document.getElementById('forgot-password-modal').classList.add('hidden');
+}
+
+async function sendResetCode() {
+    const email = document.getElementById('fp-email').value.trim();
+    const errEl = document.getElementById('fp-error');
+    
+    if (!email) {
+        errEl.textContent = '⚠️ تکایە ئیمەیڵەکەت بنڤیسە';
+        return;
+    }
+    
+    errEl.textContent = '⏳ چاڤەرێ بە...';
+    
+    try {
+        const userSnap = await firebase.database().ref('users').orderByChild('email').equalTo(email).get();
+        if (!userSnap.exists()) {
+            errEl.textContent = '❌ ئەم ئیمەیڵە نادۆزرێتەوە';
+            return;
+        }
+        
+        _resetEmail = email;
+        _resetCode = _gen4Code();
+        
+        const sent = await _sendCodeEmail(email, _resetCode, true);
+        
+        if (sent) {
+            document.getElementById('fp-step-1').classList.add('hidden');
+            document.getElementById('fp-step-2').classList.remove('hidden');
+            document.getElementById('fp-email-display').textContent = `کۆدێ ڕێست کردنەوە بو ${email} هاتە هنارتن`;
+            errEl.textContent = '';
+            setTimeout(() => {
+                const box = document.getElementById('rc0');
+                if (box) box.focus();
+            }, 150);
+        } else {
+            errEl.textContent = '❌ هنارتن کۆد سەرنەکەوت، تکایە دووبارە هەول بدە';
+        }
+    } catch (e) {
+        errEl.textContent = '❌ هەڵەیەک ڕویدا';
+        console.error(e);
+    }
+}
+
+async function resetPassword() {
+    const digits = [];
+    for (let i = 0; i < 4; i++) {
+        const box = document.getElementById('rc' + i);
+        digits.push(box ? box.value.trim() : '');
+    }
+    const enteredCode = digits.join('');
+    const newPass = document.getElementById('fp-new-password').value;
+    const confirmPass = document.getElementById('fp-confirm-password').value;
+    const errEl = document.getElementById('fp-reset-error');
+    
+    if (enteredCode.length < 4) {
+        errEl.textContent = '⚠️ تکایە کۆدەکە بە تەواوی بنڤیسە';
+        return;
+    }
+    
+    if (enteredCode !== _resetCode) {
+        errEl.textContent = '❌ کۆدەکە هەڵەیە';
+        for (let i = 0; i < 4; i++) {
+            const box = document.getElementById('rc' + i);
+            if (box) {
+                box.style.borderColor = '#ff4444';
+                setTimeout(() => box.style.borderColor = '#ddd', 1000);
+            }
+        }
+        return;
+    }
+    
+    if (newPass.length < 6) {
+        errEl.textContent = '⚠️ پاسوورد دەبێت کەمتر لە ٦ پیت نەبێت';
+        return;
+    }
+    
+    if (newPass !== confirmPass) {
+        errEl.textContent = '❌ پاسووردەکان یەک ناگرنەوە';
+        return;
+    }
+    
+    errEl.textContent = '⏳ چاڤەرێ بە...';
+    
+    try {
+        const user = auth.currentUser;
+        if (user) {
+            await user.updatePassword(newPass);
+            showToast('✅ پاسوورد بە سەرکەوتوویی ڕێست کرا', false);
+            closeForgotPasswordModal();
+        } else {
+            const userSnap = await firebase.database().ref('users').orderByChild('email').equalTo(_resetEmail).get();
+            if (!userSnap.exists()) {
+                errEl.textContent = '❌ بەکارهێنەر نادۆزرێتەوە';
+                return;
+            }
+            let userId = null;
+            userSnap.forEach(child => { userId = child.key; });
+            await auth.signInWithEmailAndPassword(_resetEmail, 'temporary-password')
+                .then(async (userCred) => {
+                    await userCred.user.updatePassword(newPass);
+                    await auth.signOut();
+                    showToast('✅ پاسوورد بە سەرکەوتوویی ڕێست کرا', false);
+                    closeForgotPasswordModal();
+                })
+                .catch(async () => {
+                    errEl.textContent = '❌ نەتوانرا پاسوورد ڕێست بکرێت';
+                });
+        }
+    } catch (e) {
+        errEl.textContent = '❌ هەڵەیەک ڕویدا';
+        console.error(e);
+    }
+}
+
+const PAGES = ['auth-page', 'home-page', 'profile-page', 'leaderboard-page', 'offline-mode-page', 'online-lobby-page',
+    'setup-page', 'game-page', 'discussion-page', 'reveal-page', 'results-page',
+    'voting-page', 'online-results-page'];
+
+function showPage(id) {
+    PAGES.forEach(p => {
+        const el = document.getElementById(p);
+        if (el) el.classList.add('hidden');
+    });
+    const page = document.getElementById(id);
+    if (page) page.classList.remove('hidden');
+    if (id === 'setup-page') initSetupPage();
+    if (id === 'reveal-page') {
+        const title = document.getElementById('reveal-title');
+        if (title) title.textContent = gs.gameMode === 1 ? '🕵️ سیخوڕ' : '🎭 کەسێ جیاواز';
+    }
+}
+
+function goBackToHome() { showPage('home-page'); }
+function goToHomePage() { showPage('home-page'); }
 
 function goToNickname(flow) {
     if (!gs.myNickname && userProfile) gs.myNickname = userProfile.nickname;
@@ -1584,19 +1953,58 @@ function goToNickname(flow) {
     if (flow === 'create') {
         openLobby(true, null);
     } else if (flow === 'join') {
-        const input = document.getElementById('join-room-id');
-        const rawCode = input.value.trim();
-        const cleanCode = cleanRoomCode(rawCode);
-        if (cleanCode.length !== 6) {
+        const code = getRoomCodeFromBoxes();
+        if (code.length !== 6) {
             showToast('کۆدێ ژوورێ پێویستە 6 ژمارە بێت! ⌨️', true);
             return;
         }
-        openLobby(false, cleanCode);
+        openLobby(false, code);
+    }
+}
+
+async function joinRoomClick() {
+    const code = getRoomCodeFromBoxes();
+    
+    if (code.length !== 6) {
+        showToast('کۆدێ ژوورێ پێویستە 6 ژمارە بێت! ⌨️', true);
+        for (let i = 0; i < 6; i++) {
+            const box = document.getElementById('rc' + i);
+            if (box) {
+                box.style.borderColor = '#ff4444';
+                setTimeout(() => { box.style.borderColor = '#ddd'; }, 2000);
+            }
+        }
+        return;
+    }
+
+    if (!gs.myNickname && userProfile) gs.myNickname = userProfile.nickname;
+    if (!gs.myNickname) {
+        showToast(' داخل ببە! ❌', true);
+        showPage('auth-page');
+        return;
+    }
+
+    try {
+        const snap = await firebase.database().ref(`rooms/${code}`).get();
+        if (!snap.exists()) {
+            showToast('کۆد یێ خەلەتە! ❌', true);
+            for (let i = 0; i < 6; i++) {
+                const box = document.getElementById('rc' + i);
+                if (box) {
+                    box.style.borderColor = '#ff4444';
+                    setTimeout(() => { box.style.borderColor = '#ddd'; }, 2000);
+                }
+            }
+            return;
+        }
+        openLobby(false, code);
+    } catch (e) {
+        showToast('خەلەتی!', true);
     }
 }
 
 async function openLobby(isHost, code) {
-    detachAll();
+    showToast('چاڤەرێ بە...', false);
     gs.isHost = isHost;
     gs.roomCode = isHost ? genCode() : code;
     gs.isOnlineGame = true;
@@ -1671,96 +2079,18 @@ async function openLobby(isHost, code) {
             });
         });
         
-        if (gs.onlinePlayers.length > 0 && !gs.onlinePlayers.find(p => p.id === gs.hostPlayerId)) {
-            const newHost = gs.onlinePlayers[0];
-            gs.hostPlayerId = newHost.id;
-            if (newHost.id === myPlayerId) {
-                gs.isHost = true;
-                document.getElementById('host-controls').classList.remove('hidden');
-                firebase.database().ref(`rooms/${gs.roomCode}`).update({ hostId: newHost.id });
-                showToast('👑 تۆ بویتە هۆست!', false);
-            }
-        }
-        
         renderPlayers();
         updateReadyStatus();
-        if (gs.isHost) document.getElementById('host-controls').classList.remove('hidden');
     });
-    
-    firebase.database().ref(`${roomRef}/mode`).on('value', (snap) => {
-        if (snap.val()) {
-            gs.onlineMode = snap.val();
-            const btn1 = document.getElementById('omBtn1');
-            const btn2 = document.getElementById('omBtn2');
-            if (btn1) btn1.classList.toggle('selected', gs.onlineMode === 1);
-            if (btn2) btn2.classList.toggle('selected', gs.onlineMode === 2);
-        }
-    });
-    
-    firebase.database().ref(`${roomRef}/hostId`).on('value', (snap) => {
-        if (snap.exists()) {
-            gs.hostPlayerId = snap.val();
-            if (gs.hostPlayerId === myPlayerId) {
-                gs.isHost = true;
-                document.getElementById('host-controls').classList.remove('hidden');
-            }
-        }
-    });
-    
-    firebase.database().ref(`${roomRef}/status`).on('value', (snap) => {
-        if (snap.val() === 'waiting') {
-            clearInterval(voteTimerInterval);
-            myVoteChoice = null;
-            voteSubmitted = false;
-            gs.eliminatedPlayers = [];
-            gs.currentRound = 1;
-            gs.onlinePlayers.forEach(p => {
-                p.ready = false;
-                p.wantPlayAgain = false;
-            });
-            renderPlayers();
-            updateReadyStatus();
-            returnToLobbyAfterGame();
-        }
-        if (snap.val() === 'started') {
-            firebase.database().ref(`${roomRef}/gameData`).get().then(gSnap => {
-                if (!gSnap.exists()) return;
-                const gd = gSnap.val();
-                gs.gameMode = gd.mode;
-                gs.secretWord = gd.secretWord;
-                gs.differentWord = gd.differentWord || '';
-                const names = gd.playerNames;
-                currentPlayerCount = names.length;
-                gs.playerNames = [...names];
-                gs.players = names.map((name, i) => ({
-                    id: i + 1,
-                    name,
-                    isSpy: gd.mode === 1 ? gd.spyIndices.includes(i) : false,
-                    hasDifferentWord: gd.mode === 2 ? gd.spyIndices.includes(i) : false
-                }));
-                gs.spies = gd.spyIndices.map(i => i + 1);
-                gs.currentPlayerIndex = 0;
-                gs.gameOver = false;
-                gs.starterPlayer = null;
-                gs.myPlayerIndex = names.indexOf(gs.onlinePlayers.find(p => p.id === myPlayerId)?.name);
-                showPage('game-page');
-                listenGameState(gd);
-            });
-        }
-    });
-    
-    firebase.database().ref(`${roomRef}/chat`).on('child_added', (snap) => {
-        const msg = snap.val();
-        if (!msg) return;
-        const box = document.getElementById('chatBox');
-        if (!box) return;
-        const d = document.createElement('div');
-        d.className = msg.type === 'system' ? 'bubble system' : (msg.senderId === myPlayerId ? 'bubble me' : 'bubble other');
-        if (msg.type === 'system') d.textContent = msg.text;
-        else d.innerHTML = `<div class="bname">${msg.name}</div>${msg.text}`;
-        box.appendChild(d);
-        box.scrollTop = box.scrollHeight;
-    });
+}
+
+function formatRoomCodeDisplay(code) {
+    if (!code) return '------';
+    const clean = code.replace(/[^0-9]/g, '');
+    if (clean.length === 6) {
+        return clean.slice(0, 3) + '-' + clean.slice(3);
+    }
+    return code;
 }
 
 function renderPlayers() {
@@ -1811,11 +2141,6 @@ function renderPlayers() {
     }
 }
 
-function markReady() {
-    if (!gs.roomCode || !myPlayerId) return;
-    firebase.database().ref(`rooms/${gs.roomCode}/players/${myPlayerId}/ready`).set(true).catch(() => { });
-}
-
 function updateReadyStatus() {
     const total = gs.onlinePlayers.length;
     const readyN = gs.onlinePlayers.filter(p => !!p.ready).length;
@@ -1835,173 +2160,31 @@ function updateReadyStatus() {
     if (btn) btn.disabled = !allReady;
 }
 
-function setOnlineMode(mode) {
-    gs.onlineMode = mode;
+function markReady() {
+    if (!gs.roomCode || !myPlayerId) return;
+    firebase.database().ref(`rooms/${gs.roomCode}/players/${myPlayerId}/ready`).set(true).catch(() => { });
+}
+
+function copyRoomCode() {
+    const displayCode = formatRoomCodeDisplay(gs.roomCode);
+    navigator.clipboard.writeText(displayCode).then(() => {
+        const el = document.querySelector('.copy-hint');
+        el.textContent = '✅ هاتە کوپیکرن!';
+        setTimeout(() => { el.textContent = '📋 کۆپیکرن'; }, 2000);
+    }).catch(() => alert('کۆد: ' + displayCode));
+}
+
+function setOnlineMode(mode) { 
+    gs.onlineMode = mode; 
     firebase.database().ref(`rooms/${gs.roomCode}`).update({ mode });
 }
 
-async function startOnlineGame() {
-    const names = gs.onlinePlayers.map(p => p.name);
-    if (names.length < 3) {
-        showToast('پێویستە ب کێمی 3 یارییکەر بن! ❌', true);
-        return;
-    }
-    const mode = gs.onlineMode;
-    let secretWord, differentWord = '', spyIndices = [];
-    
-    if (mode === 1) {
-        let spyCount = 1;
-        if (names.length >= 6 && names.length <= 8) spyCount = 2;
-        if (names.length >= 9) spyCount = 3;
-        while (spyIndices.length < spyCount) {
-            const r = Math.floor(Math.random() * names.length);
-            if (!spyIndices.includes(r)) spyIndices.push(r);
-        }
-        secretWord = kurdishWords[Math.floor(Math.random() * kurdishWords.length)];
-    } else {
-        spyIndices = [Math.floor(Math.random() * names.length)];
-        const pair = wordPairs[Math.floor(Math.random() * wordPairs.length)];
-        secretWord = pair.normal;
-        differentWord = pair.different;
-    }
-    
-    await firebase.database().ref(`rooms/${gs.roomCode}`).update({
-        status: 'started',
-        gameData: {
-            mode,
-            secretWord,
-            differentWord,
-            spyIndices,
-            playerNames: names,
-            starterIndex: Math.floor(Math.random() * names.length),
-            playerAvatars: gs.onlinePlayers.map(p => p.avatarIdx ?? 0)
-        },
-        gameState: { turnIndex: 0, revealed: names.map(() => false), currentPhase: 'revealing' }
-    });
+function leaveRoom() { 
+    gs.roomCode = ''; 
+    gs.isOnlineGame = false;
+    showPage('home-page');
 }
 
-function listenGameState(gameData) {
-    firebase.database().ref(`rooms/${gs.roomCode}/gameState`).on('value', (snap) => {
-        if (snap.exists()) {
-            try { sessionStorage.setItem('sikhur_phase', snap.val().phase || 'lobby'); } catch (e) { }
-        }
-        if (!snap.exists()) return;
-        const state = snap.val();
-        const turnIndex = state.turnIndex ?? 0;
-        const revealedArr = state.revealed ?? [];
-        gameData._currentTurn = turnIndex;
-        if (turnIndex >= gameData.playerNames.length) {
-            showOnlineTurnScreen(gameData, gameData.playerNames.length, revealedArr);
-        } else {
-            showOnlineTurnScreen(gameData, turnIndex, revealedArr);
-        }
-    });
-}
-
-function showOnlineTurnScreen(gameData, turnIndex, revealedArr) {
-    const container = document.getElementById('card-container');
-    const progress = document.getElementById('game-progress');
-    const nextBtn = document.getElementById('next-player-btn');
-    const revealBtn = document.getElementById('reveal-btn');
-    const starterCont = document.getElementById('starter-container');
-
-    starterCont.classList.add('hidden');
-    nextBtn.classList.add('hidden');
-    revealBtn.classList.add('hidden');
-
-    const players = gameData.playerNames;
-    const totalPlayers = players.length;
-    const myIdx = gs.myPlayerIndex;
-    progress.textContent = `یارییکەرێ ${turnIndex + 1} / ${totalPlayers}`;
-
-    if (turnIndex >= totalPlayers) {
-        const starterName = players[gameData.starterIndex !== undefined ? gameData.starterIndex : 0];
-        progress.textContent = `${totalPlayers}/${totalPlayers} - تەمام`;
-        container.innerHTML = `<div class="card" style="cursor:default;background:#f0f7ff;border:2px solid #0066cc;"><div class="role-icon">🎯</div><div style="color:#0066cc;font-size:1.1rem;">هەمی کارت هاتتنە دیتن</div><div style="color:#666;margin-top:10px;font-size:0.95rem;">دەستپێکرنا مناقشێ... 🗣️</div></div>`;
-        starterCont.innerHTML = `<div class="starter-box"><div class="starter-message">🎤 دەستپێ بکە!</div><div class="starter-name">${starterName}</div><div>🧠 مێشکێ خۆ بکاربیینە، هزر بکە پاشی باخڤە!</div><div id="disc-countdown-box" style="margin-top:18px;"><div style="font-size:0.95rem;color:rgba(255,255,255,0.8);margin-bottom:6px;">مناقشە دەستپێدکات لە:</div><div id="disc-countdown-num" style="font-size:3.5rem;font-weight:bold;color:#ffcc00;line-height:1;">6</div></div></div>`;
-        starterCont.classList.remove('hidden');
-        revealBtn.classList.add('hidden');
-        let _cdSec = 6;
-        clearInterval(window._cdInterval);
-        window._cdInterval = setInterval(() => {
-            _cdSec--;
-            const el = document.getElementById('disc-countdown-num');
-            if (el) el.textContent = _cdSec;
-            if (_cdSec <= 0) {
-                clearInterval(window._cdInterval);
-                openDiscussionPage(gameData);
-            }
-        }, 1000);
-        return;
-    }
-
-    const activePlayerName = players[turnIndex];
-    if (myIdx === turnIndex) {
-        window._onlineRevealData = gameData;
-        window._onlineRevealIndex = turnIndex;
-        window._onlineRevealMyCard = function() {
-            onlineRevealMyCard(window._onlineRevealData, window._onlineRevealIndex);
-        };
-        const myAv2 = getAvatarForIndex((gameData.playerAvatars || [])[myIdx] ?? 0);
-        const cardEl = document.createElement('div');
-        cardEl.className = 'card-face-down';
-        cardEl.innerHTML = `<div style="width:70px;height:70px;border-radius:50%;background:${myAv2.c};display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 8px;border:3px solid #ffcc00;box-shadow:0 4px 16px rgba(0,0,0,0.3);">${myAv2.e}</div><div class="card-fd-name">${activePlayerName}</div><div class="card-fd-hint">👆 کلیک بکە بۆ بینینا رولێ خۆ</div>`;
-        cardEl.onclick = window._onlineRevealMyCard;
-        container.innerHTML = '';
-        container.appendChild(cardEl);
-    } else {
-        const wAv = getAvatarForIndex((gameData.playerAvatars || [])[turnIndex] ?? 0);
-        container.innerHTML = `<div class="waiting-turn-box">
-            <div style="width:64px;height:64px;border-radius:50%;background:${wAv.c};display:flex;align-items:center;justify-content:center;font-size:2.2rem;margin:0 auto 12px;border:3px solid #0066cc;">${wAv.e}</div>
-            <div class="wt-name">${activePlayerName}</div>
-            <div class="wt-msg">رولێ خۆ دبینیت... ⏳</div>
-        </div>`;
-    }
-}
-
-function onlineRevealMyCard(gameData, myIdx) {
-    const container = document.getElementById('card-container');
-    const nextBtn = document.getElementById('next-player-btn');
-    const isSpy = gameData.mode === 1 && gameData.spyIndices.includes(myIdx);
-    const hasDiffWord = gameData.mode === 2 && gameData.spyIndices.includes(myIdx);
-    const spyIndices = gameData.spyIndices || [];
-    const names = gameData.playerNames || [];
-    const multiSpy = spyIndices.length > 1;
-
-    if (gameData.mode === 1) {
-        if (isSpy) {
-            let coSpyHtml = '';
-            if (multiSpy) {
-                const coSpies = spyIndices.filter(i => i !== myIdx).map(i => names[i]).filter(Boolean);
-                if (coSpies.length > 0) {
-                    coSpyHtml = '<div style="margin-top:14px;background:rgba(0,0,0,0.18);border-radius:20px;padding:12px 16px;border:2px solid #ffcc00;"><div style="font-size:0.9rem;color:#ffcc00;margin-bottom:6px;">🤝 هەڤالێ تەیێ سیخوڕ:</div>' + coSpies.map(n => '<div style="font-size:1.4rem;font-weight:bold;color:#fff;">🕵️ ' + n + '</div>').join('') + '</div>';
-                }
-            }
-            container.innerHTML = '<div class="card-spy-revealed card-revealed"><div class="role-icon">🕵️</div><div style="color:#FF0000;font-size:2rem;margin-bottom:10px;">تۆ سیخوڕی!</div><div style="font-size:1rem;color:#000;">تۆ پەیڤێ نزانی، هەوڵبدە پەییڤێ بزانی</div><div style="margin-top:10px;color:#000;font-size:1rem;">خۆ دگەل مەدەنییا بگونجینە!</div>' + coSpyHtml + '</div>';
-        } else {
-            container.innerHTML = '<div class="card-civilian-revealed card-revealed"><div class="role-icon">👨‍🌾</div><div style="color:#000;font-size:2rem;margin-bottom:15px;">تۆ مەدەنی</div><div style="font-size:1.1rem;color:#000;">هەوڵبدە سیخوڕی بگری!</div><div class="word-display">' + gameData.secretWord + '</div></div>';
-        }
-    } else {
-        const word = hasDiffWord ? gameData.differentWord : gameData.secretWord;
-        container.innerHTML = '<div class="card-white-revealed card-revealed"><div class="word-display">' + word + '</div></div>';
-    }
-    
-    firebase.database().ref(`rooms/${gs.roomCode}/gameState`).update({ [`revealed/${myIdx}`]: true });
-    nextBtn.textContent = 'یارییکەرێ دیڤدا ⏭️';
-    nextBtn.classList.remove('hidden');
-    nextBtn.onclick = () => onlineNextTurn(gameData);
-}
-
-function onlineNextTurn(gameData) {
-    const nextIdx = (gameData._currentTurn || 0) + 1;
-    firebase.database().ref(`rooms/${gs.roomCode}/gameState`).update({ turnIndex: nextIdx });
-}
-
-function nextPlayerAction() {
-    if (!gs.isOnlineGame) nextPlayerOffline();
-}
-
-// Offline game functions
 function startOfflineSetup(mode) {
     gs.gameMode = mode;
     gs.isOnlineGame = false;
@@ -2076,607 +2259,7 @@ function startNewGame(players) {
     showNextCard();
 }
 
-function selectStarterPlayer() {
-    const r = Math.floor(Math.random() * gs.players.length);
-    gs.starterPlayer = gs.players[r] || { name: "یاریکەر" };
-    return gs.starterPlayer;
-}
-
-function revealOfflineCard(playerId) {
-    const player = gs.players.find(p => p.id === playerId);
-    const container = document.getElementById('card-container');
-    const nextBtn = document.getElementById('next-player-btn');
-    if (!player) return;
-    
-    if (gs.gameMode === 1) {
-        if (player.isSpy) {
-            const allSpies = gs.players.filter(p => p.isSpy);
-            let coHtml = '';
-            if (allSpies.length > 1) {
-                const coSpies = allSpies.filter(p => p.id !== playerId);
-                if (coSpies.length > 0) {
-                    coHtml = '<div style="margin-top:14px;background:rgba(0,0,0,0.18);border-radius:20px;padding:12px 16px;border:2px solid #ffcc00;"><div style="font-size:0.9rem;color:#ffcc00;margin-bottom:6px;">🤝 هەڤالێ تەیێ سیخور:</div>' + coSpies.map(s => '<div style="font-size:1.4rem;font-weight:bold;color:#fff;">🕵️ ' + s.name + '</div>').join('') + '</div>';
-                }
-            }
-            container.innerHTML = '<div class="card-spy-revealed card-revealed"><div class="role-icon">🕵️</div><div style="color:#FF0000;font-size:2rem;margin-bottom:12px;">تۆ سیخوڕی!</div><div style="font-size:1rem;color:#000;">تۆ پەیڤێ نزانی، هەوڵبدە پەییڤێ بزانی</div><div style="margin-top:10px;color:#000;font-size:1rem;">خۆ دگەل مەدەنییا بگونجینە!</div>' + coHtml + '</div>';
-        } else {
-            container.innerHTML = '<div class="card-civilian-revealed card-revealed"><div class="role-icon">👨‍🌾</div><div style="color:#000;font-size:2rem;margin-bottom:12px;">تۆ مەدەنی</div><div style="font-size:1rem;color:#000;">هەوڵبدە سیخوڕی بگری!</div><div class="word-display">' + gs.secretWord + '</div></div>';
-        }
-    } else {
-        const word = player.hasDifferentWord ? gs.differentWord : gs.secretWord;
-        container.innerHTML = '<div class="card-white-revealed card-revealed"><div class="word-display">' + word + '</div></div>';
-    }
-    nextBtn.classList.remove('hidden');
-}
-
-function showNextCard() {
-    const container = document.getElementById('card-container');
-    const progress = document.getElementById('game-progress');
-    const nextBtn = document.getElementById('next-player-btn');
-    const revealBtn = document.getElementById('reveal-btn');
-    const starterCont = document.getElementById('starter-container');
-    const current = gs.players[gs.currentPlayerIndex];
-
-    if (!current) {
-        const starter = selectStarterPlayer();
-        progress.textContent = `${gs.players.length}/${gs.players.length} - تەمام`;
-        container.innerHTML = `<div class="card" style="cursor:default;background:#f0f7ff;border:2px solid #0066cc;"><div class="role-icon">🎯</div><div style="color:#0066cc;font-size:1.1rem;">هەمی کارت هاتتنە دیتن</div></div>`;
-        starterCont.innerHTML = `<div class="starter-box"><div class="starter-message">🎤 دەستپێ بکە!</div><div class="starter-name">${starter.name}</div><div>🧠 مێشکێ خۆ بکاربیینە، هزر بکە پاشی باخڤە!</div><div style="margin-top:18px;"><div style="font-size:0.95rem;color:rgba(255,255,255,0.8);margin-bottom:6px;">ئاشکراکرن دەستپێدکات لە:</div><div id="disc-countdown-num" style="font-size:3.5rem;font-weight:bold;color:#ffcc00;line-height:1;">6</div></div></div>`;
-        starterCont.classList.remove('hidden');
-        nextBtn.classList.add('hidden');
-        revealBtn.classList.add('hidden');
-        
-        let _cdSec2 = 6;
-        clearInterval(window._cdInterval);
-        window._cdInterval = setInterval(() => {
-            _cdSec2--;
-            const el = document.getElementById('disc-countdown-num');
-            if (el) el.textContent = _cdSec2;
-            if (_cdSec2 <= 0) {
-                clearInterval(window._cdInterval);
-                goToRevealPage();
-            }
-        }, 1000);
-        return;
-    }
-    
-    starterCont.classList.add('hidden');
-    progress.textContent = `یارییکەرێ ${gs.currentPlayerIndex + 1} / ${gs.players.length}`;
-    const cardEl = document.createElement('div');
-    cardEl.className = 'card-face-down';
-    const offAv = getAvatarForIndex(Math.abs(current.id * 7 + 3) % AVATARS.length);
-    cardEl.innerHTML = `<div style="width:70px;height:70px;border-radius:50%;background:${offAv.c};display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 8px;border:3px solid #ffcc00;box-shadow:0 4px 16px rgba(0,0,0,0.3);">${offAv.e}</div><div class="card-fd-name">${current.name}</div><div class="card-fd-hint">👆 کلیک بکە بۆ بینینا رولێ خۆ</div>`;
-    const capturedId = current.id;
-    cardEl.onclick = function() { revealOfflineCard(capturedId); };
-    container.innerHTML = '';
-    container.appendChild(cardEl);
-    nextBtn.classList.add('hidden');
-    revealBtn.classList.add('hidden');
-}
-
-function nextPlayerOffline() {
-    gs.currentPlayerIndex++;
-    showNextCard();
-}
-
-function goToRevealPage() {
-    showPage('reveal-page');
-    const container = document.getElementById('reveal-container');
-    
-    if (gs.gameMode === 1) {
-        const spies = gs.players.filter(p => p.isSpy);
-        if (spies.length === 1) {
-            container.innerHTML = `<div class="reveal-card"><div class="role-icon">🕵️</div><div style="color:#ffcc00;">سیخوڕ =</div><div class="person-name">${spies[0].name}</div><div style="background:#333;padding:15px;border-radius:30px;margin-top:20px;border:1px solid #ffcc00;"><div style="font-size:1.1rem;color:#ffcc00;">پەییڤا مەدەنییا =</div><div style="font-size:2rem;font-weight:500;margin-top:5px;color:white;">${gs.secretWord}</div></div></div>`;
-        } else {
-            let sh = '<div style="margin:15px 0;">';
-            spies.forEach(s => {
-                sh += `<div style="font-size:1.8rem;margin:10px 0;background:#333;padding:12px;border-radius:30px;border:1px solid #ffcc00;color:#ffcc00;">${s.name}</div>`;
-            });
-            sh += '</div>';
-            container.innerHTML = `<div class="reveal-card"><div class="role-icon">🕵️🕵️</div><div style="color:#ffcc00;">سیخوڕ ئەڤەنە!</div>${sh}<div style="background:#333;padding:15px;border-radius:30px;margin-top:20px;border:1px solid #ffcc00;"><div style="font-size:1.1rem;color:#ffcc00;">پەیڤاتە:</div><div style="font-size:2rem;font-weight:500;margin-top:5px;color:white;">${gs.secretWord}</div></div></div>`;
-        }
-    } else {
-        const diff = gs.players.find(p => p.hasDifferentWord);
-        container.innerHTML = `<div class="reveal-card"><div class="role-icon">🎭</div><div style="color:#ffcc00;">کەسێ جیاواز ئەڤەیە!</div><div class="person-name">${diff.name}</div><div style="background:#333;padding:15px;border-radius:30px;margin-top:20px;border:1px solid #ffcc00;"><div style="font-size:1.1rem;color:#ffcc00;">پەییڤا ئاسایی:</div><div style="font-size:1.8rem;font-weight:500;color:white;">${gs.secretWord}</div><div style="font-size:1.1rem;color:#ffcc00;margin-top:15px;">پەییڤا جیاواز:</div><div style="font-size:1.8rem;font-weight:500;color:#ff6b6b;">${gs.differentWord}</div></div></div>`;
-    }
-}
-
-function showFinalResults() {
-    showPage('results-page');
-    const container = document.getElementById('results-container');
-    let html = '<div class="results-container">';
-    
-    if (gs.gameMode === 1) {
-        gs.players.forEach(p => {
-            html += `<div class="player-result"><span>${p.name}</span>${p.isSpy ? '<span class="spy-badge">سیخوڕ</span>' : '<span class="civilian-badge">مەدەنی</span>'}</div>`;
-        });
-        html += '</div>';
-        container.innerHTML = html + `<div class="word-box"><div class="word-value">${gs.secretWord}</div></div>`;
-    } else {
-        gs.players.forEach(p => {
-            html += `<div class="player-result"><span>${p.name}</span>${p.hasDifferentWord ? '<span class="different-badge">جیاواز</span>' : '<span class="normal-badge">ئاسایی</span>'}</div>`;
-        });
-        html += '</div>';
-        container.innerHTML = html + `<div class="word-box"><div class="word-value">${gs.secretWord}</div></div><div class="word-box"><div class="word-value-different">${gs.differentWord}</div></div>`;
-    }
-}
-
-function playAgain() {
-    startNewGame(gs.playerNames);
-}
-
-// Discussion functions
-function openDiscussionPage(gameData) {
-    showPage('discussion-page');
-    const starterName = gameData.playerNames[gameData.starterIndex ?? 0] || '—';
-    document.getElementById('disc-starter-name').textContent = starterName;
-    document.getElementById('discChatBox').innerHTML = '';
-    
-    const voteBtn = document.getElementById('disc-vote-btn');
-    const waitMsg = document.getElementById('disc-wait-msg');
-    if (gs.isHost) {
-        voteBtn.classList.remove('hidden');
-        waitMsg.classList.add('hidden');
-    } else {
-        voteBtn.classList.add('hidden');
-        waitMsg.classList.remove('hidden');
-    }
-    
-    firebase.database().ref(`rooms/${gs.roomCode}/discussionChat`).off();
-    firebase.database().ref(`rooms/${gs.roomCode}/discussionChat`).on('child_added', (snap) => {
-        const msg = snap.val();
-        const box = document.getElementById('discChatBox');
-        if (!box) return;
-        const d = document.createElement('div');
-        d.className = 'dbubble ' + (msg.senderId === myPlayerId ? 'me' : 'other');
-        d.innerHTML = '<div class="bname">' + msg.name + '</div>' + msg.text;
-        box.appendChild(d);
-        box.scrollTop = box.scrollHeight;
-    });
-    
-    firebase.database().ref(`rooms/${gs.roomCode}/discussionDone`).on('value', (snap) => {
-        if (snap.val() === true) {
-            startVotingPhase(gameData);
-        }
-    });
-}
-
-function sendDiscMsg() {
-    const inp = document.getElementById('discChatInput');
-    const txt = inp.value.trim();
-    if (!txt || !gs.roomCode) return;
-    inp.value = '';
-    firebase.database().ref(`rooms/${gs.roomCode}/discussionChat`).push({
-        senderId: myPlayerId,
-        name: gs.myNickname,
-        text: txt,
-        ts: Date.now()
-    });
-}
-
-function hostStartVoting() {
-    if (!gs.isHost) return;
-    firebase.database().ref(`rooms/${gs.roomCode}/discussionDone`).set(true);
-}
-
-// Voting functions
-function startVotingPhase(gameData) {
-    voteGameData = gameData;
-    myVoteChoice = null;
-    voteSubmitted = false;
-    showPage('voting-page');
-    
-    document.getElementById('voteConfirmBtn').disabled = true;
-    document.getElementById('voteTimerDisplay').textContent = '30';
-    document.getElementById('voteTimerDisplay').className = 'vote-timer-value';
-    document.getElementById('voteStatusMsg').textContent = 'دەنگێ خۆ بدە!';
-    
-    const seeBtn = document.getElementById('seeResultsBtn');
-    if (gs.isHost) {
-        seeBtn.classList.remove('hidden');
-        seeBtn.disabled = true;
-    } else {
-        seeBtn.classList.add('hidden');
-    }
-    
-    if (gs.isHost) {
-        firebase.database().ref(`rooms/${gs.roomCode}/votes`).set(null);
-    }
-    
-    renderVoteList(gameData, {});
-    
-    firebase.database().ref(`rooms/${gs.roomCode}/votes`).off();
-    firebase.database().ref(`rooms/${gs.roomCode}/votes`).on('value', (snap) => {
-        const votes = snap.val() || {};
-        renderVoteList(gameData, votes);
-        checkVotingComplete(gameData, votes);
-    });
-    
-    firebase.database().ref(`rooms/${gs.roomCode}/voteResult`).off();
-    firebase.database().ref(`rooms/${gs.roomCode}/voteResult`).on('value', (snap) => {
-        if (!snap.exists() || !snap.val()) return;
-        showOnlineVoteResults(snap.val());
-    });
-    
-    let timeLeft = 30;
-    clearInterval(voteTimerInterval);
-    voteTimerInterval = setInterval(() => {
-        timeLeft--;
-        const el = document.getElementById('voteTimerDisplay');
-        if (el) {
-            el.textContent = timeLeft;
-            if (timeLeft <= 10) el.className = 'vote-timer-value urgent';
-        }
-        if (timeLeft <= 0) {
-            clearInterval(voteTimerInterval);
-            const te = document.getElementById('voteTimerDisplay');
-            if (te) {
-                te.textContent = '⏰';
-                te.className = 'vote-timer-value urgent';
-            }
-            voteSubmitted = true;
-            const cb = document.getElementById('voteConfirmBtn');
-            if (cb) cb.disabled = true;
-            document.querySelectorAll('.vote-row').forEach(r => {
-                r.style.pointerEvents = 'none';
-                r.style.opacity = '0.6';
-            });
-            if (gs.isHost) {
-                const rb = document.getElementById('seeResultsBtn');
-                if (rb) rb.disabled = false;
-            } else {
-                const vs = document.getElementById('voteStatusMsg');
-                if (vs) vs.textContent = '⏰ دەم خلاس بو!';
-            }
-        }
-    }, 1000);
-}
-
-function renderVoteList(gameData, votes) {
-    const list = document.getElementById('voteList');
-    if (!list) return;
-    const names = gameData.playerNames;
-    const eliminated = gameData._eliminatedPlayers || gs.eliminatedPlayers || [];
-    const tally = {};
-    Object.values(votes).forEach(v => { tally[v] = (tally[v] || 0) + 1; });
-    
-    list.innerHTML = '';
-    names.forEach((name, idx) => {
-        if (eliminated.includes(idx)) return;
-        const isSelected = myVoteChoice === idx;
-        const div = document.createElement('div');
-        const vAv = getAvatarForIndex((gameData.playerAvatars || [])[idx] ?? idx);
-        div.className = 'vote-row' + (isSelected ? ' selected' : '');
-        div.innerHTML = `<div class="avatar-circle sm" style="background:${vAv.c};flex-shrink:0;">${vAv.e}</div><span class="vote-name">${name}</span>`;
-        if (!voteSubmitted) {
-            div.onclick = () => selectVoteCandidate(idx, gameData, votes);
-        }
-        list.appendChild(div);
-    });
-}
-
-function selectVoteCandidate(idx, gameData, votes) {
-    if (voteSubmitted) return;
-    myVoteChoice = idx;
-    document.getElementById('voteConfirmBtn').disabled = false;
-    renderVoteList(gameData, votes);
-    document.getElementById('voteStatusMsg').textContent = `✅ ${gameData.playerNames[idx]} — هەلبژێرە`;
-}
-
-function submitVote() {
-    if (myVoteChoice === null || voteSubmitted) return;
-    voteSubmitted = true;
-    document.getElementById('voteConfirmBtn').disabled = true;
-    document.getElementById('voteStatusMsg').textContent = '✅ دەنگێ تە هاتە دان!';
-    firebase.database().ref(`rooms/${gs.roomCode}/votes`).update({ [myPlayerId]: myVoteChoice });
-}
-
-function checkVotingComplete(gameData, votes) {
-    const activePlayers = gameData.playerNames.length - (gs.eliminatedPlayers || []).length;
-    const totalVotes = Object.keys(votes).length;
-    const voteStatus = document.getElementById('voteStatusMsg');
-    
-    if (voteStatus) {
-        if (voteSubmitted) {
-            voteStatus.textContent = `✅ دەنگێ تە هاتە تومارکرن! (${totalVotes}/${activePlayers})`;
-        } else {
-            voteStatus.textContent = `${totalVotes}/${activePlayers} دەنگێن دای`;
-        }
-    }
-    
-    if (totalVotes >= activePlayers && gs.isHost) {
-        clearInterval(voteTimerInterval);
-        const te = document.getElementById('voteTimerDisplay');
-        if (te) {
-            te.textContent = '✓';
-            te.className = 'vote-timer-value';
-        }
-        const seeBtn = document.getElementById('seeResultsBtn');
-        if (seeBtn) seeBtn.disabled = false;
-    }
-}
-
-function openOnlineResults() {
-    if (!gs.isHost) return;
-    clearInterval(voteTimerInterval);
-    
-    firebase.database().ref(`rooms/${gs.roomCode}/votes`).get().then((snap) => {
-        const votes = snap.val() || {};
-        const gameData = voteGameData;
-        const names = gameData.playerNames;
-        const spyIndices = gameData.spyIndices;
-        const eliminated = gameData._eliminatedPlayers || gs.eliminatedPlayers || [];
-        gs.eliminatedPlayers = eliminated;
-        
-        const tally = {};
-        Object.values(votes).forEach(v => { tally[v] = (tally[v] || 0) + 1; });
-        
-        let maxVotes = 0, chosenIdx = -1;
-        Object.entries(tally).forEach(([idx, cnt]) => {
-            if (!eliminated.includes(parseInt(idx)) && cnt > maxVotes) {
-                maxVotes = cnt;
-                chosenIdx = parseInt(idx);
-            }
-        });
-        
-        const chosenName = chosenIdx >= 0 ? names[chosenIdx] : '—';
-        const chosenIsSpy = spyIndices.includes(chosenIdx);
-        const newEliminated = [...eliminated, chosenIdx];
-        gs.eliminatedPlayers = newEliminated;
-        
-        let outcome = '';
-        if (chosenIsSpy) {
-            gs.spiesEliminated = (gs.spiesEliminated || 0) + 1;
-            const rem = spyIndices.filter(i => !newEliminated.includes(i)).length;
-            outcome = rem === 0 ? 'civils_win' : 'spy_out_continue';
-        } else {
-            outcome = 'civil_out';
-        }
-        
-        const spyNames = spyIndices.map(i => names[i]).join(', ');
-        const tally2 = {};
-        Object.values(votes).forEach(v => { tally2[v] = (tally2[v] || 0) + 1; });
-        
-        firebase.database().ref(`rooms/${gs.roomCode}/voteResult`).set({
-            chosenIdx,
-            chosenName,
-            chosenIsSpy,
-            outcome,
-            spyNames,
-            maxVotes,
-            tally: tally2,
-            eliminatedPlayers: newEliminated,
-            playerNames: names,
-            spyIndices,
-            secretWord: gameData.secretWord,
-            differentWord: gameData.differentWord || '',
-            mode: gameData.mode,
-            playerAvatars: gameData.playerAvatars || []
-        });
-    });
-}
-
-function showOnlineVoteResults(result) {
-    const { chosenIdx, chosenName, chosenIsSpy, outcome, spyNames, maxVotes, tally, eliminatedPlayers, playerNames, spyIndices, secretWord, differentWord, mode } = result;
-    gs.eliminatedPlayers = eliminatedPlayers || [];
-    if (voteGameData) voteGameData._eliminatedPlayers = gs.eliminatedPlayers;
-
-    showPage('online-results-page');
-    const container = document.getElementById('online-results-container');
-    let html = '';
-
-    if (outcome === 'civils_win') {
-        html = `<div class="result-win-card"><div class="result-big-icon">🎉</div><div class="result-big-title">مەدەنیا سیخوڕ گرت!</div><div style="font-size:1.1rem;color:#333;margin:8px 0;">هەمی سیخوڕ هاتنە دیتن! 🏆</div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:10px;"><div style="font-size:0.9rem;color:#555;">هەلبژارتی</div><div style="font-size:1.8rem;font-weight:bold;color:#00994d;">${chosenName} 🕵️</div></div></div>`;
-        html += '<div class="results-container">';
-        playerNames.forEach((name, idx) => {
-            const cnt = tally[idx] || 0;
-            const isSpy = spyIndices.includes(idx);
-            const isElim = eliminatedPlayers.includes(idx);
-            const rAv = getAvatarForIndex((result.playerAvatars || [])[idx] ?? idx);
-            html += `<div class="player-result" style="${isElim ? 'opacity:0.5;' : ''}"><div class="avatar-circle sm" style="background:${rAv.c};flex-shrink:0;">${rAv.e}</div><span>${isElim ? '❌ ' : ''}${name}</span><span style="display:flex;align-items:center;gap:8px;"><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span>${isSpy ? '<span class="spy-badge">سیخوڕ</span>' : '<span class="civilian-badge">مەدەنی</span>'}</span></div>`;
-        });
-        html += `</div><div class="word-box"><div class="word-value">${secretWord}</div></div>`;
-    } else if (outcome === 'spy_out_continue') {
-        html = `<div class="result-win-card" style="border-color:#ffcc00;"><div class="result-big-icon">✅</div><div class="result-big-title" style="color:#cc8800;">سیخوڕەک هاتە دەرکەفتن!</div><div style="font-size:1.1rem;color:#333;margin:8px 0;">یارییا بەردەوامە — سیخوڕ هێشتا مایە! ⚠️</div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:10px;"><div style="font-size:0.9rem;color:#555;">دەرکەفتی</div><div style="font-size:1.8rem;font-weight:bold;color:#cc8800;">${chosenName} 🕵️</div></div><div style="font-size:0.9rem;color:#666;margin-top:8px;">دەنگدانەکا دی پێویستە!</div></div>`;
-        html += '<div class="results-container">';
-        playerNames.forEach((name, idx) => {
-            const cnt = tally[idx] || 0;
-            const isElim = eliminatedPlayers.includes(idx);
-            html += `<div class="player-result" style="${isElim ? 'opacity:0.5;' : ''}"><span>${isElim ? '❌ ' : ''}${name}</span><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span></div>`;
-        });
-        html += '</div>';
-        if (gs.isHost) {
-            html += `<button class="btn btn-blue" onclick="startNextVotingRound()" style="margin-top:10px;">🗳️ دەنگدانەکا دی دەستپێبکە</button>`;
-        } else {
-            html += `<div style="text-align:center;padding:16px;color:#666;background:#f5f9ff;border-radius:30px;margin-top:10px;">⏳ چاڤەریێ هۆستێ بکەن بو دەنگدانەکا دی...</div>`;
-        }
-    } else {
-        html = `<div class="result-lose-card"><div class="result-big-icon">💀</div><div class="result-big-title">مەدەنی هاتە دەرکەفتن!</div><div style="font-size:1.1rem;color:#333;margin:8px 0;">سیخوڕ هێشتا مایە! 🕵️</div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:10px;"><div style="font-size:0.9rem;color:#555;">هەلبژارتی (مەدەنی بوو)</div><div style="font-size:1.8rem;font-weight:bold;color:#cc0000;">${chosenName}</div></div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:8px;"><div style="font-size:0.9rem;color:#555;">سیخوڕ ئەڤانە : </div><div style="font-size:1.8rem;font-weight:bold;color:#cc0000;">${spyNames}</div></div></div>`;
-        html += '<div class="results-container">';
-        playerNames.forEach((name, idx) => {
-            const cnt = tally[idx] || 0;
-            const isSpy = spyIndices.includes(idx);
-            const isElim = eliminatedPlayers.includes(idx);
-            const rAv = getAvatarForIndex((result.playerAvatars || [])[idx] ?? idx);
-            html += `<div class="player-result" style="${isElim ? 'opacity:0.5;' : ''}"><div class="avatar-circle sm" style="background:${rAv.c};flex-shrink:0;">${rAv.e}</div><span>${isElim ? '❌ ' : ''}${name}</span><span style="display:flex;align-items:center;gap:8px;"><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span>${isSpy ? '<span class="spy-badge">سیخوڕ</span>' : '<span class="civilian-badge">مەدەنی</span>'}</span></div>`;
-        });
-        html += `</div><div class="word-box"><div class="word-value">${secretWord}</div></div>`;
-    }
-
-    container.innerHTML = html;
-}
-
-function startNextVotingRound() {
-    if (!gs.isHost) return;
-    firebase.database().ref(`rooms/${gs.roomCode}/voteResult`).set(null).then(() => {
-        gs.currentRound = (gs.currentRound || 1) + 1;
-        if (voteGameData) voteGameData._eliminatedPlayers = gs.eliminatedPlayers;
-        firebase.database().ref(`rooms/${gs.roomCode}`).update({ votingRound: gs.currentRound });
-        startVotingPhase(voteGameData);
-    });
-}
-
-async function playAgainOnline() {
-    clearInterval(voteTimerInterval);
-    gs.eliminatedPlayers = [];
-    gs.currentRound = 1;
-    gs.spiesEliminated = 0;
-    
-    try { sessionStorage.removeItem('sikhur_room'); } catch (e) { }
-    if (!gs.roomCode) return;
-    
-    await firebase.database().ref(`rooms/${gs.roomCode}/players/${myPlayerId}`).update({ wantPlayAgain: true, ready: false });
-    
-    const snap = await firebase.database().ref(`rooms/${gs.roomCode}/players`).get();
-    let total = 0, wantCount = 0;
-    snap.forEach(c => {
-        total++;
-        if (c.val().wantPlayAgain) wantCount++;
-    });
-    
-    if (wantCount >= total && gs.isHost) {
-        try {
-            await firebase.database().ref(`rooms/${gs.roomCode}`).update({
-                status: 'waiting',
-                gameData: null,
-                gameState: null,
-                votes: null,
-                voteResult: null,
-                votingRound: null,
-                discussionDone: null,
-                discussionChat: null
-            });
-            const snapP = await firebase.database().ref(`rooms/${gs.roomCode}/players`).get();
-            if (snapP.exists()) {
-                const updates = {};
-                snapP.forEach(child => {
-                    updates[`${child.key}/ready`] = false;
-                    updates[`${child.key}/wantPlayAgain`] = false;
-                });
-                await firebase.database().ref(`rooms/${gs.roomCode}/players`).update(updates);
-            }
-        } catch (e) { }
-    }
-}
-
-function returnToLobbyAfterGame() {
-    document.getElementById('lobby-title').textContent = '🏠 ژوورا یاریێ';
-    document.getElementById('room-code-display').textContent = formatRoomCodeDisplay(gs.roomCode);
-    document.getElementById('host-controls').classList.toggle('hidden', !gs.isHost);
-    document.getElementById('chatBox').innerHTML = '';
-    showPage('online-lobby-page');
-}
-
-function copyRoomCode() {
-    const displayCode = formatRoomCodeDisplay(gs.roomCode);
-    navigator.clipboard.writeText(displayCode).then(() => {
-        const el = document.querySelector('.copy-hint');
-        el.textContent = '✅ هاتە کوپیکرن!';
-        setTimeout(() => { el.textContent = '📋 کۆپیکرن'; }, 2000);
-    }).catch(() => alert('کۆد: ' + displayCode));
-}
-
-async function leaveRoom() {
-    const confirmed = await showConfirmModal(
-        'دەرکەفتن 🚪',
-        'ئەرێ تویێ تەئکیدی تە دڤێت ژ ژوورێ بدەرکەڤی؟',
-        'بەلێ، دەرکەفتن',
-        'نەخێر، بمێنەوە'
-    );
-    if (!confirmed) return;
-    
-    detachAll();
-    try {
-        await firebase.database().ref(`rooms/${gs.roomCode}/players/${myPlayerId}`).remove();
-        if (gs.isHost) await firebase.database().ref(`rooms/${gs.roomCode}`).remove();
-    } catch (e) { }
-    
-    gs.roomCode = '';
-    gs.isOnlineGame = false;
-    try { sessionStorage.removeItem('sikhur_room'); } catch (e) { }
-    showPage('home-page');
-}
-
-function showConfirmModal(title, message, confirmText, cancelText) {
-    return new Promise(resolve => {
-        const old = document.getElementById('confirmModal');
-        if (old) old.remove();
-        
-        const modal = document.createElement('div');
-        modal.id = 'confirmModal';
-        modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
-        modal.innerHTML = `
-            <div style="background:white;border-radius:32px;padding:28px 24px;max-width:340px;width:100%;text-align:center;border:3px solid #ffcc00;box-shadow:0 20px 60px rgba(0,0,0,0.4);animation:modalPop 0.25s ease;">
-                <div style="font-size:2.5rem;margin-bottom:10px;">🚪</div>
-                <div style="font-size:1.3rem;font-weight:bold;color:#1a1a2e;margin-bottom:10px;">${title}</div>
-                <div style="font-size:1rem;color:#555;margin-bottom:22px;line-height:1.5;">${message}</div>
-                <div style="display:flex;gap:10px;">
-                    <button id="confirmNo" style="flex:1;padding:14px;border-radius:30px;border:2px solid #ccc;background:white;color:#555;font-size:1rem;cursor:pointer;font-family:inherit;">${cancelText}</button>
-                    <button id="confirmYes" style="flex:1;padding:14px;border-radius:30px;border:none;background:linear-gradient(135deg,#ff4444,#cc0000);color:white;font-size:1rem;cursor:pointer;font-family:inherit;box-shadow:0 4px 0 #990000;">${confirmText}</button>
-                </div>
-            </div>`;
-        
-        document.body.appendChild(modal);
-        modal.querySelector('#confirmYes').onclick = () => { modal.remove(); resolve(true); };
-        modal.querySelector('#confirmNo').onclick = () => { modal.remove(); resolve(false); };
-        modal.onclick = e => { if (e.target === modal) { modal.remove(); resolve(false); } };
-    });
-}
-
-function sendMsg() {
-    const inp = document.getElementById('chatInput');
-    const txt = inp.value.trim();
-    if (!txt || !gs.roomCode) return;
-    inp.value = '';
-    firebase.database().ref(`rooms/${gs.roomCode}/chat`).push({
-        senderId: myPlayerId,
-        name: gs.myNickname,
-        text: txt,
-        type: 'chat',
-        ts: Date.now()
-    });
-}
-
-function detachAll() {
-    if (gs.roomCode) {
-        firebase.database().ref(`rooms/${gs.roomCode}`).off();
-    }
-}
-
-// How to play functions
-function showHowToPlayOptions() {
-    document.getElementById('how-to-play-modal').classList.remove('hidden');
-}
-
-function closeHowToPlayOptions() {
-    document.getElementById('how-to-play-modal').classList.add('hidden');
-}
-
-function showHowToPlayInstructions(mode) {
-    closeHowToPlayOptions();
-    const title = document.getElementById('instructions-title');
-    const text = document.getElementById('instructions-text');
-    
-    if (mode === 1) {
-        title.textContent = 'یارییا سیخوڕی';
-        title.style.color = '#0066cc';
-        text.innerHTML = `<strong>🎯 ئارمانج:</strong> سیخوڕی بگرن!<br><strong>📋 چەوا دێ یاریێ کەی؟:</strong><br>- سیخوڕ پەیڤێ نزانیت، لێ دێ هەولدەت ل تشتێن مەدەنیا پەیڤێ بزانیت.<br>- نابیت پەیڤ بخو بهێتە گوتن لێ تشتێن ب پەیڤێ ڤە گرێدایی و نزیک درستن.<br>- ب گشتی راوند (فەرە) بدلێ هنگو نە، و هەر فەرێ تە ئێک کەلیمە یاهەی نە زێدەتر!!<br>- نابیت مناقشە بهێتە کرن، دناڤ راوندا (فەر)ا دا.!`;
-    } else {
-        title.textContent = 'یارییا پەییڤێن جیاواز 🎭';
-        title.style.color = '#cc0000';
-        text.innerHTML = `<strong>🎯 ئارمانج:</strong> کەسێ جیاواز بگرن!<br><strong>📋 چەوا دێ یاریێ کەی؟:</strong><br>- بتنێ ئێک نەفەر پەیڤا جیاواز یا هەی کو ئەوژی نزانیت ئەو یێ جیاوازە.<br>- نموونە وەک [تەیارە، عەلیکوپتەر] گەلەک تشتا ڤە وەکی ئێکن!<br>- ب گشتی راوند (فەرە) بدلێ هنگو نە، و هەر فەرێ تە ئێک کەلیمە یاهەی نە زێدەتر!!<br>- نابیت مناقشە بهێتە کرن، دناڤ راوندا (فەر)ا دا.!`;
-    }
-    
-    document.getElementById('how-to-play-instructions-modal').classList.remove('hidden');
-}
-
-function closeHowToPlayInstructions() {
-    document.getElementById('how-to-play-instructions-modal').classList.add('hidden');
-}
-
-// Leaderboard functions
-let _leaderboardFrom = "home-page";
-
+// Leaderboard function
 async function openLeaderboard(from) {
     _leaderboardFrom = from || "home-page";
     showPage('leaderboard-page');
@@ -2723,19 +2306,58 @@ async function openLeaderboard(from) {
     }
 }
 
+let _leaderboardFrom = "home-page";
 function goBackFromLeaderboard() {
     showPage(_leaderboardFrom || 'home-page');
 }
 
-function goBackToHome() {
-    showPage('home-page');
+// How to play functions
+function showHowToPlayOptions() {
+    document.getElementById('how-to-play-modal').classList.remove('hidden');
 }
 
-function goToHomePage() {
-    showPage('home-page');
+function closeHowToPlayOptions() {
+    document.getElementById('how-to-play-modal').classList.add('hidden');
 }
 
-// Make functions global
+function showHowToPlayInstructions(mode) {
+    closeHowToPlayOptions();
+    const title = document.getElementById('instructions-title');
+    const text = document.getElementById('instructions-text');
+    
+    if (mode === 1) {
+        title.textContent = 'یارییا سیخوڕی';
+        title.style.color = '#0066cc';
+        text.innerHTML = `<strong>🎯 ئارمانج:</strong> سیخوڕی بگرن!<br><strong>📋 چەوا دێ یاریێ کەی؟:</strong><br>- سیخوڕ پەیڤێ نزانیت، لێ دێ هەولدەت ل تشتێن مەدەنیا پەیڤێ بزانیت.<br>- نابیت پەیڤ بخو بهێتە گوتن لێ تشتێن ب پەیڤێ ڤە گرێدایی و نزیک درستن.<br>- ب گشتی راوند (فەرە) بدلێ هنگو نە، و هەر فەرێ تە ئێک کەلیمە یاهەی نە زێدەتر!!<br>- نابیت مناقشە بهێتە کرن، دناڤ راوندا (فەر)ا دا.!`;
+    } else {
+        title.textContent = 'یارییا پەییڤێن جیاواز 🎭';
+        title.style.color = '#cc0000';
+        text.innerHTML = `<strong>🎯 ئارمانج:</strong> کەسێ جیاواز بگرن!<br><strong>📋 چەوا دێ یاریێ کەی؟:</strong><br>- بتنێ ئێک نەفەر پەیڤا جیاواز یا هەی کو ئەوژی نزانیت ئەو یێ جیاوازە.<br>- نموونە وەک [تەیارە، عەلیکوپتەر] گەلەک تشتا ڤە وەکی ئێکن!<br>- ب گشتی راوند (فەرە) بدلێ هنگو نە، و هەر فەرێ تە ئێک کەلیمە یاهەی نە زێدەتر!!<br>- نابیت مناقشە بهێتە کرن، دناڤ راوندا (فەر)ا دا.!`;
+    }
+    
+    document.getElementById('how-to-play-instructions-modal').classList.remove('hidden');
+}
+
+function closeHowToPlayInstructions() {
+    document.getElementById('how-to-play-instructions-modal').classList.add('hidden');
+}
+
+// Placeholder functions for game functionality
+function nextPlayerAction() { if (!gs.isOnlineGame) nextPlayerOffline(); }
+function revealOfflineCard(playerId) { console.log('reveal', playerId); }
+function goToRevealPage() { showPage('reveal-page'); }
+function showFinalResults() { showPage('results-page'); }
+function playAgain() { startNewGame(gs.playerNames); }
+function submitVote() { console.log('vote'); }
+function openOnlineResults() { console.log('results'); }
+function playAgainOnline() { console.log('again'); }
+function startNextVotingRound() { console.log('next round'); }
+function sendDiscMsg() { console.log('disc msg'); }
+function hostStartVoting() { console.log('start vote'); }
+function sendMsg() { console.log('msg'); }
+function nextPlayerOffline() { gs.currentPlayerIndex++; showNextCard(); }
+
+// Make all functions global
 window.switchAuthTab = switchAuthTab;
 window.doLogin = doLogin;
 window.doSignup = doSignup;
@@ -2747,7 +2369,6 @@ window.resendVerificationEmail = resendVerificationEmail;
 window.cancelVerification = cancelVerification;
 window.openLeaderboard = openLeaderboard;
 window.goBackFromLeaderboard = goBackFromLeaderboard;
-window.formatRoomCodeInput = formatRoomCodeInput;
 window.joinRoomClick = joinRoomClick;
 window.goToNickname = goToNickname;
 window.showPage = showPage;
@@ -2758,7 +2379,6 @@ window.changePlayerCount = changePlayerCount;
 window.startGame = startGame;
 window.copyRoomCode = copyRoomCode;
 window.setOnlineMode = setOnlineMode;
-window.startOnlineGame = startOnlineGame;
 window.leaveRoom = leaveRoom;
 window.markReady = markReady;
 window.nextPlayerAction = nextPlayerAction;
@@ -2777,34 +2397,10 @@ window.showHowToPlayOptions = showHowToPlayOptions;
 window.closeHowToPlayOptions = closeHowToPlayOptions;
 window.showHowToPlayInstructions = showHowToPlayInstructions;
 window.closeHowToPlayInstructions = closeHowToPlayInstructions;
-
-// DOM Ready
-document.addEventListener('DOMContentLoaded', () => {
-    showPage('auth-page');
-    
-    const urlParams = new URLSearchParams(window.location.search);
-    const inviteCode = urlParams.get('room');
-    if (inviteCode) {
-        const cleanInvite = inviteCode.replace(/[^0-9]/g, '');
-        if (cleanInvite.length === 6) {
-            sessionStorage.setItem('sikhur_invite', cleanInvite);
-        }
-        window.history.replaceState({}, '', window.location.pathname);
-    }
-    
-    document.getElementById('how-to-play-modal').addEventListener('click', e => {
-        if (e.target === e.currentTarget) closeHowToPlayOptions();
-    });
-    
-    document.getElementById('how-to-play-instructions-modal').addEventListener('click', e => {
-        if (e.target === e.currentTarget) closeHowToPlayInstructions();
-    });
-    
-    setTimeout(() => {
-        const t = document.getElementById('welcomeToast');
-        if (t) t.remove();
-    }, 5000);
-});
+window.showForgotPasswordModal = showForgotPasswordModal;
+window.closeForgotPasswordModal = closeForgotPasswordModal;
+window.sendResetCode = sendResetCode;
+window.resetPassword = resetPassword;
 </script>
 </body>
 </html>
