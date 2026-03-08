@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-title" content="سیخوڕ">
     <link rel="apple-touch-icon" href="assets/image/sikhur.jpg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>سیخوڕ | Sikhur</title>
+    <title>Sikhur | سیخوڕ</title>
     <link rel="icon" type="image/png" href="assets/image/sikhur.jpg">
     <style>
         @font-face {
@@ -626,8 +626,8 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
 
 <!-- TABS -->
 <div class="auth-tabs">
-    <button class="auth-tab active" id="tab-login"  onclick="switchAuthTab('login')">چوونەژوور</button>
-    <button class="auth-tab"        id="tab-signup" onclick="switchAuthTab('signup')">هەژمارا نوی</button>
+    <button class="auth-tab active" id="tab-login"  onclick="switchAuthTab('login')">چوونەژوور (Login)</button>
+    <button class="auth-tab"        id="tab-signup" onclick="switchAuthTab('signup')">هەژمارا نوی (Signup)</button>
 </div>
 
 <!-- ── LOGIN ── -->
@@ -921,595 +921,123 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
         <div id="instructions-text" class="game-modal-text" style="text-align:right;"></div>
         <button class="how-to-play-close" onclick="closeHowToPlayInstructions()">گرتن</button>
     </div>
-</div><script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script><script>
-    // Initialize EmailJS immediately after load
-    (function initEJS() {
-        if (window.emailjs) {
-            window.emailjs.init({ publicKey: 'ypT0M2Rd5t-T8iYwO' });
-        } else {
-            document.querySelector('script[src*="emailjs"]').addEventListener('load', () => {
-                window.emailjs.init({ publicKey: 'ypT0M2Rd5t-T8iYwO' });
-            });
-        }
-    })();
-</script><script>
+</div>
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+// Initialize EmailJS
 (function() {
-    function loadScript(src, cb) {
-        var s = document.createElement('script');
-        s.src = src; s.onload = cb; s.onerror = cb;
-        document.head.appendChild(s);
-    }
-    var cdns = [
-        'https://cdn.jsdelivr.net/npm/peerjs@1.5.2/dist/peerjs.min.js',
-        'https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js'
-    ];
-    var i = 0;
-    function tryNext() {
-        if (i >= cdns.length) return;
-        loadScript(cdns[i++], function() { if (typeof Peer === 'undefined') tryNext(); });
-    }
-    tryNext();
+    emailjs.init('ypT0M2Rd5t-T8iYwO');
 })();
-</script><script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, get, push, onValue, onChildAdded, remove, update, off }
-    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-import {
-    getAuth, onAuthStateChanged,
-    signInWithEmailAndPassword, createUserWithEmailAndPassword,
-    signOut, GoogleAuthProvider, signInWithPopup,
-    browserLocalPersistence, setPersistence
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
+// Firebase Configuration
 const firebaseConfig = {
-    apiKey:"AIzaSyA-ZxdE8YKOBH45EqfylIdRmYF47wmwWI0",
-    authDomain:"sikhur-game.firebaseapp.com",
-    databaseURL:"https://sikhur-game-default-rtdb.firebaseio.com",
-    projectId:"sikhur-game",
-    storageBucket:"sikhur-game.firebasestorage.app",
-    messagingSenderId:"501101971993",
-    appId:"1:501101971993:web:1feea3e49ab43a74187888"
+    apiKey: "AIzaSyA-ZxdE8YKOBH45EqfylIdRmYF47wmwWI0",
+    authDomain: "sikhur-game.firebaseapp.com",
+    databaseURL: "https://sikhur-game-default-rtdb.firebaseio.com",
+    projectId: "sikhur-game",
+    storageBucket: "sikhur-game.firebasestorage.app",
+    messagingSenderId: "501101971993",
+    appId: "1:501101971993:web:1feea3e49ab43a74187888"
 };
-const fbApp = initializeApp(firebaseConfig);
-const db = getDatabase(fbApp);
-const auth = getAuth(fbApp);
-const googleProvider = new GoogleAuthProvider();
-// Force LOCAL persistence — stays logged in after refresh/close
-setPersistence(auth, browserLocalPersistence).catch(()=>{});
-// myPlayerId is set from auth UID after login
-let myPlayerId = 'p_' + Math.random().toString(36).substr(2,9);
-let currentUser = null; // Firebase Auth user
-let userProfile = null; // { nickname, gamesPlayed, wins }
 
-// Track if we're already processing a reconnection
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const auth = firebase.auth();
+
+// Enable persistence
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
+// Global variables
+let myPlayerId = null;
+let currentUser = null;
+let userProfile = null;
 let isReconnecting = false;
-
-/* ══════════════════════════════════════════
-   AUTH — email/password + Google
-   Flow A (email):   signup → pick nickname → home
-   Flow B (Google):  first time → pick nickname → home
-                     returning  → load profile  → home
-══════════════════════════════════════════ */
-
 let _pendingNewUser = false;
+let _verifyCode = null;
+let _verifyEmail = null;
+let _pendingPassword = null;
+let _resendCooldown = false;
 
-onAuthStateChanged(auth, async (user) => {
-    if (user) {
-        currentUser = user;
-        myPlayerId  = user.uid;
-
-        const snap = await get(ref(db, 'users/' + user.uid));
-        if (snap.exists()) {
-            userProfile      = snap.val();
-            gs.myNickname    = userProfile.nickname;
-            _pendingNewUser  = false;
-            updateProfileUI();
-            
-            // Check for invite link first
-            try {
-                const invite = sessionStorage.getItem('sikhur_invite');
-                if(invite) {
-                    sessionStorage.removeItem('sikhur_invite');
-                    const cleanInvite = invite.replace(/[^0-9]/g, '');
-                    if(cleanInvite.length === 6) {
-                        const iSnap = await get(ref(db,'rooms/'+cleanInvite));
-                        if(iSnap.exists()) {
-                            document.getElementById('join-room-id').value = formatRoomCodeDisplay(cleanInvite);
-                            showToast('🔗 لینکی دەعوەتێ هاتە دیتن!', false);
-                            await openLobby(false, cleanInvite);
-                            return;
-                        }
-                    }
-                }
-            } catch(e) {}
-            
-            // Check if user was in a room before refresh
-            if (!isReconnecting) {
-                try {
-                    const savedRoom = sessionStorage.getItem('sikhur_room');
-                    if (savedRoom) {
-                        isReconnecting = true;
-                        const {code, isHost} = JSON.parse(savedRoom);
-                        if (code) {
-                            const cleanCode = code.replace(/[^0-9]/g, '');
-                            if(cleanCode.length === 6) {
-                                const roomSnap = await get(ref(db, 'rooms/' + cleanCode));
-                                if (roomSnap.exists() && roomSnap.val().status !== 'waiting_end') {
-                                    showToast('🔄 ژوورا خۆ دوبارە ڤەدبینیت...', false);
-                                    await openLobby(isHost, cleanCode);
-                                    isReconnecting = false;
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                } catch(e) { 
-                    sessionStorage.removeItem('sikhur_room');
-                }
-                isReconnecting = false;
-            }
-            showPage('home-page');
-        } else {
-            // New user — must pick nickname
-            _pendingNewUser = true;
-            _showNicknamePicker();
-        }
-    } else {
-        currentUser     = null;
-        userProfile     = null;
-        _pendingNewUser = false;
-        _resetAuthUI();
-        showPage('auth-page');
-    }
-});
-
-/* ── helpers ── */
-function _resetAuthUI() {
-    // Restore tabs bar
-    const tabsEl = document.querySelector('.auth-tabs');
-    if (tabsEl) tabsEl.style.display = '';
-    document.getElementById('auth-verify-email').classList.add('hidden');
-    switchAuthTab('login');
-    ['login-email','login-password','signup-email','signup-password','signup-nickname'].forEach(id => {
-        const el = document.getElementById(id); if (el) el.value = '';
-    });
-    ['login-error','signup-error','pick-nickname-error'].forEach(id => {
-        const el = document.getElementById(id); if (el) el.textContent = '';
-    });
-}
-
-function _showNicknamePicker() {
-    showPage('auth-page');
-    document.getElementById('auth-login-form').classList.add('hidden');
-    document.getElementById('auth-signup-form').classList.add('hidden');
-    document.getElementById('auth-nickname-picker').classList.remove('hidden');
-    document.getElementById('tab-login').classList.remove('active');
-    document.getElementById('tab-signup').classList.remove('active');
-    const sub = document.getElementById('auth-sub-text');
-    if (sub) sub.textContent = 'ناڤێ یارییکەرێ خۆ هەلبژێرە';
-    setTimeout(() => { const el = document.getElementById('pick-nickname'); if(el) el.focus(); }, 300);
-}
-
-function switchAuthTab(tab) {
-    document.getElementById('tab-login').classList.toggle('active',  tab === 'login');
-    document.getElementById('tab-signup').classList.toggle('active', tab === 'signup');
-    document.getElementById('auth-login-form').classList.toggle('hidden',  tab !== 'login');
-    document.getElementById('auth-signup-form').classList.toggle('hidden', tab !== 'signup');
-    document.getElementById('auth-nickname-picker').classList.add('hidden');
-    ['login-error','signup-error'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent=''; });
-}
-
-async function isNicknameTaken(nick) {
-    const snap = await get(ref(db, 'nicknames/' + nick.toLowerCase()));
-    return snap.exists();
-}
-
-/* ── LOGIN (email) ── */
-async function doLogin() {
-    const email = document.getElementById('login-email').value.trim();
-    const pass  = document.getElementById('login-password').value;
-    const errEl = document.getElementById('login-error');
-    errEl.textContent = '';
-    if (!email || !pass) { errEl.textContent = '⚠️ ئیمەیڵ و پاسوورد پێویستن'; return; }
-    try {
-        await signInWithEmailAndPassword(auth, email, pass);
-        // onAuthStateChanged handles the rest
-    } catch(e) {
-        const map = {
-            'auth/user-not-found':       '❌ ئەڤ ئیمەیڵە نەهاتە دیتن',
-            'auth/wrong-password':       '❌ پاسوورد یێ خەلەتە',
-            'auth/invalid-credential':   '❌ ئیمەیڵ یان پاسوورد یێ خەلەتە',
-            'auth/invalid-email':        '❌ ئیمەیڵ نڤیسین یێ خەلەتە',
-            'auth/too-many-requests':    '⚠️ زۆر جارا هەوڵ یا بو هاتییە دان —  چاڤەرێ بە',
-        };
-        errEl.textContent = map[e.code] || ('❌ خەلەتە: ' + e.message);
-    }
-}
-
-/* ── SIGNUP (email + password) — with 4-digit code via EmailJS ── */
-let _verifyCode       = null;   // the 4-digit code we generated
-let _verifyEmail      = null;   // email being verified
-let _verifyPollInterval = null;
-let _resendCooldown   = false;
-let _pendingPassword  = null;   // keep password so we can create account after verify
-
-// ─────────────────────────────────────────────
 // EmailJS Configuration
-// ─────────────────────────────────────────────
-const EMAILJS_SERVICE_ID  = 'service_cxf35pq';
+const EMAILJS_SERVICE_ID = 'service_cxf35pq';
 const EMAILJS_TEMPLATE_ID = 'template_qffo8w2';
-const EMAILJS_PUBLIC_KEY  = 'ypT0M2Rd5t-T8iYwO';
+const EMAILJS_PUBLIC_KEY = 'ypT0M2Rd5t-T8iYwO';
 
-function _gen4Code() {
-    return String(Math.floor(1000 + Math.random() * 9000));
-}
+// Game state
+const gs = {
+    players: [], spies: [], secretWord: "", differentWord: "",
+    gameMode: 1, currentPlayerIndex: 0, gameOver: false,
+    playerNames: [], starterPlayer: null,
+    myNickname: "", pendingFlow: "",
+    isHost: false, roomCode: "", onlineMode: 1, onlinePlayers: [],
+    isOnlineGame: false, myPlayerIndex: -1, hostPlayerId: '',
+    eliminatedPlayers: [], currentRound: 1, spiesEliminated: 0, totalSpies: 1,
+};
 
-async function _sendCodeEmail(email, code) {
-    // Store in Firebase with 10-min expiry
-    const key = btoa(email).replace(/[^a-zA-Z0-9]/g,'_');
-    try {
-        await set(ref(db, `verificationCodes/${key}`), {
-            code, createdAt: Date.now(), expiresAt: Date.now() + 10 * 60 * 1000
-        });
-    } catch(e) { console.warn('Firebase store error:', e); }
-    
-    // Send via EmailJS
-    try {
-        if (!window.emailjs) throw new Error('EmailJS not loaded');
-        
-        const result = await window.emailjs.send(
-            EMAILJS_SERVICE_ID,
-            EMAILJS_TEMPLATE_ID,
-            {
-                to_email: email,
-                email: email,
-                name: 'سیخوڕ یارییکەر',
-                code: String(code),
-                app_name: 'سیخوڕ | Sikhur'
-            },
-            { publicKey: EMAILJS_PUBLIC_KEY }
-        );
-        
-        console.log('✅ Email sent:', result);
-        return true;
-    } catch(e) {
-        console.error('❌ EmailJS error:', e);
-        return false;
-    }
-}
+let currentPlayerCount = 5;
+let fbListeners = [];
+let voteListeners = [];
+let voteTimerInterval = null;
+let myVoteChoice = null;
+let voteSubmitted = false;
+let voteGameData = null;
 
-async function doSignup() {
-    const email = document.getElementById('signup-email').value.trim();
-    const pass  = document.getElementById('signup-password').value;
-    const errEl = document.getElementById('signup-error');
-    errEl.textContent = '';
-    if (!email)        { errEl.textContent = '⚠️ ئیمەیڵ یێ پێویستە';               return; }
-    if (pass.length<6) { errEl.textContent = '⚠️ پاسوورد ب کێمی 6 پیت لازمە'; return; }
+// Word lists
+const wordPairs = [
+    {normal: "بریانی", different: "کوفتە"},
+    {normal: "ئاوی پرتەقاڵ", different: "دۆی مێو"},
+    {normal: "سامسۆنگ", different: "ئایفۆن"},
+    {normal: "نایکی", different: "ئەدیداس"},
+    {normal: "تۆیۆتا", different: "بێنز"},
+    {normal: "ئینستاگرام", different: "فیسبوک"},
+    {normal: "مەسی", different: "ڕۆناڵدۆ"},
+    {normal: "ڕۆناڵدینیۆ", different: "کاکا"},
+    {normal: "ماست", different: "دۆ"},
+    {normal: "گۆگ", different: "بالۆن"},
+    {normal: "تاکسی", different: "پاسکیل"},
+    {normal: "ئێمباپێ", different: "ڕۆدری"},
+    {normal: "بێڵینگهام", different: "کاماوینگا"},
+    {normal: "چیپس", different: "پەپکی خوێ"},
+    {normal: "نانی", different: "ئارد"},
+    {normal: "شامپۆ", different: "کۆندیشنەر"},
+    {normal: "زیرەک", different: "شارەزا"},
+    {normal: "دۆ", different: "شیر"},
+    {normal: "پاییز", different: "زستان"},
+    {normal: "کڵۆچە", different: "پیت"},
+    {normal: "کۆلێژ", different: "زانکۆ"},
+    {normal: "شەکر", different: "خێ"}
+];
 
-    errEl.textContent = '⏳ کۆد یێ دهێتە هنارتن...';
-    _verifyEmail    = email;
-    _pendingPassword = pass;
-    _verifyCode     = _gen4Code();
+const kurdishWords = [
+    "مەلا مصطفی بارزانی", "ئازادی", "ستالین", "سەدام", "دلو ژیر", "مەیدان 🏟️", "خورما",
+    "هنار", "کۆمەڵ", "پرادو", "ئەکسنت", "مازدا", "BMW", "محەمەد عەلی", "دەریا",
+    "بوق", "کول", "گەلی", "کورنیش دهوک", "دەنگ دهوکێ", "Zakho FC", "ئەڤین",
+    "دیگو مارادۆنا 🐐", "کیلیان مباپی", "کەریم بنزیمە", "محمد صلاح", "گۆڵ", "تۆپ",
+    "مۆبایل", "کۆمپیوتەر", "ئێلان ماسک", "جۆ بایدەن", "شی جینپینگ", "ئەوروپا",
+    "دهوک", "نەجار", "ئەندازیار", "ئەبو حەمزە", "ئەبو عومەر", "ئەلا",
+    "پشیل", "روباه", "چیتا", "گاو", "میرشک", "مۆز", "پرتەقال", "Google", "دەف",
+    "فرچە 🪮", "ماکینە حەلاقەت", "تووتن", "قلیان", "دار", "باران", "زۆز", "باڵندە", "گوڵ",
+    "دڵشاد", "مال", "فۆتۆ", "سەیارە بچووک", "شەربەت", "پێک", "پەنیر", "مەڕ", "مانگ",
+    "بازاڕ", "جووتیار"
+];
 
-    errEl.textContent = '📨 کۆد دهێتە هنارتن...';
-    const sent = await _sendCodeEmail(email, _verifyCode);
-    errEl.textContent = '';
-    _showVerifyScreen(email);
-    if (!sent) {
-        const statusEl = document.getElementById('verify-status-msg');
-        if (statusEl) {
-            statusEl.innerHTML = `
-                <div style="background:#fff3cd;border:2px solid #ffc107;border-radius:16px;padding:12px 16px;margin-bottom:4px;">
-                    <div style="font-size:0.8rem;color:#856404;margin-bottom:6px;">📧 ئیمەیڵ نەچوو —  :</div>
-                    <div style="font-size:2.4rem;font-weight:bold;letter-spacing:10px;color:#0066cc;">${_verifyCode}</div>
-                </div>`;
-            statusEl.style.color = '';
-        }
-    }
-}
-
-function _setupVcBoxes() {
-    // Attach events once — called from _showVerifyScreen
-    [0,1,2,3].forEach(idx => {
-        const box = document.getElementById('vc'+idx);
-        if (!box || box._vcReady) return;
-        box._vcReady = true;
-
-        box.addEventListener('keydown', e => {
-            // Backspace — clear current and go back
-            if (e.key === 'Backspace') {
-                if (box.value.length === 0 && idx > 0) {
-                    const prev = document.getElementById('vc'+(idx-1));
-                    if (prev) { prev.value = ''; prev.focus(); }
-                } else {
-                    box.value = '';
-                }
-                e.preventDefault();
-            }
-        });
-
-        box.addEventListener('input', e => {
-            // Strip non-digits, keep only last char
-            box.value = box.value.replace(/[^0-9]/g,'').slice(-1);
-            // Highlight active box
-            [0,1,2,3].forEach(i => {
-                const b = document.getElementById('vc'+i);
-                if(b) b.style.borderColor = '#ddd';
-            });
-            if (box.value) {
-                box.style.borderColor = '#0066cc';
-                if (idx < 3) {
-                    document.getElementById('vc'+(idx+1)).focus();
-                } else {
-                    // Last digit — auto submit
-                    setTimeout(submitVerifyCode, 100);
-                }
-            }
-        });
-
-        box.addEventListener('focus', () => {
-            box.style.borderColor = '#0066cc';
-            box.select();
-        });
-        box.addEventListener('blur', () => {
-            if (!box.value) box.style.borderColor = '#ddd';
-        });
-
-        // Handle paste on any box — fill all 4
-        box.addEventListener('paste', e => {
-            e.preventDefault();
-            const text = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g,'');
-            [...text.slice(0,4)].forEach((ch, i) => {
-                const b = document.getElementById('vc'+i);
-                if (b) { b.value = ch; b.style.borderColor = '#0066cc'; }
-            });
-            const filled = Math.min(text.length, 4);
-            const focusBox = document.getElementById('vc'+ Math.min(filled, 3));
-            if (focusBox) focusBox.focus();
-            if (text.length >= 4) setTimeout(submitVerifyCode, 100);
-        });
-    });
-}
-
-async function submitVerifyCode() {
-    const digits = [0,1,2,3].map(i => {
-        const el = document.getElementById('vc'+i);
-        return el ? el.value.trim() : '';
-    });
-    const entered = digits.join('');
-    const statusEl = document.getElementById('verify-status-msg');
-
-    if (entered.length < 4) {
-        if (statusEl) { statusEl.textContent = '⚠️ کودێ 4 ژمارەیی بنڤیسە'; statusEl.style.color = '#cc6600'; }
-        return;
-    }
-    if (statusEl) { statusEl.textContent = '⏳ چاڤەرێ بە...'; statusEl.style.color = '#888'; }
-
-    // Check against Firebase (extra security — prevents old codes)
-    try {
-        const key = btoa(_verifyEmail).replace(/[^a-zA-Z0-9]/g,'_');
-        const snap = await get(ref(db, `verificationCodes/${key}`));
-        if (!snap.exists()) {
-            if (statusEl) { statusEl.textContent = '❌ کۆد یێ بسەرڤە چووی — دووبارە پنێرە'; statusEl.style.color = '#cc0000'; }
-            return;
-        }
-        const stored = snap.val();
-        if (Date.now() > stored.expiresAt) {
-            if (statusEl) { statusEl.textContent = '❌ کۆد یێ بسەرڤە چووی (10 دەقە) — دووبارە پنێرە'; statusEl.style.color = '#cc0000'; }
-            return;
-        }
-        if (entered !== stored.code && entered !== _verifyCode) {
-            // Shake the boxes
-            [0,1,2,3].forEach(i => {
-                const b = document.getElementById('vc'+i);
-                if (b) { b.style.borderColor='#ff4444'; setTimeout(()=>b.style.borderColor='#ddd',1000); }
-            });
-            if (statusEl) { statusEl.textContent = '❌ کۆد یێ خەلەتە — دووبارە هەولێ بو بدە'; statusEl.style.color = '#cc0000'; }
-            return;
-        }
-    } catch(e) {
-        // Firebase check failed — fall back to in-memory code
-        if (entered !== _verifyCode) {
-            if (statusEl) { statusEl.textContent = '❌ کۆد یێ خەلەتە'; statusEl.style.color = '#cc0000'; }
-            return;
-        }
-    }
-
-    // Code correct ✅
-    if (statusEl) { statusEl.textContent = '✅ هاتە پشتراستکرن! هەژمارا نوی دروست دبیت...'; statusEl.style.color = '#00994d'; }
-    // Clean up code from Firebase
-    remove(ref(db, `verificationCodes/${btoa(_verifyEmail).replace(/[^a-zA-Z0-9]/g,'_')}`)).catch(()=>{});
-
-    // Now create the Firebase Auth account
-    try {
-        await createUserWithEmailAndPassword(auth, _verifyEmail, _pendingPassword);
-        // onAuthStateChanged fires → no profile → _showNicknamePicker()
-    } catch(e) {
-        const map = {
-            'auth/email-already-in-use': '❌ ئەڤ ئیمەیڵە یێ هاتییە بکارئینان',
-            'auth/weak-password':        '⚠️ پاسوورد یێ لاوازە',
-        };
-        if (statusEl) { statusEl.textContent = map[e.code] || ('❌ ' + e.message); statusEl.style.color = '#cc0000'; }
-    }
-}
-window.submitVerifyCode = submitVerifyCode;
-
-async function resendVerificationEmail() {
-    if (_resendCooldown) { showToast('⏳ 60 سانییا چاڤەرێ بە', true); return; }
-    if (!_verifyEmail)   return;
-    const btn = document.getElementById('resendBtn');
-    _verifyCode = _gen4Code();
-    const sent = await _sendCodeEmail(_verifyEmail, _verifyCode);
-    if (sent) showToast('📨 کۆدێ نوی هاتە هنارتن!', false);
-    else { showToast('⚠️ ئیمەیڵ نەچوو — دووبارە هەولێ بو بدە', true); }
-    // Clear boxes
-    [0,1,2,3].forEach(i=>{ const b=document.getElementById('vc'+i); if(b) b.value=''; });
-    document.getElementById('vc0')?.focus();
-    const statusEl = document.getElementById('verify-status-msg');
-    if (statusEl) { statusEl.textContent = ''; }
-    // 60s cooldown
-    _resendCooldown = true;
-    if (btn) btn.style.opacity = '0.4';
-    setTimeout(() => { _resendCooldown = false; if (btn) btn.style.opacity = '1'; }, 60000);
-}
-window.resendVerificationEmail = resendVerificationEmail;
-
-function cancelVerification() {
-    clearInterval(_verifyPollInterval);
-    _verifyCode = null; _verifyEmail = null; _pendingPassword = null;
-    // Delete partially-created account if exists
-    if (auth.currentUser) auth.currentUser.delete().catch(()=>{});
-    _resetAuthUI();
-    switchAuthTab('signup');
-}
-window.cancelVerification = cancelVerification;
-
-function _showVerifyScreen(email) {
-    document.getElementById('auth-login-form').classList.add('hidden');
-    document.getElementById('auth-signup-form').classList.add('hidden');
-    document.getElementById('auth-nickname-picker').classList.add('hidden');
-    document.getElementById('auth-verify-email').classList.remove('hidden');
-    const tabsEl = document.querySelector('.auth-tabs');
-    if (tabsEl) tabsEl.style.display = 'none';
-    document.getElementById('tab-login').classList.remove('active');
-    document.getElementById('tab-signup').classList.remove('active');
-    const sub = document.getElementById('auth-sub-text');
-    if (sub) sub.textContent = 'کودێ پشتراسکرنێ بنڤیسە';
-    const addrEl = document.getElementById('verify-email-addr');
-    if (addrEl) addrEl.textContent = email;
-    const statusEl = document.getElementById('verify-status-msg');
-    if (statusEl) { statusEl.textContent = ''; }
-    // Reset boxes
-    [0,1,2,3].forEach(i=>{ const b=document.getElementById('vc'+i); if(b){ b.value=''; b.style.borderColor='#ddd'; b._vcReady=false; } });
-    _setupVcBoxes();
-    // Auto-focus first box — shows keyboard immediately on mobile
-    setTimeout(()=>{
-        const b = document.getElementById('vc0');
-        if(b) b.focus();
-    }, 150);
-}
-
-/* ── GOOGLE LOGIN ── */
-async function doGoogleLogin() {
-    try {
-        await signInWithPopup(auth, googleProvider);
-        // onAuthStateChanged handles everything
-    } catch(e) {
-        if (e.code !== 'auth/popup-closed-by-user')
-            showToast('Google داخلبوون سەرنەکەفت ❌', true);
-    }
-}
-
-/* ── NICKNAME PICKER (Google new users) ── */
-async function confirmPickedNickname() {
-    if (!currentUser) return;
-    const nick  = document.getElementById('pick-nickname').value.trim();
-    const errEl = document.getElementById('pick-nickname-error');
-    errEl.textContent = '';
-    if (!nick || nick.length < 2) { errEl.textContent = '⚠️ کێمی 2 پیت پێویستە'; return; }
-    if (nick.length > 20)         { errEl.textContent = '⚠️ زێدەتر ل 20 پیت نابیت'; return; }
-    // Check special characters
-    if (!/^[\w\u0600-\u06FF\s\-_.]+$/.test(nick)) { errEl.textContent = '⚠️ ناڤ پیتێن جیاواز تێدایە'; return; }
-    errEl.textContent = '⏳ چاڤەرێ  بە...';
-    errEl.style.color = '#888';
-    try {
-        // Check if taken — if Firebase blocks the read, just proceed
-        let taken = false;
-        try { taken = await isNicknameTaken(nick); } catch(e) { taken = false; }
-        if (taken) { errEl.textContent = '❌ ئەڤ ناڤە یێ هاتییە بکارئینان — ناڤێ دیکە هەلبژێرە'; errEl.style.color = '#e53e3e'; return; }
-        const avatarIdx = assignAvatar();
-        const profile = { nickname: nick, gamesPlayed: 0, wins: 0,
-                          email: currentUser.email || '', photoURL: currentUser.photoURL || '', avatarIdx };
-        await set(ref(db, 'users/'     + currentUser.uid), profile);
-        await set(ref(db, 'nicknames/' + nick.toLowerCase()), currentUser.uid);
-        userProfile   = profile;
-        gs.myNickname = nick;
-        _pendingNewUser = false;
-        updateProfileUI();
-        showPage('home-page');
-    } catch(e) {
-        errEl.textContent = '❌ خەلەتیەک پەیدا بوو — دوبارە هەولێ بو بدە';
-        errEl.style.color = '#e53e3e';
-        console.error('confirmPickedNickname error:', e);
-    }
-}
-
-/* ── SIGN OUT ── */
-async function doSignOut() {
-    await signOut(auth);
-    // onAuthStateChanged fires → shows auth page
-}
-
-/* ── PROFILE UI ── */
-function updateProfileUI() {
-    if (!userProfile) return;
-    const nick    = userProfile.nickname || '?';
-    const initial = nick.charAt(0).toUpperCase();
-    const photo   = userProfile.photoURL || '';
-
-    // Header bar (home page top)
-    const av = getAvatarForIndex(userProfile.avatarIdx ?? 0);
-    const btn = document.getElementById('homeProfileBtn');
-    if (btn) {
-        btn.style.background = av.c;
-        btn.style.fontSize   = '1.6rem';
-        btn.textContent      = av.e;
-    }
-    const nameEl = document.getElementById('homeProfileName');
-    if (nameEl) nameEl.textContent = nick;
-    // Profile page big avatar
-    const bigAv = document.getElementById('profile-avatar-big');
-    if (bigAv) {
-        bigAv.style.background = av.c;
-        bigAv.style.padding    = '0';
-        bigAv.style.fontSize   = '2.8rem';
-        bigAv.textContent      = av.e;
-    }
-    const nickEl  = document.getElementById('profile-nickname-display'); if(nickEl)  nickEl.textContent  = nick;
-    const emailEl = document.getElementById('profile-email-display');    if(emailEl) emailEl.textContent = currentUser?.email || '';
-    // Stats
-    const games = userProfile.gamesPlayed || 0;
-    const wins  = userProfile.wins        || 0;
-    const rate  = games > 0 ? Math.round((wins/games)*100) : 0;
-    const sg = document.getElementById('stat-games'); if(sg) sg.textContent = games;
-    const sw = document.getElementById('stat-wins');  if(sw) sw.textContent = wins;
-    const sr = document.getElementById('stat-rate');  if(sr) sr.textContent = rate + '%';
-    // Badge
-    const badge = document.getElementById('profile-badge-role');
-    if (badge) {
-        if      (wins >= 50) badge.textContent = '👑 لیگی امپراتور';
-        else if (wins >= 20) badge.textContent = '🏆 یارییکەرێ اسطورە';
-        else if (wins >= 10) badge.textContent = '⭐ یارییکەرێ باش';
-        else                 badge.textContent = '🎭 یارییکەرێ نوی';
-    }
-}
-
-async function recordGameResult(won, word) { // word param dropped — history removed for simplicity
-    if (!currentUser || !userProfile) return;
-    userProfile.gamesPlayed = (userProfile.gamesPlayed || 0) + 1;
-    if (won) userProfile.wins = (userProfile.wins || 0) + 1;
-    await update(ref(db, 'users/' + currentUser.uid), {
-        gamesPlayed: userProfile.gamesPlayed, wins: userProfile.wins
-    });
-    updateProfileUI();
-}
-
-/* ══════════════════════════════════════════
-   AVATAR SYSTEM
-   40 unique characters assigned at signup.
-   Stored in Firebase profile, never changes.
-══════════════════════════════════════════ */
+// Avatar system
 const AVATARS = [
-    {e:'🦊',c:'#FF6B35'},{e:'🐺',c:'#6B7280'},{e:'🦁',c:'#F59E0B'},{e:'🐯',c:'#EF4444'},
-    {e:'🦝',c:'#8B5CF6'},{e:'🐻',c:'#92400E'},{e:'🐼',c:'#374151'},{e:'🦄',c:'#EC4899'},
-    {e:'🐸',c:'#10B981'},{e:'🐧',c:'#3B82F6'},{e:'🦋',c:'#A78BFA'},{e:'🦅',c:'#B45309'},
-    {e:'🐉',c:'#DC2626'},{e:'🦖',c:'#65A30D'},{e:'🦈',c:'#0284C7'},{e:'🐙',c:'#DB2777'},
-    {e:'🦊',c:'#EA580C'},{e:'🦦',c:'#0369A1'},{e:'🐨',c:'#4B5563'},{e:'🦘',c:'#C2410C'},
-    {e:'🦩',c:'#BE185D'},{e:'🦚',c:'#047857'},{e:'🦜',c:'#B91C1C'},{e:'🐬',c:'#0891B2'},
-    {e:'🦞',c:'#DC2626'},{e:'🦀',c:'#EA580C'},{e:'🐊',c:'#15803D'},{e:'🦕',c:'#7C3AED'},
-    {e:'🧸',c:'#B45309'},{e:'🤖',c:'#0F172A'},{e:'👾',c:'#7C3AED'},{e:'🎭',c:'#0066cc'},
-    {e:'🎩',c:'#1E293B'},{e:'🕵️',c:'#374151'},{e:'🧙',c:'#6D28D9'},{e:'🥷',c:'#111827'},
-    {e:'🦸',c:'#1D4ED8'},{e:'🦹',c:'#7C2D12'},{e:'🤴',c:'#B45309'},{e:'👸',c:'#BE185D'},
+    {e: '🦊', c: '#FF6B35'}, {e: '🐺', c: '#6B7280'}, {e: '🦁', c: '#F59E0B'}, {e: '🐯', c: '#EF4444'},
+    {e: '🦝', c: '#8B5CF6'}, {e: '🐻', c: '#92400E'}, {e: '🐼', c: '#374151'}, {e: '🦄', c: '#EC4899'},
+    {e: '🐸', c: '#10B981'}, {e: '🐧', c: '#3B82F6'}, {e: '🦋', c: '#A78BFA'}, {e: '🦅', c: '#B45309'},
+    {e: '🐉', c: '#DC2626'}, {e: '🦖', c: '#65A30D'}, {e: '🦈', c: '#0284C7'}, {e: '🐙', c: '#DB2777'},
+    {e: '🦊', c: '#EA580C'}, {e: '🦦', c: '#0369A1'}, {e: '🐨', c: '#4B5563'}, {e: '🦘', c: '#C2410C'},
+    {e: '🦩', c: '#BE185D'}, {e: '🦚', c: '#047857'}, {e: '🦜', c: '#B91C1C'}, {e: '🐬', c: '#0891B2'},
+    {e: '🦞', c: '#DC2626'}, {e: '🦀', c: '#EA580C'}, {e: '🐊', c: '#15803D'}, {e: '🦕', c: '#7C3AED'},
+    {e: '🧸', c: '#B45309'}, {e: '🤖', c: '#0F172A'}, {e: '👾', c: '#7C3AED'}, {e: '🎭', c: '#0066cc'},
+    {e: '🎩', c: '#1E293B'}, {e: '🕵️', c: '#374151'}, {e: '🧙', c: '#6D28D9'}, {e: '🥷', c: '#111827'},
+    {e: '🦸', c: '#1D4ED8'}, {e: '🦹', c: '#7C2D12'}, {e: '🤴', c: '#B45309'}, {e: '👸', c: '#BE185D'},
 ];
 
 function getAvatarForIndex(idx) {
@@ -1517,30 +1045,10 @@ function getAvatarForIndex(idx) {
 }
 
 function assignAvatar() {
-    // Random index 0-39
     return Math.floor(Math.random() * AVATARS.length);
 }
 
-function renderAvatarCircle(avatarIdx, size='') {
-    const av = getAvatarForIndex(avatarIdx ?? 0);
-    return `<div class="avatar-circle ${size}" style="background:${av.c};">${av.e}</div>`;
-}
-
-
-setTimeout(() => { const t=document.getElementById('welcomeToast'); if(t) t.remove(); }, 5000);
-
-function showToast(msg, isError=false) {
-    document.querySelectorAll('.welcome-notification').forEach(e=>e.remove());
-    const d = document.createElement('div');
-    d.className = 'welcome-notification';
-    if (isError) d.style.background = 'linear-gradient(135deg,#cc0000,#ff4444)';
-    d.textContent = msg;
-    d.onclick = () => d.remove();
-    document.body.appendChild(d);
-    setTimeout(() => d.remove(), 5000);
-}
-
-// Room code formatting functions
+// Room code formatting
 function formatRoomCodeInput(input) {
     let value = input.value.replace(/[^0-9]/g, '');
     if (value.length > 6) value = value.slice(0, 6);
@@ -1564,115 +1072,516 @@ function cleanRoomCode(code) {
     return code.replace(/[^0-9]/g, '');
 }
 
-// FIXED: All wordPairs objects now have commas between them
-const wordPairs = [
-    {normal:"بریانی", different:"کوفتە"},
-    {normal:"ئاوی پرتەقاڵ", different:"دۆی مێو"},
-    {normal:"سامسۆنگ", different:"ئایفۆن"},
-    {normal:"نایکی", different:"ئەدیداس"},
-    {normal:"تۆیۆتا", different:"بێنز"},
-    {normal:"ئینستاگرام", different:"فیسبوک"},
-    {normal:"مەسی", different:"ڕۆناڵدۆ"},
-    {normal:"ڕۆناڵدینیۆ", different:"کاکا"},
-    {normal:"ماست", different:"دۆ"},
-    {normal:"گۆگ", different:"بالۆن"},
-    {normal:"تاکسی", different:"پاسکیل"},
-    {normal:"ئێمباپێ", different:"ڕۆدری"},
-    {normal:"بێڵینگهام", different:"کاماوینگا"},
-    {normal:"چیپس", different:"پەپکی خوێ"},
-    {normal:"نانی", different:"ئارد"},
-    {normal:"شامپۆ", different:"کۆندیشنەر"},
-    {normal:"زیرەک", different:"شارەزا"},
-    {normal:"دۆ", different:"شیر"},
-    {normal:"پاییز", different:"زستان"},
-    {normal:"کڵۆچە", different:"پیت"},
-    {normal:"کۆلێژ", different:"زانکۆ"},
-    {normal:"شەکر", different:"خێ"}
-];
+// Utility functions
+function showToast(msg, isError = false) {
+    document.querySelectorAll('.welcome-notification').forEach(e => e.remove());
+    const d = document.createElement('div');
+    d.className = 'welcome-notification';
+    if (isError) d.style.background = 'linear-gradient(135deg,#cc0000,#ff4444)';
+    d.textContent = msg;
+    d.onclick = () => d.remove();
+    document.body.appendChild(d);
+    setTimeout(() => d.remove(), 5000);
+}
 
-const kurdishWords = [
-"مەلا مصطفی بارزانی","ئازادی","ستالین","سەدام","دلو ژیر","مەیدان 🏟️","خورما",
-"هنار","کۆمەڵ","پرادو","ئەکسنت","مازدا","BMW","محەمەد عەلی","دەریا",
-"بوق","کول","گەلی","کورنیش دهوک","دەنگ دهوکێ","Zakho FC","ئەڤین",
-"دیگو مارادۆنا 🐐","کیلیان مباپی","کەریم بنزیمە","محمد صلاح","گۆڵ","تۆپ",
-"مۆبایل","کۆمپیوتەر","ئێلان ماسک","جۆ بایدەن","شی جینپینگ","ئەوروپا",
-"دهوک","نەجار","ئەندازیار","ئەبو حەمزە","ئەبو عومەر","ئەلا",
-"پشیل","روباه","چیتا","گاو","میرشک","مۆز","پرتەقال","Google","دەف",
-"فرچە 🪮","ماکینە حەلاقەت","تووتن","قلیان","دار","باران","زۆز","باڵندە","گوڵ",
-"دڵشاد","مال","فۆتۆ","سەیارە بچووک","شەربەت","پێک","پەنیر","مەڕ","مانگ",
-"بازاڕ","جووتیار"
-];
-
-const gs = {
-    players:[], spies:[], secretWord:"", differentWord:"",
-    gameMode:1, currentPlayerIndex:0, gameOver:false,
-    playerNames:[], starterPlayer:null,
-    myNickname:"", pendingFlow:"",
-    isHost:false, roomCode:"", onlineMode:1, onlinePlayers:[],
-    isOnlineGame:false, myPlayerIndex:-1, hostPlayerId:'',
-    eliminatedPlayers:[], currentRound:1, spiesEliminated:0, totalSpies:1,
-};
-let currentPlayerCount = 5;
-
-let fbListeners = [];
-function fbListen(path, cb) { fbListeners.push(path); onValue(ref(db,path), cb); }
-function fbListenChild(path, cb) { fbListeners.push(path); onChildAdded(ref(db,path), cb); }
-function detachAll() { fbListeners.forEach(p=>off(ref(db,p))); fbListeners=[]; }
-function genCode() { 
-    // Generate 6-digit code
+function genCode() {
     return String(Math.floor(100000 + Math.random() * 900000));
 }
 
-let voteListeners = [];
-function detachVoteListeners() { voteListeners.forEach(p=>off(ref(db,p))); voteListeners=[]; }
-function fbVoteListen(path, cb) { voteListeners.push(path); onValue(ref(db,path), cb); }
+function _gen4Code() {
+    return String(Math.floor(1000 + Math.random() * 9000));
+}
 
-const PAGES = ['auth-page','home-page','profile-page','leaderboard-page','offline-mode-page','online-lobby-page',
-               'setup-page','game-page','discussion-page','reveal-page','results-page',
-               'voting-page','online-results-page','leaderboard-page'];
+// Page management
+const PAGES = ['auth-page', 'home-page', 'profile-page', 'leaderboard-page', 'offline-mode-page', 'online-lobby-page',
+    'setup-page', 'game-page', 'discussion-page', 'reveal-page', 'results-page',
+    'voting-page', 'online-results-page'];
 
 function showPage(id) {
-    PAGES.forEach(p => document.getElementById(p).classList.add('hidden'));
-    document.getElementById(id).classList.remove('hidden');
-    if (id==='setup-page') initSetupPage();
-    if (id==='reveal-page') document.getElementById('reveal-title').textContent = gs.gameMode===1?'🕵️ سیخوڕ':'🎭 کەسێ جیاواز';
+    PAGES.forEach(p => {
+        const el = document.getElementById(p);
+        if (el) el.classList.add('hidden');
+    });
+    const page = document.getElementById(id);
+    if (page) page.classList.remove('hidden');
+    if (id === 'setup-page') initSetupPage();
+    if (id === 'reveal-page') {
+        const title = document.getElementById('reveal-title');
+        if (title) title.textContent = gs.gameMode === 1 ? '🕵️ سیخوڕ' : '🎭 کەسێ جیاواز';
+    }
 }
-function goBackToHome() { showPage('home-page'); }
-function goToHomePage()  { showPage('home-page'); }
 
+// Auth state observer
+auth.onAuthStateChanged(async (user) => {
+    if (user) {
+        currentUser = user;
+        myPlayerId = user.uid;
+
+        const snap = await firebase.database().ref('users/' + user.uid).get();
+        if (snap.exists()) {
+            userProfile = snap.val();
+            gs.myNickname = userProfile.nickname;
+            _pendingNewUser = false;
+            updateProfileUI();
+
+            // Check for invite
+            try {
+                const invite = sessionStorage.getItem('sikhur_invite');
+                if (invite) {
+                    sessionStorage.removeItem('sikhur_invite');
+                    const cleanInvite = invite.replace(/[^0-9]/g, '');
+                    if (cleanInvite.length === 6) {
+                        const iSnap = await firebase.database().ref('rooms/' + cleanInvite).get();
+                        if (iSnap.exists()) {
+                            document.getElementById('join-room-id').value = formatRoomCodeDisplay(cleanInvite);
+                            showToast('🔗 لینکی دەعوەتێ هاتە دیتن!', false);
+                            await openLobby(false, cleanInvite);
+                            return;
+                        }
+                    }
+                }
+            } catch (e) { }
+
+            // Check for saved room
+            if (!isReconnecting) {
+                try {
+                    const savedRoom = sessionStorage.getItem('sikhur_room');
+                    if (savedRoom) {
+                        isReconnecting = true;
+                        const { code, isHost } = JSON.parse(savedRoom);
+                        if (code) {
+                            const cleanCode = code.replace(/[^0-9]/g, '');
+                            if (cleanCode.length === 6) {
+                                const roomSnap = await firebase.database().ref('rooms/' + cleanCode).get();
+                                if (roomSnap.exists() && roomSnap.val().status !== 'waiting_end') {
+                                    showToast('🔄 ژوورا خۆ دوبارە ڤەدبینیت...', false);
+                                    await openLobby(isHost, cleanCode);
+                                    isReconnecting = false;
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                } catch (e) {
+                    sessionStorage.removeItem('sikhur_room');
+                }
+                isReconnecting = false;
+            }
+            showPage('home-page');
+        } else {
+            _pendingNewUser = true;
+            _showNicknamePicker();
+        }
+    } else {
+        currentUser = null;
+        userProfile = null;
+        _pendingNewUser = false;
+        _resetAuthUI();
+        showPage('auth-page');
+    }
+});
+
+function _resetAuthUI() {
+    const tabsEl = document.querySelector('.auth-tabs');
+    if (tabsEl) tabsEl.style.display = '';
+    document.getElementById('auth-verify-email').classList.add('hidden');
+    switchAuthTab('login');
+    ['login-email', 'login-password', 'signup-email', 'signup-password'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+    ['login-error', 'signup-error', 'pick-nickname-error'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = '';
+    });
+}
+
+function _showNicknamePicker() {
+    showPage('auth-page');
+    document.getElementById('auth-login-form').classList.add('hidden');
+    document.getElementById('auth-signup-form').classList.add('hidden');
+    document.getElementById('auth-nickname-picker').classList.remove('hidden');
+    document.getElementById('tab-login').classList.remove('active');
+    document.getElementById('tab-signup').classList.remove('active');
+    const sub = document.getElementById('auth-sub-text');
+    if (sub) sub.textContent = 'ناڤێ یارییکەرێ خۆ هەلبژێرە';
+    setTimeout(() => {
+        const el = document.getElementById('pick-nickname');
+        if (el) el.focus();
+    }, 300);
+}
+
+function switchAuthTab(tab) {
+    document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+    document.getElementById('tab-signup').classList.toggle('active', tab === 'signup');
+    document.getElementById('auth-login-form').classList.toggle('hidden', tab !== 'login');
+    document.getElementById('auth-signup-form').classList.toggle('hidden', tab !== 'signup');
+    document.getElementById('auth-nickname-picker').classList.add('hidden');
+    ['login-error', 'signup-error'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = '';
+    });
+}
+
+// Login functions
+async function doLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const pass = document.getElementById('login-password').value;
+    const errEl = document.getElementById('login-error');
+    errEl.textContent = '';
+    if (!email || !pass) {
+        errEl.textContent = '⚠️ ئیمەیڵ و پاسوورد پێویستن';
+        return;
+    }
+    try {
+        await auth.signInWithEmailAndPassword(email, pass);
+    } catch (e) {
+        const map = {
+            'auth/user-not-found': '❌ ئەڤ ئیمەیڵە نەهاتە دیتن',
+            'auth/wrong-password': '❌ پاسوورد یێ خەلەتە',
+            'auth/invalid-credential': '❌ ئیمەیڵ یان پاسوورد یێ خەلەتە',
+            'auth/invalid-email': '❌ ئیمەیڵ نڤیسین یێ خەلەتە',
+            'auth/too-many-requests': '⚠️ زۆر جارا هەوڵ یا بو هاتییە دان —  چاڤەرێ بە',
+        };
+        errEl.textContent = map[e.code] || ('❌ خەلەتە: ' + e.message);
+    }
+}
+
+async function doGoogleLogin() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    try {
+        await auth.signInWithPopup(provider);
+    } catch (e) {
+        if (e.code !== 'auth/popup-closed-by-user')
+            showToast('Google داخلبوون سەرنەکەفت ❌', true);
+    }
+}
+
+async function doSignOut() {
+    await auth.signOut();
+}
+
+// Email verification functions
+async function _sendCodeEmail(email, code) {
+    const key = btoa(email).replace(/[^a-zA-Z0-9]/g, '_');
+    try {
+        await firebase.database().ref(`verificationCodes/${key}`).set({
+            code, createdAt: Date.now(), expiresAt: Date.now() + 10 * 60 * 1000
+        });
+    } catch (e) {
+        console.warn('Firebase store error:', e);
+    }
+
+    try {
+        if (!window.emailjs) throw new Error('EmailJS not loaded');
+        const result = await emailjs.send(
+            EMAILJS_SERVICE_ID,
+            EMAILJS_TEMPLATE_ID,
+            {
+                to_email: email,
+                email: email,
+                name: 'سیخوڕ یارییکەر',
+                code: String(code),
+                app_name: 'سیخوڕ | Sikhur'
+            }
+        );
+        console.log('✅ Email sent:', result);
+        return true;
+    } catch (e) {
+        console.error('❌ EmailJS error:', e);
+        return false;
+    }
+}
+
+async function doSignup() {
+    const email = document.getElementById('signup-email').value.trim();
+    const pass = document.getElementById('signup-password').value;
+    const errEl = document.getElementById('signup-error');
+    errEl.textContent = '';
+    if (!email) {
+        errEl.textContent = '⚠️ ئیمەیڵ یێ پێویستە';
+        return;
+    }
+    if (pass.length < 6) {
+        errEl.textContent = '⚠️ پاسوورد ب کێمی 6 پیت لازمە';
+        return;
+    }
+
+    errEl.textContent = '⏳ کۆد یێ دهێتە هنارتن...';
+    _verifyEmail = email;
+    _pendingPassword = pass;
+    _verifyCode = _gen4Code();
+
+    errEl.textContent = '📨 کۆد دهێتە هنارتن...';
+    const sent = await _sendCodeEmail(email, _verifyCode);
+    errEl.textContent = '';
+    _showVerifyScreen(email);
+    if (!sent) {
+        const statusEl = document.getElementById('verify-status-msg');
+        if (statusEl) {
+            statusEl.innerHTML = `
+                <div style="background:#fff3cd;border:2px solid #ffc107;border-radius:16px;padding:12px 16px;margin-bottom:4px;">
+                    <div style="font-size:0.8rem;color:#856404;margin-bottom:6px;">📧 ئیمەیڵ نەچوو —  :</div>
+                    <div style="font-size:2.4rem;font-weight:bold;letter-spacing:10px;color:#0066cc;">${_verifyCode}</div>
+                </div>`;
+            statusEl.style.color = '';
+        }
+    }
+}
+
+function _showVerifyScreen(email) {
+    document.getElementById('auth-login-form').classList.add('hidden');
+    document.getElementById('auth-signup-form').classList.add('hidden');
+    document.getElementById('auth-nickname-picker').classList.add('hidden');
+    document.getElementById('auth-verify-email').classList.remove('hidden');
+    const tabsEl = document.querySelector('.auth-tabs');
+    if (tabsEl) tabsEl.style.display = 'none';
+    document.getElementById('tab-login').classList.remove('active');
+    document.getElementById('tab-signup').classList.remove('active');
+    const sub = document.getElementById('auth-sub-text');
+    if (sub) sub.textContent = 'کودێ پشتراسکرنێ بنڤیسە';
+    const addrEl = document.getElementById('verify-email-addr');
+    if (addrEl) addrEl.textContent = email;
+    const statusEl = document.getElementById('verify-status-msg');
+    if (statusEl) statusEl.textContent = '';
+    
+    // Reset boxes
+    [0, 1, 2, 3].forEach(i => {
+        const b = document.getElementById('vc' + i);
+        if (b) {
+            b.value = '';
+            b.style.borderColor = '#ddd';
+        }
+    });
+    
+    setTimeout(() => {
+        const b = document.getElementById('vc0');
+        if (b) b.focus();
+    }, 150);
+}
+
+async function submitVerifyCode() {
+    const digits = [0, 1, 2, 3].map(i => {
+        const el = document.getElementById('vc' + i);
+        return el ? el.value.trim() : '';
+    });
+    const entered = digits.join('');
+    const statusEl = document.getElementById('verify-status-msg');
+
+    if (entered.length < 4) {
+        if (statusEl) {
+            statusEl.textContent = '⚠️ کودێ 4 ژمارەیی بنڤیسە';
+            statusEl.style.color = '#cc6600';
+        }
+        return;
+    }
+
+    if (entered !== _verifyCode) {
+        [0, 1, 2, 3].forEach(i => {
+            const b = document.getElementById('vc' + i);
+            if (b) {
+                b.style.borderColor = '#ff4444';
+                setTimeout(() => b.style.borderColor = '#ddd', 1000);
+            }
+        });
+        if (statusEl) {
+            statusEl.textContent = '❌ کۆد یێ خەلەتە';
+            statusEl.style.color = '#cc0000';
+        }
+        return;
+    }
+
+    if (statusEl) {
+        statusEl.textContent = '✅ هاتە پشتراستکرن! هەژمارا نوی دروست دبیت...';
+        statusEl.style.color = '#00994d';
+    }
+
+    try {
+        await auth.createUserWithEmailAndPassword(_verifyEmail, _pendingPassword);
+    } catch (e) {
+        const map = {
+            'auth/email-already-in-use': '❌ ئەڤ ئیمەیڵە یێ هاتییە بکارئینان',
+            'auth/weak-password': '⚠️ پاسوورد یێ لاوازە',
+        };
+        if (statusEl) {
+            statusEl.textContent = map[e.code] || ('❌ ' + e.message);
+            statusEl.style.color = '#cc0000';
+        }
+    }
+}
+
+async function resendVerificationEmail() {
+    if (_resendCooldown) {
+        showToast('⏳ 60 سانییا چاڤەرێ بە', true);
+        return;
+    }
+    if (!_verifyEmail) return;
+    const btn = document.getElementById('resendBtn');
+    _verifyCode = _gen4Code();
+    const sent = await _sendCodeEmail(_verifyEmail, _verifyCode);
+    if (sent) showToast('📨 کۆدێ نوی هاتە هنارتن!', false);
+    else showToast('⚠️ ئیمەیڵ نەچوو — دووبارە هەولێ بو بدە', true);
+    
+    [0, 1, 2, 3].forEach(i => {
+        const b = document.getElementById('vc' + i);
+        if (b) b.value = '';
+    });
+    document.getElementById('vc0')?.focus();
+    
+    _resendCooldown = true;
+    if (btn) btn.style.opacity = '0.4';
+    setTimeout(() => {
+        _resendCooldown = false;
+        if (btn) btn.style.opacity = '1';
+    }, 60000);
+}
+
+function cancelVerification() {
+    _verifyCode = null;
+    _verifyEmail = null;
+    _pendingPassword = null;
+    _resetAuthUI();
+    switchAuthTab('signup');
+}
+
+async function confirmPickedNickname() {
+    if (!currentUser) return;
+    const nick = document.getElementById('pick-nickname').value.trim();
+    const errEl = document.getElementById('pick-nickname-error');
+    errEl.textContent = '';
+    if (!nick || nick.length < 2) {
+        errEl.textContent = '⚠️ کێمی 2 پیت پێویستە';
+        return;
+    }
+    if (nick.length > 20) {
+        errEl.textContent = '⚠️ زێدەتر ل 20 پیت نابیت';
+        return;
+    }
+    if (!/^[\w\u0600-\u06FF\s\-_.]+$/.test(nick)) {
+        errEl.textContent = '⚠️ ناڤ پیتێن جیاواز تێدایە';
+        return;
+    }
+
+    errEl.textContent = '⏳ چاڤەرێ بە...';
+    errEl.style.color = '#888';
+
+    try {
+        const snap = await firebase.database().ref('nicknames/' + nick.toLowerCase()).get();
+        if (snap.exists()) {
+            errEl.textContent = '❌ ئەڤ ناڤە یێ هاتییە بکارئینان — ناڤێ دیکە هەلبژێرە';
+            errEl.style.color = '#e53e3e';
+            return;
+        }
+
+        const avatarIdx = assignAvatar();
+        const profile = {
+            nickname: nick,
+            gamesPlayed: 0,
+            wins: 0,
+            email: currentUser.email || '',
+            photoURL: currentUser.photoURL || '',
+            avatarIdx
+        };
+        await firebase.database().ref('users/' + currentUser.uid).set(profile);
+        await firebase.database().ref('nicknames/' + nick.toLowerCase()).set(currentUser.uid);
+        userProfile = profile;
+        gs.myNickname = nick;
+        _pendingNewUser = false;
+        updateProfileUI();
+        showPage('home-page');
+    } catch (e) {
+        errEl.textContent = '❌ خەلەتیەک پەیدا بوو — دوبارە هەولێ بو بدە';
+        errEl.style.color = '#e53e3e';
+        console.error('confirmPickedNickname error:', e);
+    }
+}
+
+function updateProfileUI() {
+    if (!userProfile) return;
+    const nick = userProfile.nickname || '?';
+    const av = getAvatarForIndex(userProfile.avatarIdx ?? 0);
+    
+    const btn = document.getElementById('homeProfileBtn');
+    if (btn) {
+        btn.style.background = av.c;
+        btn.style.fontSize = '1.6rem';
+        btn.textContent = av.e;
+    }
+    
+    const nameEl = document.getElementById('homeProfileName');
+    if (nameEl) nameEl.textContent = nick;
+    
+    const bigAv = document.getElementById('profile-avatar-big');
+    if (bigAv) {
+        bigAv.style.background = av.c;
+        bigAv.style.padding = '0';
+        bigAv.style.fontSize = '2.8rem';
+        bigAv.textContent = av.e;
+    }
+    
+    const nickEl = document.getElementById('profile-nickname-display');
+    if (nickEl) nickEl.textContent = nick;
+    
+    const emailEl = document.getElementById('profile-email-display');
+    if (emailEl) emailEl.textContent = currentUser?.email || '';
+    
+    const games = userProfile.gamesPlayed || 0;
+    const wins = userProfile.wins || 0;
+    const rate = games > 0 ? Math.round((wins / games) * 100) : 0;
+    
+    const sg = document.getElementById('stat-games');
+    if (sg) sg.textContent = games;
+    const sw = document.getElementById('stat-wins');
+    if (sw) sw.textContent = wins;
+    const sr = document.getElementById('stat-rate');
+    if (sr) sr.textContent = rate + '%';
+}
+
+// Room functions
 async function joinRoomClick() {
     const input = document.getElementById('join-room-id');
     const rawCode = input.value.trim();
     const cleanCode = cleanRoomCode(rawCode);
-    
-    if (cleanCode.length !== 6) { 
-        showToast('کۆدێ ژوورێ پێویستە 6 ژمارە بێت! ⌨️', true); 
-        input.style.borderColor='#ff4444'; 
-        setTimeout(()=>{input.style.borderColor='';},2000); 
-        return; 
+
+    if (cleanCode.length !== 6) {
+        showToast('کۆدێ ژوورێ پێویستە 6 ژمارە بێت! ⌨️', true);
+        input.style.borderColor = '#ff4444';
+        setTimeout(() => { input.style.borderColor = ''; }, 2000);
+        return;
     }
-    
+
     if (!gs.myNickname && userProfile) gs.myNickname = userProfile.nickname;
-    if (!gs.myNickname) { showToast(' داخل ببە! ❌',true); showPage('auth-page'); return; }
-    
+    if (!gs.myNickname) {
+        showToast(' داخل ببە! ❌', true);
+        showPage('auth-page');
+        return;
+    }
+
     try {
-        const snap = await get(ref(db,`rooms/${cleanCode}`));
-        if (!snap.exists()) { 
-            showToast('کۆد یێ خەلەتە! ❌',true); 
-            input.style.borderColor='#ff4444'; 
-            setTimeout(()=>{input.style.borderColor='';},2000); 
-            return; 
+        const snap = await firebase.database().ref(`rooms/${cleanCode}`).get();
+        if (!snap.exists()) {
+            showToast('کۆد یێ خەلەتە! ❌', true);
+            input.style.borderColor = '#ff4444';
+            setTimeout(() => { input.style.borderColor = ''; }, 2000);
+            return;
         }
-        input.style.borderColor='';
+        input.style.borderColor = '';
         openLobby(false, cleanCode);
-    } catch(e) { showToast('خەلەتی!',true); }
+    } catch (e) {
+        showToast('خەلەتی!', true);
+    }
 }
 
 function goToNickname(flow) {
     if (!gs.myNickname && userProfile) gs.myNickname = userProfile.nickname;
-    if (!gs.myNickname) { showToast(' پێشتر داخلبە! ❌', true); showPage('auth-page'); return; }
-    if (flow === 'create') openLobby(true, null);
-    else if (flow === 'join') {
+    if (!gs.myNickname) {
+        showToast(' پێشتر داخلبە! ❌', true);
+        showPage('auth-page');
+        return;
+    }
+    if (flow === 'create') {
+        openLobby(true, null);
+    } else if (flow === 'join') {
         const input = document.getElementById('join-room-id');
         const rawCode = input.value.trim();
         const cleanCode = cleanRoomCode(rawCode);
@@ -1684,131 +1593,330 @@ function goToNickname(flow) {
     }
 }
 
-function startOfflineSetup(mode) {
-    gs.gameMode=mode; gs.isOnlineGame=false;
-    document.getElementById('setup-title').textContent = mode===1?'⚙️ ڕێکخستنا سیخوڕی 🕵️':'⚙️ ڕێکخستنا پەیڤێن جیاواز 🎭';
-    showPage('setup-page');
-}
-
-function changePlayerCount(delta) { currentPlayerCount=Math.min(10,Math.max(3,currentPlayerCount+delta)); document.getElementById('player-count').textContent=currentPlayerCount; updatePlayerInputs(); }
-function updatePlayerInputs() {
-    let html='';
-    for(let i=1;i<=currentPlayerCount;i++) html+=`<div style="margin:8px 0;"><input type="text" class="player-input" id="pname-${i}" placeholder="یارییکەرێ ${i}"></div>`;
-    document.getElementById('player-inputs-container').innerHTML=html;
-}
-function initSetupPage() { document.getElementById('player-count').textContent=currentPlayerCount; updatePlayerInputs(); }
-function startGame() {
-    const players=[];
-    for(let i=1;i<=currentPlayerCount;i++){const el=document.getElementById(`pname-${i}`);players.push(el&&el.value.trim()?el.value.trim():`یارییکەرێ ${i}`);}
-    gs.playerNames=[...players]; startNewGame(players);
-}
-
-function startNewGame(players) {
-    let secretWord,differentWord='',spyIndices=[];
-    if(gs.gameMode===1){
-        let spyCount=1;
-        if(currentPlayerCount>=6&&currentPlayerCount<=8)spyCount=2;
-        if(currentPlayerCount>=9)spyCount=3;
-        while(spyIndices.length<spyCount){const r=Math.floor(Math.random()*currentPlayerCount);if(!spyIndices.includes(r))spyIndices.push(r);}
-        secretWord=kurdishWords[Math.floor(Math.random()*kurdishWords.length)];
+async function openLobby(isHost, code) {
+    detachAll();
+    gs.isHost = isHost;
+    gs.roomCode = isHost ? genCode() : code;
+    gs.isOnlineGame = true;
+    gs.onlinePlayers = [];
+    
+    try {
+        sessionStorage.setItem('sikhur_room', JSON.stringify({ code: gs.roomCode, isHost }));
+    } catch (e) { }
+    
+    document.getElementById('room-code-display').textContent = formatRoomCodeDisplay(gs.roomCode);
+    document.getElementById('lobby-title').textContent = '🏠 ژوورا یاریێ';
+    document.getElementById('host-controls').classList.toggle('hidden', !isHost);
+    document.getElementById('chatBox').innerHTML = '';
+    showPage('online-lobby-page');
+    
+    const roomRef = `rooms/${gs.roomCode}`;
+    const myAvatarIdx = userProfile?.avatarIdx ?? 0;
+    
+    if (isHost) {
+        gs.hostPlayerId = myPlayerId;
+        await firebase.database().ref(roomRef).set({
+            host: myPlayerId,
+            hostId: myPlayerId,
+            mode: 1,
+            status: 'waiting',
+            createdAt: Date.now(),
+            expiresAt: Date.now() + (2 * 60 * 60 * 1000)
+        });
+        firebase.database().ref(`${roomRef}/chat`).push({
+            senderId: 'system',
+            name: 'سیستەم',
+            text: `🏠 ${gs.myNickname} ژوور دروست کر — کۆدی شەیر بکە دگەل هەڤاڵان 📤`,
+            type: 'system',
+            ts: Date.now()
+        });
     } else {
-        spyIndices=[Math.floor(Math.random()*currentPlayerCount)];
-        const pair=wordPairs[Math.floor(Math.random()*wordPairs.length)];
-        secretWord=pair.normal; differentWord=pair.different;
-    }
-    gs.players=players.map((name,i)=>({id:i+1,name,isSpy:gs.gameMode===1?spyIndices.includes(i):false,hasDifferentWord:gs.gameMode===2?spyIndices.includes(i):false}));
-    gs.spies=spyIndices.map(i=>i+1); gs.secretWord=secretWord; gs.differentWord=differentWord;
-    gs.currentPlayerIndex=0; gs.gameOver=false; gs.starterPlayer=null;
-    showPage('game-page'); showNextCard();
-}
-function selectStarterPlayer() { const r=Math.floor(Math.random()*gs.players.length); gs.starterPlayer=gs.players[r]||{name:"یاریکەر"}; return gs.starterPlayer; }
-
-function revealOfflineCard(playerId) {
-    const player=gs.players.find(p=>p.id===playerId);
-    const container=document.getElementById('card-container');
-    const nextBtn=document.getElementById('next-player-btn');
-    if(!player)return;
-    if(gs.gameMode===1){
-        if(player.isSpy){
-            const allSpies=gs.players.filter(p=>p.isSpy);
-            let coHtml='';
-            if(allSpies.length>1){
-                const coSpies=allSpies.filter(p=>p.id!==playerId);
-                if(coSpies.length>0) coHtml='<div style="margin-top:14px;background:rgba(0,0,0,0.18);border-radius:20px;padding:12px 16px;border:2px solid #ffcc00;"><div style="font-size:0.9rem;color:#ffcc00;margin-bottom:6px;">🤝 هەڤالێ تەیێ سیخور:</div>'+coSpies.map(s=>'<div style="font-size:1.4rem;font-weight:bold;color:#fff;">🕵️ '+s.name+'</div>').join('')+'</div>';
-            }
-            container.innerHTML='<div class="card-spy-revealed card-revealed"><div class="role-icon">🕵️</div><div style="color:#FF0000;font-size:2rem;margin-bottom:12px;">تۆ سیخوڕی!</div><div style="font-size:1rem;color:#000;">تۆ پەیڤێ نزانی، هەوڵبدە پەییڤێ بزانی</div><div style="margin-top:10px;color:#000;font-size:1rem;">خۆ دگەل مەدەنییا بگونجینە!</div>'+coHtml+'</div>';
-        } else {
-            container.innerHTML='<div class="card-civilian-revealed card-revealed"><div class="role-icon">👨‍🌾</div><div style="color:#000;font-size:2rem;margin-bottom:12px;">تۆ مەدەنی</div><div style="font-size:1rem;color:#000;">هەوڵبدە سیخوڕی بگری!</div><div class="word-display">'+gs.secretWord+'</div></div>';
+        const roomSnap = await firebase.database().ref(roomRef).get();
+        if (!roomSnap.exists()) {
+            showToast('ژوور نەدۆزرایەوە ❌', true);
+            showPage('home-page');
+            return;
         }
-    } else {
-        const word=player.hasDifferentWord?gs.differentWord:gs.secretWord;
-        container.innerHTML='<div class="card-white-revealed card-revealed"><div class="word-display">'+word+'</div></div>';
+        gs.hostPlayerId = roomSnap.val().hostId || roomSnap.val().host || '';
+        firebase.database().ref(`${roomRef}/chat`).push({
+            senderId: 'system',
+            name: 'سیستەم',
+            text: `👋 خێر هاتی ${gs.myNickname}!`,
+            type: 'system',
+            ts: Date.now()
+        });
     }
-    nextBtn.classList.remove('hidden');
+    
+    await firebase.database().ref(`${roomRef}/players/${myPlayerId}`).set({
+        name: gs.myNickname,
+        joinedAt: Date.now(),
+        ready: false,
+        avatarIdx: myAvatarIdx
+    });
+    
+    if (isHost) setTimeout(() => markReady(), 800);
+    
+    firebase.database().ref(`${roomRef}/players`).on('value', (snap) => {
+        gs.onlinePlayers = [];
+        snap.forEach(child => {
+            const v = child.val();
+            gs.onlinePlayers.push({
+                id: child.key,
+                name: v.name || '?',
+                ready: !!(v.ready),
+                wantPlayAgain: v.wantPlayAgain || false,
+                avatarIdx: v.avatarIdx ?? 0
+            });
+        });
+        
+        if (gs.onlinePlayers.length > 0 && !gs.onlinePlayers.find(p => p.id === gs.hostPlayerId)) {
+            const newHost = gs.onlinePlayers[0];
+            gs.hostPlayerId = newHost.id;
+            if (newHost.id === myPlayerId) {
+                gs.isHost = true;
+                document.getElementById('host-controls').classList.remove('hidden');
+                firebase.database().ref(`rooms/${gs.roomCode}`).update({ hostId: newHost.id });
+                showToast('👑 تۆ بویتە هۆست!', false);
+            }
+        }
+        
+        renderPlayers();
+        updateReadyStatus();
+        if (gs.isHost) document.getElementById('host-controls').classList.remove('hidden');
+    });
+    
+    firebase.database().ref(`${roomRef}/mode`).on('value', (snap) => {
+        if (snap.val()) {
+            gs.onlineMode = snap.val();
+            const btn1 = document.getElementById('omBtn1');
+            const btn2 = document.getElementById('omBtn2');
+            if (btn1) btn1.classList.toggle('selected', gs.onlineMode === 1);
+            if (btn2) btn2.classList.toggle('selected', gs.onlineMode === 2);
+        }
+    });
+    
+    firebase.database().ref(`${roomRef}/hostId`).on('value', (snap) => {
+        if (snap.exists()) {
+            gs.hostPlayerId = snap.val();
+            if (gs.hostPlayerId === myPlayerId) {
+                gs.isHost = true;
+                document.getElementById('host-controls').classList.remove('hidden');
+            }
+        }
+    });
+    
+    firebase.database().ref(`${roomRef}/status`).on('value', (snap) => {
+        if (snap.val() === 'waiting') {
+            clearInterval(voteTimerInterval);
+            myVoteChoice = null;
+            voteSubmitted = false;
+            gs.eliminatedPlayers = [];
+            gs.currentRound = 1;
+            gs.onlinePlayers.forEach(p => {
+                p.ready = false;
+                p.wantPlayAgain = false;
+            });
+            renderPlayers();
+            updateReadyStatus();
+            returnToLobbyAfterGame();
+        }
+        if (snap.val() === 'started') {
+            firebase.database().ref(`${roomRef}/gameData`).get().then(gSnap => {
+                if (!gSnap.exists()) return;
+                const gd = gSnap.val();
+                gs.gameMode = gd.mode;
+                gs.secretWord = gd.secretWord;
+                gs.differentWord = gd.differentWord || '';
+                const names = gd.playerNames;
+                currentPlayerCount = names.length;
+                gs.playerNames = [...names];
+                gs.players = names.map((name, i) => ({
+                    id: i + 1,
+                    name,
+                    isSpy: gd.mode === 1 ? gd.spyIndices.includes(i) : false,
+                    hasDifferentWord: gd.mode === 2 ? gd.spyIndices.includes(i) : false
+                }));
+                gs.spies = gd.spyIndices.map(i => i + 1);
+                gs.currentPlayerIndex = 0;
+                gs.gameOver = false;
+                gs.starterPlayer = null;
+                gs.myPlayerIndex = names.indexOf(gs.onlinePlayers.find(p => p.id === myPlayerId)?.name);
+                showPage('game-page');
+                listenGameState(gd);
+            });
+        }
+    });
+    
+    firebase.database().ref(`${roomRef}/chat`).on('child_added', (snap) => {
+        const msg = snap.val();
+        if (!msg) return;
+        const box = document.getElementById('chatBox');
+        if (!box) return;
+        const d = document.createElement('div');
+        d.className = msg.type === 'system' ? 'bubble system' : (msg.senderId === myPlayerId ? 'bubble me' : 'bubble other');
+        if (msg.type === 'system') d.textContent = msg.text;
+        else d.innerHTML = `<div class="bname">${msg.name}</div>${msg.text}`;
+        box.appendChild(d);
+        box.scrollTop = box.scrollHeight;
+    });
 }
 
-function showNextCard() {
-    const container=document.getElementById('card-container');
-    const progress=document.getElementById('game-progress');
-    const nextBtn=document.getElementById('next-player-btn');
-    const revealBtn=document.getElementById('reveal-btn');
-    const starterCont=document.getElementById('starter-container');
-    const current=gs.players[gs.currentPlayerIndex];
+function renderPlayers() {
+    const box = document.getElementById('waiting-players-list');
+    if (!box) return;
+    let html = `<div class="players-box-title">یارییکەر: (${gs.onlinePlayers.length}) 👥</div>`;
+    
+    gs.onlinePlayers.forEach(p => {
+        const isMe = p.id === myPlayerId;
+        const isHostP = p.id === gs.hostPlayerId;
+        const av = getAvatarForIndex(p.avatarIdx ?? 0);
+        
+        const dot = p.ready
+            ? `<span style="display:inline-block;width:13px;height:13px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;flex-shrink:0;"></span>`
+            : `<span style="display:inline-block;width:13px;height:13px;border-radius:50%;background:#ef4444;box-shadow:0 0 6px #ef4444;flex-shrink:0;"></span>`;
+        
+        const avatarHtml = isHostP
+            ? `<div style="position:relative;flex-shrink:0;width:42px;height:42px;">
+                <div class="avatar-circle sm" style="background:${av.c};width:42px;height:42px;line-height:42px;">${av.e}</div>
+                <span style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:1rem;line-height:1;pointer-events:none;">👑</span>
+               </div>`
+            : `<div class="avatar-circle sm" style="background:${av.c};flex-shrink:0;">${av.e}</div>`;
+        
+        let right = '';
+        if (!p.ready && isMe) {
+            right = `<button id="myReadyBtn" style="background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:30px;padding:8px 18px;font-size:0.95rem;font-weight:bold;cursor:pointer;white-space:nowrap;">حازرم ✅</button>`;
+        }
+        
+        html += `<div style="display:flex;align-items:center;gap:10px;padding:10px 8px;border-bottom:1px solid #f0f0f0;">
+            ${avatarHtml}
+            <span style="flex:1;font-size:1rem;font-weight:${isMe ? 'bold' : 'normal'};color:#222;">
+                ${p.name}${isMe ? ' (تۆ)' : ''}
+            </span>
+            ${dot}
+            ${right}
+        </div>`;
+    });
+    
+    box.innerHTML = html;
+    
+    const btn = document.getElementById('myReadyBtn');
+    if (btn) {
+        btn.onclick = function() {
+            btn.textContent = '⏳';
+            btn.disabled = true;
+            markReady();
+        };
+    }
+}
 
-    if(!current){
-        const starter=selectStarterPlayer();
-        progress.textContent=`${gs.players.length}/${gs.players.length} - تەمام`;
-        container.innerHTML=`<div class="card" style="cursor:default;background:#f0f7ff;border:2px solid #0066cc;"><div class="role-icon">🎯</div><div style="color:#0066cc;font-size:1.1rem;">هەمی کارت هاتتنە دیتن</div></div>`;
-        starterCont.innerHTML=`<div class="starter-box"><div class="starter-message">🎤 دەستپێ بکە!</div><div class="starter-name">${starter.name}</div><div>🧠 مێشکێ خۆ بکاربیینە، هزر بکە پاشی باخڤە!</div><div style="margin-top:18px;"><div style="font-size:0.95rem;color:rgba(255,255,255,0.8);margin-bottom:6px;">ئاشکراکرن دەستپێدکات لە:</div><div id="disc-countdown-num" style="font-size:3.5rem;font-weight:bold;color:#ffcc00;line-height:1;">6</div></div></div>`;
-        starterCont.classList.remove('hidden');
-        nextBtn.classList.add('hidden');
-        revealBtn.classList.add('hidden');
-        // FIXED: Use -- (decrement) not – (em-dash)
-        let _cdSec2 = 6;
-        clearInterval(window._cdInterval);
-        window._cdInterval = setInterval(() => {
-            _cdSec2--;
-            const el = document.getElementById('disc-countdown-num');
-            if (el) el.textContent = _cdSec2;
-            if (_cdSec2 <= 0) { clearInterval(window._cdInterval); goToRevealPage(); }
-        }, 1000);
+function markReady() {
+    if (!gs.roomCode || !myPlayerId) return;
+    firebase.database().ref(`rooms/${gs.roomCode}/players/${myPlayerId}/ready`).set(true).catch(() => { });
+}
+
+function updateReadyStatus() {
+    const total = gs.onlinePlayers.length;
+    const readyN = gs.onlinePlayers.filter(p => !!p.ready).length;
+    const allReady = total >= 2 && readyN === total;
+    const msg = document.getElementById('readyCountMsg');
+    const btn = document.getElementById('startGameBtn');
+    
+    if (msg) {
+        if (allReady) {
+            msg.innerHTML = `✅ هەمی ئامادەن! &nbsp;<strong>(${readyN}/${total})</strong>`;
+            msg.style.cssText = 'display:block;color:#15803d;font-weight:bold;background:#dcfce7;border:2px solid #22c55e;border-radius:30px;padding:10px 18px;text-align:center;margin:10px 0;font-size:1rem;';
+        } else {
+            msg.innerHTML = `چاوەڕوانی یارییکەران... &nbsp;<strong>(${readyN}/${total} حازرن)</strong>`;
+            msg.style.cssText = 'display:block;color:#92400e;background:#fef3c7;border:2px solid #f59e0b;border-radius:30px;padding:10px 18px;text-align:center;margin:10px 0;font-size:1rem;';
+        }
+    }
+    if (btn) btn.disabled = !allReady;
+}
+
+function setOnlineMode(mode) {
+    gs.onlineMode = mode;
+    firebase.database().ref(`rooms/${gs.roomCode}`).update({ mode });
+}
+
+async function startOnlineGame() {
+    const names = gs.onlinePlayers.map(p => p.name);
+    if (names.length < 3) {
+        showToast('پێویستە ب کێمی 3 یارییکەر بن! ❌', true);
         return;
     }
-    starterCont.classList.add('hidden');
-    progress.textContent=`یارییکەرێ ${gs.currentPlayerIndex+1} / ${gs.players.length}`;
-    const cardEl = document.createElement('div');
-    cardEl.className = 'card-face-down';
-    const offAv = getAvatarForIndex(Math.abs(current.id * 7 + 3) % AVATARS.length);
-    cardEl.innerHTML = `<div style="width:70px;height:70px;border-radius:50%;background:${offAv.c};display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 8px;border:3px solid #ffcc00;box-shadow:0 4px 16px rgba(0,0,0,0.3);">${offAv.e}</div><div class="card-fd-name">${current.name}</div><div class="card-fd-hint">👆 کلیک بکە بۆ بینینا رولێ خۆ</div>`;
-    const capturedId = current.id;
-    cardEl.onclick = function(){ revealOfflineCard(capturedId); };
-    container.innerHTML = '';
-    container.appendChild(cardEl);
-    nextBtn.classList.add('hidden');
-    revealBtn.classList.add('hidden');
+    const mode = gs.onlineMode;
+    let secretWord, differentWord = '', spyIndices = [];
+    
+    if (mode === 1) {
+        let spyCount = 1;
+        if (names.length >= 6 && names.length <= 8) spyCount = 2;
+        if (names.length >= 9) spyCount = 3;
+        while (spyIndices.length < spyCount) {
+            const r = Math.floor(Math.random() * names.length);
+            if (!spyIndices.includes(r)) spyIndices.push(r);
+        }
+        secretWord = kurdishWords[Math.floor(Math.random() * kurdishWords.length)];
+    } else {
+        spyIndices = [Math.floor(Math.random() * names.length)];
+        const pair = wordPairs[Math.floor(Math.random() * wordPairs.length)];
+        secretWord = pair.normal;
+        differentWord = pair.different;
+    }
+    
+    await firebase.database().ref(`rooms/${gs.roomCode}`).update({
+        status: 'started',
+        gameData: {
+            mode,
+            secretWord,
+            differentWord,
+            spyIndices,
+            playerNames: names,
+            starterIndex: Math.floor(Math.random() * names.length),
+            playerAvatars: gs.onlinePlayers.map(p => p.avatarIdx ?? 0)
+        },
+        gameState: { turnIndex: 0, revealed: names.map(() => false), currentPhase: 'revealing' }
+    });
 }
 
-function nextPlayerOffline() { gs.currentPlayerIndex++; showNextCard(); }
+function listenGameState(gameData) {
+    firebase.database().ref(`rooms/${gs.roomCode}/gameState`).on('value', (snap) => {
+        if (snap.exists()) {
+            try { sessionStorage.setItem('sikhur_phase', snap.val().phase || 'lobby'); } catch (e) { }
+        }
+        if (!snap.exists()) return;
+        const state = snap.val();
+        const turnIndex = state.turnIndex ?? 0;
+        const revealedArr = state.revealed ?? [];
+        gameData._currentTurn = turnIndex;
+        if (turnIndex >= gameData.playerNames.length) {
+            showOnlineTurnScreen(gameData, gameData.playerNames.length, revealedArr);
+        } else {
+            showOnlineTurnScreen(gameData, turnIndex, revealedArr);
+        }
+    });
+}
 
 function showOnlineTurnScreen(gameData, turnIndex, revealedArr) {
-    const container=document.getElementById('card-container');
-    const progress=document.getElementById('game-progress');
-    const nextBtn=document.getElementById('next-player-btn');
-    const revealBtn=document.getElementById('reveal-btn');
-    const starterCont=document.getElementById('starter-container');
+    const container = document.getElementById('card-container');
+    const progress = document.getElementById('game-progress');
+    const nextBtn = document.getElementById('next-player-btn');
+    const revealBtn = document.getElementById('reveal-btn');
+    const starterCont = document.getElementById('starter-container');
 
-    starterCont.classList.add('hidden'); nextBtn.classList.add('hidden'); revealBtn.classList.add('hidden');
+    starterCont.classList.add('hidden');
+    nextBtn.classList.add('hidden');
+    revealBtn.classList.add('hidden');
 
-    const players=gameData.playerNames;
-    const totalPlayers=players.length;
-    const myIdx=gs.myPlayerIndex;
-    progress.textContent=`یارییکەرێ ${turnIndex+1} / ${totalPlayers}`;
+    const players = gameData.playerNames;
+    const totalPlayers = players.length;
+    const myIdx = gs.myPlayerIndex;
+    progress.textContent = `یارییکەرێ ${turnIndex + 1} / ${totalPlayers}`;
 
-    if(turnIndex>=totalPlayers){
-        const starterName=players[gameData.starterIndex!==undefined?gameData.starterIndex:0];
-        progress.textContent=`${totalPlayers}/${totalPlayers} - تەمام`;
-        container.innerHTML=`<div class="card" style="cursor:default;background:#f0f7ff;border:2px solid #0066cc;"><div class="role-icon">🎯</div><div style="color:#0066cc;font-size:1.1rem;">هەمی کارت هاتتنە دیتن</div><div style="color:#666;margin-top:10px;font-size:0.95rem;">دەستپێکرنا مناقشێ... 🗣️</div></div>`;
-        starterCont.innerHTML=`<div class="starter-box"><div class="starter-message">🎤 دەستپێ بکە!</div><div class="starter-name">${starterName}</div><div>🧠 مێشکێ خۆ بکاربیینە، هزر بکە پاشی باخڤە!</div><div id="disc-countdown-box" style="margin-top:18px;"><div style="font-size:0.95rem;color:rgba(255,255,255,0.8);margin-bottom:6px;">مناقشە دەستپێدکات لە:</div><div id="disc-countdown-num" style="font-size:3.5rem;font-weight:bold;color:#ffcc00;line-height:1;">6</div></div></div>`;
+    if (turnIndex >= totalPlayers) {
+        const starterName = players[gameData.starterIndex !== undefined ? gameData.starterIndex : 0];
+        progress.textContent = `${totalPlayers}/${totalPlayers} - تەمام`;
+        container.innerHTML = `<div class="card" style="cursor:default;background:#f0f7ff;border:2px solid #0066cc;"><div class="role-icon">🎯</div><div style="color:#0066cc;font-size:1.1rem;">هەمی کارت هاتتنە دیتن</div><div style="color:#666;margin-top:10px;font-size:0.95rem;">دەستپێکرنا مناقشێ... 🗣️</div></div>`;
+        starterCont.innerHTML = `<div class="starter-box"><div class="starter-message">🎤 دەستپێ بکە!</div><div class="starter-name">${starterName}</div><div>🧠 مێشکێ خۆ بکاربیینە، هزر بکە پاشی باخڤە!</div><div id="disc-countdown-box" style="margin-top:18px;"><div style="font-size:0.95rem;color:rgba(255,255,255,0.8);margin-bottom:6px;">مناقشە دەستپێدکات لە:</div><div id="disc-countdown-num" style="font-size:3.5rem;font-weight:bold;color:#ffcc00;line-height:1;">6</div></div></div>`;
         starterCont.classList.remove('hidden');
         revealBtn.classList.add('hidden');
         let _cdSec = 6;
@@ -1825,12 +1933,14 @@ function showOnlineTurnScreen(gameData, turnIndex, revealedArr) {
         return;
     }
 
-    const activePlayerName=players[turnIndex];
-    if(myIdx===turnIndex){
-        window._onlineRevealData=gameData;
-        window._onlineRevealIndex=turnIndex;
-        window._onlineRevealMyCard=function(){ onlineRevealMyCard(window._onlineRevealData, window._onlineRevealIndex); };
-        const myAv2 = getAvatarForIndex((gameData.playerAvatars||[])[myIdx]??0);
+    const activePlayerName = players[turnIndex];
+    if (myIdx === turnIndex) {
+        window._onlineRevealData = gameData;
+        window._onlineRevealIndex = turnIndex;
+        window._onlineRevealMyCard = function() {
+            onlineRevealMyCard(window._onlineRevealData, window._onlineRevealIndex);
+        };
+        const myAv2 = getAvatarForIndex((gameData.playerAvatars || [])[myIdx] ?? 0);
         const cardEl = document.createElement('div');
         cardEl.className = 'card-face-down';
         cardEl.innerHTML = `<div style="width:70px;height:70px;border-radius:50%;background:${myAv2.c};display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 8px;border:3px solid #ffcc00;box-shadow:0 4px 16px rgba(0,0,0,0.3);">${myAv2.e}</div><div class="card-fd-name">${activePlayerName}</div><div class="card-fd-hint">👆 کلیک بکە بۆ بینینا رولێ خۆ</div>`;
@@ -1838,8 +1948,8 @@ function showOnlineTurnScreen(gameData, turnIndex, revealedArr) {
         container.innerHTML = '';
         container.appendChild(cardEl);
     } else {
-        const wAv = getAvatarForIndex((gameData.playerAvatars||[])[turnIndex]??0);
-        container.innerHTML=`<div class="waiting-turn-box">
+        const wAv = getAvatarForIndex((gameData.playerAvatars || [])[turnIndex] ?? 0);
+        container.innerHTML = `<div class="waiting-turn-box">
             <div style="width:64px;height:64px;border-radius:50%;background:${wAv.c};display:flex;align-items:center;justify-content:center;font-size:2.2rem;margin:0 auto 12px;border:3px solid #0066cc;">${wAv.e}</div>
             <div class="wt-name">${activePlayerName}</div>
             <div class="wt-msg">رولێ خۆ دبینیت... ⏳</div>
@@ -1848,723 +1958,648 @@ function showOnlineTurnScreen(gameData, turnIndex, revealedArr) {
 }
 
 function onlineRevealMyCard(gameData, myIdx) {
-    const container=document.getElementById('card-container');
-    const nextBtn=document.getElementById('next-player-btn');
-    const isSpy=gameData.mode===1&&gameData.spyIndices.includes(myIdx);
-    const hasDiffWord=gameData.mode===2&&gameData.spyIndices.includes(myIdx);
-    const spyIndices=gameData.spyIndices||[];
-    const names=gameData.playerNames||[];
-    const multiSpy=spyIndices.length>1;
+    const container = document.getElementById('card-container');
+    const nextBtn = document.getElementById('next-player-btn');
+    const isSpy = gameData.mode === 1 && gameData.spyIndices.includes(myIdx);
+    const hasDiffWord = gameData.mode === 2 && gameData.spyIndices.includes(myIdx);
+    const spyIndices = gameData.spyIndices || [];
+    const names = gameData.playerNames || [];
+    const multiSpy = spyIndices.length > 1;
 
-    if(gameData.mode===1){
-        if(isSpy){
-            let coSpyHtml='';
-            if(multiSpy){
-                const coSpies=spyIndices.filter(i=>i!==myIdx).map(i=>names[i]).filter(Boolean);
-                if(coSpies.length>0) coSpyHtml='<div style="margin-top:14px;background:rgba(0,0,0,0.18);border-radius:20px;padding:12px 16px;border:2px solid #ffcc00;"><div style="font-size:0.9rem;color:#ffcc00;margin-bottom:6px;">🤝 هەڤالێ تەیێ سیخوڕ:</div>'+coSpies.map(n=>'<div style="font-size:1.4rem;font-weight:bold;color:#fff;">🕵️ '+n+'</div>').join('')+'</div>';
+    if (gameData.mode === 1) {
+        if (isSpy) {
+            let coSpyHtml = '';
+            if (multiSpy) {
+                const coSpies = spyIndices.filter(i => i !== myIdx).map(i => names[i]).filter(Boolean);
+                if (coSpies.length > 0) {
+                    coSpyHtml = '<div style="margin-top:14px;background:rgba(0,0,0,0.18);border-radius:20px;padding:12px 16px;border:2px solid #ffcc00;"><div style="font-size:0.9rem;color:#ffcc00;margin-bottom:6px;">🤝 هەڤالێ تەیێ سیخوڕ:</div>' + coSpies.map(n => '<div style="font-size:1.4rem;font-weight:bold;color:#fff;">🕵️ ' + n + '</div>').join('') + '</div>';
+                }
             }
-            container.innerHTML='<div class="card-spy-revealed card-revealed"><div class="role-icon">🕵️</div><div style="color:#FF0000;font-size:2rem;margin-bottom:10px;">تۆ سیخوڕی!</div><div style="font-size:1rem;color:#000;">تۆ پەیڤێ نزانی، هەوڵبدە پەییڤێ بزانی</div><div style="margin-top:10px;color:#000;font-size:1rem;">خۆ دگەل مەدەنییا بگونجینە!</div>'+coSpyHtml+'</div>';
+            container.innerHTML = '<div class="card-spy-revealed card-revealed"><div class="role-icon">🕵️</div><div style="color:#FF0000;font-size:2rem;margin-bottom:10px;">تۆ سیخوڕی!</div><div style="font-size:1rem;color:#000;">تۆ پەیڤێ نزانی، هەوڵبدە پەییڤێ بزانی</div><div style="margin-top:10px;color:#000;font-size:1rem;">خۆ دگەل مەدەنییا بگونجینە!</div>' + coSpyHtml + '</div>';
         } else {
-            container.innerHTML='<div class="card-civilian-revealed card-revealed"><div class="role-icon">👨‍🌾</div><div style="color:#000;font-size:2rem;margin-bottom:15px;">تۆ مەدەنی</div><div style="font-size:1.1rem;color:#000;">هەوڵبدە سیخوڕی بگری!</div><div class="word-display">'+gameData.secretWord+'</div></div>';
+            container.innerHTML = '<div class="card-civilian-revealed card-revealed"><div class="role-icon">👨‍🌾</div><div style="color:#000;font-size:2rem;margin-bottom:15px;">تۆ مەدەنی</div><div style="font-size:1.1rem;color:#000;">هەوڵبدە سیخوڕی بگری!</div><div class="word-display">' + gameData.secretWord + '</div></div>';
         }
     } else {
-        const word=hasDiffWord?gameData.differentWord:gameData.secretWord;
-        container.innerHTML='<div class="card-white-revealed card-revealed"><div class="word-display">'+word+'</div></div>';
+        const word = hasDiffWord ? gameData.differentWord : gameData.secretWord;
+        container.innerHTML = '<div class="card-white-revealed card-revealed"><div class="word-display">' + word + '</div></div>';
     }
-    update(ref(db,`rooms/${gs.roomCode}/gameState`),{ [`revealed/${myIdx}`]:true });
-    nextBtn.textContent='یارییکەرێ دیڤدا ⏭️';
+    
+    firebase.database().ref(`rooms/${gs.roomCode}/gameState`).update({ [`revealed/${myIdx}`]: true });
+    nextBtn.textContent = 'یارییکەرێ دیڤدا ⏭️';
     nextBtn.classList.remove('hidden');
-    nextBtn.onclick=()=>onlineNextTurn(gameData);
+    nextBtn.onclick = () => onlineNextTurn(gameData);
 }
 
 function onlineNextTurn(gameData) {
-    const nextIdx=(gameData._currentTurn||0)+1;
-    update(ref(db,`rooms/${gs.roomCode}/gameState`),{turnIndex:nextIdx});
-}
-function nextPlayerAction() { if(!gs.isOnlineGame) nextPlayerOffline(); }
-
-/* ══════════════════════════════════════════
-   VOICE CHAT (PeerJS)
-   Rules:
-   - Everyone creates a peer on discussion start → can RECEIVE calls (hear others).
-   - Mic ON  → call all other players (they hear you).
-   - Mic OFF → stop sending only. Peer stays alive → you still HEAR everyone.
-   - Peer ID: sikhur_{roomCode}_{playerId}
-══════════════════════════════════════════ */
-let _discPeer       = null;
-let _discStream     = null;
-let _discVoiceOn    = false;
-let _discCalls      = {};    // outgoing: peerId → MediaConnection
-let _discIncoming   = {};    // incoming: peerId → MediaConnection
-let _discGameData   = null;
-let _discChatAttached = false;
-window._discSpeaking  = {};
-
-function discPeerId(uid) { return 'sikhur_' + gs.roomCode + '_' + uid; }
-
-function _playRemoteStream(stream, pid) {
-    const old = document.getElementById('discAudio_' + pid);
-    if (old) old.remove();
-    const audio = document.createElement('audio');
-    audio.id = 'discAudio_' + pid;
-    audio.autoplay = true; audio.playsInline = true;
-    audio.srcObject = stream;
-    document.body.appendChild(audio);
-    _watchVolume(stream, pid);
+    const nextIdx = (gameData._currentTurn || 0) + 1;
+    firebase.database().ref(`rooms/${gs.roomCode}/gameState`).update({ turnIndex: nextIdx });
 }
 
-function _watchVolume(stream, uid) {
-    try {
-        const ctx  = new (window.AudioContext || window.webkitAudioContext)();
-        const src  = ctx.createMediaStreamSource(stream);
-        const anal = ctx.createAnalyser();
-        anal.fftSize = 512;
-        src.connect(anal);
-        const buf = new Uint8Array(anal.frequencyBinCount);
-        const tick = () => {
-            anal.getByteFrequencyData(buf);
-            const avg = buf.reduce((a,b)=>a+b,0) / buf.length;
-            const speaking = avg > 8;
-            if (speaking !== !!window._discSpeaking[uid]) {
-                window._discSpeaking[uid] = speaking;
-                setPlayerSpeaking(uid, speaking);
-            }
-            requestAnimationFrame(tick);
-        };
-        tick();
-    } catch(e) {}
+function nextPlayerAction() {
+    if (!gs.isOnlineGame) nextPlayerOffline();
 }
 
-function setPlayerSpeaking(uid, speaking) {
-    const el = document.getElementById('vp_' + uid);
-    if (!el) return;
-    el.classList.toggle('speaking', speaking);
-    const bars = el.querySelector('.vp-bars');
-    if (bars) bars.style.display = speaking ? 'flex' : 'none';
+// Offline game functions
+function startOfflineSetup(mode) {
+    gs.gameMode = mode;
+    gs.isOnlineGame = false;
+    const title = document.getElementById('setup-title');
+    if (title) {
+        title.textContent = mode === 1 ? '⚙️ ڕێکخستنا سیخوڕی 🕵️' : '⚙️ ڕێکخستنا پەیڤێن جیاواز 🎭';
+    }
+    showPage('setup-page');
 }
 
-function _ensurePeer(onReady) {
-    if (_discPeer && !_discPeer.destroyed && _discPeer.open) { onReady(); return; }
-    if (_discPeer && !_discPeer.destroyed) { _discPeer.on('open', () => onReady()); return; }
-    const myPid = discPeerId(myPlayerId);
-    const peer  = new Peer(myPid, {
-        host:'0.peerjs.com', port:443, path:'/', secure:true,
-        config:{ iceServers:[
-            {urls:'stun:stun.l.google.com:19302'},
-            {urls:'stun:stun1.l.google.com:19302'}
-        ]}
-    });
-    _discPeer = peer;
-    peer.on('open', () => { onReady(); });
-    // Answer all incoming calls — even with mic off (listener mode)
-    peer.on('call', call => {
-        const pid = call.peer;
-        // Answer with mic stream if on, otherwise answer with empty stream to establish connection
-        call.answer(_discStream || undefined);
-        call.on('stream', stream => { _discIncoming[pid] = call; _playRemoteStream(stream, pid); });
-        call.on('close',  () => { delete _discIncoming[pid]; });
-        call.on('error',  () => { delete _discIncoming[pid]; });
-    });
-    peer.on('error', e => {
-        if (e.type === 'unavailable-id') {
-            // Another tab has this peer — destroy and try again with suffix
-            if (_discPeer === peer) _discPeer = null;
-            try { peer.destroy(); } catch(_) {}
-            setTimeout(() => _ensurePeer(onReady), 1000);
+function changePlayerCount(delta) {
+    currentPlayerCount = Math.min(10, Math.max(3, currentPlayerCount + delta));
+    document.getElementById('player-count').textContent = currentPlayerCount;
+    updatePlayerInputs();
+}
+
+function updatePlayerInputs() {
+    let html = '';
+    for (let i = 1; i <= currentPlayerCount; i++) {
+        html += `<div style="margin:8px 0;"><input type="text" class="player-input" id="pname-${i}" placeholder="یارییکەرێ ${i}"></div>`;
+    }
+    document.getElementById('player-inputs-container').innerHTML = html;
+}
+
+function initSetupPage() {
+    document.getElementById('player-count').textContent = currentPlayerCount;
+    updatePlayerInputs();
+}
+
+function startGame() {
+    const players = [];
+    for (let i = 1; i <= currentPlayerCount; i++) {
+        const el = document.getElementById(`pname-${i}`);
+        players.push(el && el.value.trim() ? el.value.trim() : `یارییکەرێ ${i}`);
+    }
+    gs.playerNames = [...players];
+    startNewGame(players);
+}
+
+function startNewGame(players) {
+    let secretWord, differentWord = '', spyIndices = [];
+    
+    if (gs.gameMode === 1) {
+        let spyCount = 1;
+        if (currentPlayerCount >= 6 && currentPlayerCount <= 8) spyCount = 2;
+        if (currentPlayerCount >= 9) spyCount = 3;
+        while (spyIndices.length < spyCount) {
+            const r = Math.floor(Math.random() * currentPlayerCount);
+            if (!spyIndices.includes(r)) spyIndices.push(r);
         }
-    });
-    peer.on('disconnected', () => { try { peer.reconnect(); } catch(_) {} });
+        secretWord = kurdishWords[Math.floor(Math.random() * kurdishWords.length)];
+    } else {
+        spyIndices = [Math.floor(Math.random() * currentPlayerCount)];
+        const pair = wordPairs[Math.floor(Math.random() * wordPairs.length)];
+        secretWord = pair.normal;
+        differentWord = pair.different;
+    }
+    
+    gs.players = players.map((name, i) => ({
+        id: i + 1,
+        name,
+        isSpy: gs.gameMode === 1 ? spyIndices.includes(i) : false,
+        hasDifferentWord: gs.gameMode === 2 ? spyIndices.includes(i) : false
+    }));
+    gs.spies = spyIndices.map(i => i + 1);
+    gs.secretWord = secretWord;
+    gs.differentWord = differentWord;
+    gs.currentPlayerIndex = 0;
+    gs.gameOver = false;
+    gs.starterPlayer = null;
+    showPage('game-page');
+    showNextCard();
 }
 
-function _startListenerPeer() { _ensurePeer(() => {}); }
+function selectStarterPlayer() {
+    const r = Math.floor(Math.random() * gs.players.length);
+    gs.starterPlayer = gs.players[r] || { name: "یاریکەر" };
+    return gs.starterPlayer;
+}
 
-async function toggleDiscMic() {
-    if (_discVoiceOn) {
-        // MIC OFF — stop sending, keep peer alive to keep receiving
-        _discVoiceOn = false;
-        if (_discStream) { _discStream.getTracks().forEach(t => t.stop()); _discStream = null; }
-        Object.entries(_discCalls).forEach(([pid, call]) => { try { call.close(); } catch(e) {} });
-        _discCalls = {};
-        setPlayerSpeaking(myPlayerId, false);
-        const btn = document.getElementById('discMicBtn');
-        if (btn) { btn.className='disc-mic-btn mic-off'; btn.textContent='🎙️ مایکروفونێ چالاک بکە'; }
-        renderVoicePlayers();
+function revealOfflineCard(playerId) {
+    const player = gs.players.find(p => p.id === playerId);
+    const container = document.getElementById('card-container');
+    const nextBtn = document.getElementById('next-player-btn');
+    if (!player) return;
+    
+    if (gs.gameMode === 1) {
+        if (player.isSpy) {
+            const allSpies = gs.players.filter(p => p.isSpy);
+            let coHtml = '';
+            if (allSpies.length > 1) {
+                const coSpies = allSpies.filter(p => p.id !== playerId);
+                if (coSpies.length > 0) {
+                    coHtml = '<div style="margin-top:14px;background:rgba(0,0,0,0.18);border-radius:20px;padding:12px 16px;border:2px solid #ffcc00;"><div style="font-size:0.9rem;color:#ffcc00;margin-bottom:6px;">🤝 هەڤالێ تەیێ سیخور:</div>' + coSpies.map(s => '<div style="font-size:1.4rem;font-weight:bold;color:#fff;">🕵️ ' + s.name + '</div>').join('') + '</div>';
+                }
+            }
+            container.innerHTML = '<div class="card-spy-revealed card-revealed"><div class="role-icon">🕵️</div><div style="color:#FF0000;font-size:2rem;margin-bottom:12px;">تۆ سیخوڕی!</div><div style="font-size:1rem;color:#000;">تۆ پەیڤێ نزانی، هەوڵبدە پەییڤێ بزانی</div><div style="margin-top:10px;color:#000;font-size:1rem;">خۆ دگەل مەدەنییا بگونجینە!</div>' + coHtml + '</div>';
+        } else {
+            container.innerHTML = '<div class="card-civilian-revealed card-revealed"><div class="role-icon">👨‍🌾</div><div style="color:#000;font-size:2rem;margin-bottom:12px;">تۆ مەدەنی</div><div style="font-size:1rem;color:#000;">هەوڵبدە سیخوڕی بگری!</div><div class="word-display">' + gs.secretWord + '</div></div>';
+        }
+    } else {
+        const word = player.hasDifferentWord ? gs.differentWord : gs.secretWord;
+        container.innerHTML = '<div class="card-white-revealed card-revealed"><div class="word-display">' + word + '</div></div>';
+    }
+    nextBtn.classList.remove('hidden');
+}
+
+function showNextCard() {
+    const container = document.getElementById('card-container');
+    const progress = document.getElementById('game-progress');
+    const nextBtn = document.getElementById('next-player-btn');
+    const revealBtn = document.getElementById('reveal-btn');
+    const starterCont = document.getElementById('starter-container');
+    const current = gs.players[gs.currentPlayerIndex];
+
+    if (!current) {
+        const starter = selectStarterPlayer();
+        progress.textContent = `${gs.players.length}/${gs.players.length} - تەمام`;
+        container.innerHTML = `<div class="card" style="cursor:default;background:#f0f7ff;border:2px solid #0066cc;"><div class="role-icon">🎯</div><div style="color:#0066cc;font-size:1.1rem;">هەمی کارت هاتتنە دیتن</div></div>`;
+        starterCont.innerHTML = `<div class="starter-box"><div class="starter-message">🎤 دەستپێ بکە!</div><div class="starter-name">${starter.name}</div><div>🧠 مێشکێ خۆ بکاربیینە، هزر بکە پاشی باخڤە!</div><div style="margin-top:18px;"><div style="font-size:0.95rem;color:rgba(255,255,255,0.8);margin-bottom:6px;">ئاشکراکرن دەستپێدکات لە:</div><div id="disc-countdown-num" style="font-size:3.5rem;font-weight:bold;color:#ffcc00;line-height:1;">6</div></div></div>`;
+        starterCont.classList.remove('hidden');
+        nextBtn.classList.add('hidden');
+        revealBtn.classList.add('hidden');
+        
+        let _cdSec2 = 6;
+        clearInterval(window._cdInterval);
+        window._cdInterval = setInterval(() => {
+            _cdSec2--;
+            const el = document.getElementById('disc-countdown-num');
+            if (el) el.textContent = _cdSec2;
+            if (_cdSec2 <= 0) {
+                clearInterval(window._cdInterval);
+                goToRevealPage();
+            }
+        }, 1000);
         return;
     }
-    // MIC ON — get microphone and call all players
-    try {
-        _discStream = await navigator.mediaDevices.getUserMedia({
-            audio:{ echoCancellation:true, noiseSuppression:true, autoGainControl:true }
-        });
-    } catch(e) {
-        showToast('مایکرۆفۆن نەهاتە دیتن ❌', true); return;
-    }
-    _discVoiceOn = true;
-    const btn = document.getElementById('discMicBtn');
-    if (btn) { btn.className='disc-mic-btn mic-on'; btn.textContent='🔴 مایکرۆفۆن یا چالاکە — کلیک بکە بۆ بێدەنگکرنێ'; }
-    _watchVolume(_discStream, myPlayerId);
-    renderVoicePlayers();
-    _ensurePeer(() => {
-        gs.onlinePlayers.forEach(p => {
-            if (p.id === myPlayerId) return;
-            const pid = discPeerId(p.id);
-            if (_discCalls[pid] && _discCalls[pid].open) return;
-            try {
-                const call = _discPeer.call(pid, _discStream);
-                if (!call) return;
-                call.on('stream', stream => _playRemoteStream(stream, pid));
-                call.on('close',  () => { delete _discCalls[pid]; });
-                call.on('error',  () => { delete _discCalls[pid]; });
-                _discCalls[pid] = call;
-            } catch(e) {}
-        });
-    });
+    
+    starterCont.classList.add('hidden');
+    progress.textContent = `یارییکەرێ ${gs.currentPlayerIndex + 1} / ${gs.players.length}`;
+    const cardEl = document.createElement('div');
+    cardEl.className = 'card-face-down';
+    const offAv = getAvatarForIndex(Math.abs(current.id * 7 + 3) % AVATARS.length);
+    cardEl.innerHTML = `<div style="width:70px;height:70px;border-radius:50%;background:${offAv.c};display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 8px;border:3px solid #ffcc00;box-shadow:0 4px 16px rgba(0,0,0,0.3);">${offAv.e}</div><div class="card-fd-name">${current.name}</div><div class="card-fd-hint">👆 کلیک بکە بۆ بینینا رولێ خۆ</div>`;
+    const capturedId = current.id;
+    cardEl.onclick = function() { revealOfflineCard(capturedId); };
+    container.innerHTML = '';
+    container.appendChild(cardEl);
+    nextBtn.classList.add('hidden');
+    revealBtn.classList.add('hidden');
 }
 
-function stopDiscMic() {
-    _discVoiceOn = false;
-    if (_discStream) { _discStream.getTracks().forEach(t => t.stop()); _discStream = null; }
-    [...Object.values(_discCalls), ...Object.values(_discIncoming)].forEach(c => { try { c.close(); } catch(e) {} });
-    _discCalls = {}; _discIncoming = {};
-    if (_discPeer) { try { _discPeer.destroy(); } catch(e) {} _discPeer = null; }
-    document.querySelectorAll('[id^="discAudio_"]').forEach(a => a.remove());
-    setPlayerSpeaking(myPlayerId, false);
-    window._discSpeaking = {};
-    const btn = document.getElementById('discMicBtn');
-    if (btn) { btn.className='disc-mic-btn mic-off'; btn.textContent='🎙️ مایکرۆفۆنێ چالاک بکە'; }
-    renderVoicePlayers();
-}
-
-
-function renderVoicePlayers() {
-    const box = document.getElementById('discVoicePlayers');
-    if (!box) return;
-    box.innerHTML = '';
-    gs.onlinePlayers.forEach(p => {
-        const av = getAvatarForIndex(p.avatarIdx ?? 0);
-        const speaking = !!window._discSpeaking[p.id];
-        const isMeVoice = p.id === myPlayerId && _discVoiceOn;
-        const div = document.createElement('div');
-        div.className = 'disc-voice-player' + (speaking ? ' speaking' : '');
-        div.id = 'vp_' + p.id;
-        div.innerHTML =
-            `<div class="vp-avatar" style="background:${av.c};border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;">${av.e}</div>` +
-            `<div class="vp-name">${p.name}</div>` +
-            `<div class="vp-bars" style="display:${speaking?'flex':'none'}">` +
-                `<div class="vp-bar"></div><div class="vp-bar"></div><div class="vp-bar"></div>` +
-            `</div>` +
-            (!isMeVoice && p.id === myPlayerId ? `<div class="vp-mute-icon">🔇</div>` : '');
-        box.appendChild(div);
-    });
-}
-
-
-function openDiscussionPage(gameData) {
-    _discGameData = gameData;
-    window._discSpeaking = {};
-    // Reset mic state (don't stop peer — we want to receive immediately)
-    _discVoiceOn = false;
-    if (_discStream) { _discStream.getTracks().forEach(t => t.stop()); _discStream = null; }
-    _discCalls = {};
-    showPage('discussion-page');
-    const starterName = gameData.playerNames[gameData.starterIndex ?? 0] || '—';
-    document.getElementById('disc-starter-name').textContent = starterName;
-    document.getElementById('discChatBox').innerHTML = '';
-    _discChatAttached = false;
-    renderVoicePlayers();
-    const btn = document.getElementById('discMicBtn');
-    if (btn) { btn.className = 'disc-mic-btn mic-off'; btn.textContent = '🎙️ مایکرۆفۆنێ چالاک بکە'; }
-    const voteBtn = document.getElementById('disc-vote-btn');
-    const waitMsg = document.getElementById('disc-wait-msg');
-    if (gs.isHost) { voteBtn.classList.remove('hidden'); waitMsg.classList.add('hidden'); }
-    else { voteBtn.classList.add('hidden'); waitMsg.classList.remove('hidden'); }
-    // Start listener peer FIRST so we can receive calls immediately
-    _startListenerPeer();
-    fbVoteListen(`rooms/${gs.roomCode}/discussionDone`, snap=>{
-        if(snap.val()===true){ stopDiscMic(); startVotingPhase(_discGameData); }
-    });
-    if(!_discChatAttached){
-        _discChatAttached=true;
-        fbListenChild(`rooms/${gs.roomCode}/discussionChat`, snap=>{
-            const msg=snap.val();
-            const box=document.getElementById('discChatBox');
-            if(!box)return;
-            const d=document.createElement('div');
-            d.className='dbubble '+(msg.senderId===myPlayerId?'me':'other');
-            d.innerHTML='<div class="bname">'+msg.name+'</div>'+msg.text;
-            box.appendChild(d); box.scrollTop=box.scrollHeight;
-        });
-    }
-}
-
-function sendDiscMsg() {
-    const inp=document.getElementById('discChatInput');
-    const txt=inp.value.trim();
-    if(!txt||!gs.roomCode)return;
-    inp.value='';
-    push(ref(db,`rooms/${gs.roomCode}/discussionChat`),{senderId:myPlayerId,name:gs.myNickname,text:txt,ts:Date.now()});
-}
-
-function hostStartVoting() {
-    if(!gs.isHost)return;
-    set(ref(db,`rooms/${gs.roomCode}/discussionDone`),true);
+function nextPlayerOffline() {
+    gs.currentPlayerIndex++;
+    showNextCard();
 }
 
 function goToRevealPage() {
     showPage('reveal-page');
-    const container=document.getElementById('reveal-container');
-    if(gs.gameMode===1){
-        const spies=gs.players.filter(p=>p.isSpy);
-        if(spies.length===1){
-            container.innerHTML=`<div class="reveal-card"><div class="role-icon">🕵️</div><div style="color:#ffcc00;">سیخوڕ =</div><div class="person-name">${spies[0].name}</div><div style="background:#333;padding:15px;border-radius:30px;margin-top:20px;border:1px solid #ffcc00;"><div style="font-size:1.1rem;color:#ffcc00;">پەییڤا مەدەنییا =</div><div style="font-size:2rem;font-weight:500;margin-top:5px;color:white;">${gs.secretWord}</div></div></div>`;
+    const container = document.getElementById('reveal-container');
+    
+    if (gs.gameMode === 1) {
+        const spies = gs.players.filter(p => p.isSpy);
+        if (spies.length === 1) {
+            container.innerHTML = `<div class="reveal-card"><div class="role-icon">🕵️</div><div style="color:#ffcc00;">سیخوڕ =</div><div class="person-name">${spies[0].name}</div><div style="background:#333;padding:15px;border-radius:30px;margin-top:20px;border:1px solid #ffcc00;"><div style="font-size:1.1rem;color:#ffcc00;">پەییڤا مەدەنییا =</div><div style="font-size:2rem;font-weight:500;margin-top:5px;color:white;">${gs.secretWord}</div></div></div>`;
         } else {
-            let sh='<div style="margin:15px 0;">';
-            spies.forEach(s=>{sh+=`<div style="font-size:1.8rem;margin:10px 0;background:#333;padding:12px;border-radius:30px;border:1px solid #ffcc00;color:#ffcc00;">${s.name}</div>`;});
-            sh+='</div>';
-            container.innerHTML=`<div class="reveal-card"><div class="role-icon">🕵️🕵️</div><div style="color:#ffcc00;">سیخوڕ ئەڤەنە!</div>${sh}<div style="background:#333;padding:15px;border-radius:30px;margin-top:20px;border:1px solid #ffcc00;"><div style="font-size:1.1rem;color:#ffcc00;">پەیڤاتە:</div><div style="font-size:2rem;font-weight:500;margin-top:5px;color:white;">${gs.secretWord}</div></div></div>`;
+            let sh = '<div style="margin:15px 0;">';
+            spies.forEach(s => {
+                sh += `<div style="font-size:1.8rem;margin:10px 0;background:#333;padding:12px;border-radius:30px;border:1px solid #ffcc00;color:#ffcc00;">${s.name}</div>`;
+            });
+            sh += '</div>';
+            container.innerHTML = `<div class="reveal-card"><div class="role-icon">🕵️🕵️</div><div style="color:#ffcc00;">سیخوڕ ئەڤەنە!</div>${sh}<div style="background:#333;padding:15px;border-radius:30px;margin-top:20px;border:1px solid #ffcc00;"><div style="font-size:1.1rem;color:#ffcc00;">پەیڤاتە:</div><div style="font-size:2rem;font-weight:500;margin-top:5px;color:white;">${gs.secretWord}</div></div></div>`;
         }
     } else {
-        const diff=gs.players.find(p=>p.hasDifferentWord);
-        container.innerHTML=`<div class="reveal-card"><div class="role-icon">🎭</div><div style="color:#ffcc00;">کەسێ جیاواز ئەڤەیە!</div><div class="person-name">${diff.name}</div><div style="background:#333;padding:15px;border-radius:30px;margin-top:20px;border:1px solid #ffcc00;"><div style="font-size:1.1rem;color:#ffcc00;">پەییڤا ئاسایی:</div><div style="font-size:1.8rem;font-weight:500;color:white;">${gs.secretWord}</div><div style="font-size:1.1rem;color:#ffcc00;margin-top:15px;">پەییڤا جیاواز:</div><div style="font-size:1.8rem;font-weight:500;color:#ff6b6b;">${gs.differentWord}</div></div></div>`;
+        const diff = gs.players.find(p => p.hasDifferentWord);
+        container.innerHTML = `<div class="reveal-card"><div class="role-icon">🎭</div><div style="color:#ffcc00;">کەسێ جیاواز ئەڤەیە!</div><div class="person-name">${diff.name}</div><div style="background:#333;padding:15px;border-radius:30px;margin-top:20px;border:1px solid #ffcc00;"><div style="font-size:1.1rem;color:#ffcc00;">پەییڤا ئاسایی:</div><div style="font-size:1.8rem;font-weight:500;color:white;">${gs.secretWord}</div><div style="font-size:1.1rem;color:#ffcc00;margin-top:15px;">پەییڤا جیاواز:</div><div style="font-size:1.8rem;font-weight:500;color:#ff6b6b;">${gs.differentWord}</div></div></div>`;
     }
 }
+
 function showFinalResults() {
     showPage('results-page');
-    const container=document.getElementById('results-container');
-    let html='<div class="results-container">';
-    if(gs.gameMode===1){
-        gs.players.forEach(p=>{html+=`<div class="player-result"><span>${p.name}</span>${p.isSpy?'<span class="spy-badge">سیخوڕ</span>':'<span class="civilian-badge">مەدەنی</span>'}</div>`;});
-        html+='</div>';
-        container.innerHTML=html+`<div class="word-box"><div class="word-value">${gs.secretWord}</div></div>`;
+    const container = document.getElementById('results-container');
+    let html = '<div class="results-container">';
+    
+    if (gs.gameMode === 1) {
+        gs.players.forEach(p => {
+            html += `<div class="player-result"><span>${p.name}</span>${p.isSpy ? '<span class="spy-badge">سیخوڕ</span>' : '<span class="civilian-badge">مەدەنی</span>'}</div>`;
+        });
+        html += '</div>';
+        container.innerHTML = html + `<div class="word-box"><div class="word-value">${gs.secretWord}</div></div>`;
     } else {
-        gs.players.forEach(p=>{html+=`<div class="player-result"><span>${p.name}</span>${p.hasDifferentWord?'<span class="different-badge">جیاواز</span>':'<span class="normal-badge">ئاسایی</span>'}</div>`;});
-        html+='</div>';
-        container.innerHTML=html+`<div class="word-box"><div class="word-value">${gs.secretWord}</div></div><div class="word-box"><div class="word-value-different">${gs.differentWord}</div></div>`;
+        gs.players.forEach(p => {
+            html += `<div class="player-result"><span>${p.name}</span>${p.hasDifferentWord ? '<span class="different-badge">جیاواز</span>' : '<span class="normal-badge">ئاسایی</span>'}</div>`;
+        });
+        html += '</div>';
+        container.innerHTML = html + `<div class="word-box"><div class="word-value">${gs.secretWord}</div></div><div class="word-box"><div class="word-value-different">${gs.differentWord}</div></div>`;
     }
 }
-function playAgain() { startNewGame(gs.playerNames); }
 
-let voteTimerInterval=null,myVoteChoice=null,voteSubmitted=false,voteGameData=null;
-
-function startVotingPhase(gameData) {
-    voteGameData=gameData; myVoteChoice=null; voteSubmitted=false;
-    detachVoteListeners();
-    showPage('voting-page');
-    document.getElementById('voteConfirmBtn').disabled=true;
-    document.getElementById('voteTimerDisplay').textContent='30';
-    document.getElementById('voteTimerDisplay').className='vote-timer-value';
-    document.getElementById('voteStatusMsg').textContent='دەنگێ خۆ بدە!';
-    const seeBtn=document.getElementById('seeResultsBtn');
-    if(gs.isHost){seeBtn.classList.remove('hidden');seeBtn.disabled=true;}else{seeBtn.classList.add('hidden');}
-    if(gs.isHost) set(ref(db,`rooms/${gs.roomCode}/votes`),null);
-    renderVoteList(gameData,{});
-    fbVoteListen(`rooms/${gs.roomCode}/votes`,snap=>{const votes=snap.val()||{};renderVoteList(gameData,votes);checkVotingComplete(gameData,votes);});
-    fbVoteListen(`rooms/${gs.roomCode}/votingRound`,snap=>{if(!snap.exists()||!snap.val()||gs.isHost)return;const round=snap.val();if(round>(gs.currentRound||1)){gs.currentRound=round;if(voteGameData)startVotingPhase(voteGameData);}});
-    fbVoteListen(`rooms/${gs.roomCode}/voteResult`,snap=>{if(!snap.exists()||!snap.val())return;showOnlineVoteResults(snap.val());});
-    let timeLeft=30;
-    clearInterval(voteTimerInterval);
-    voteTimerInterval=setInterval(()=>{
-        timeLeft--;
-        const el=document.getElementById('voteTimerDisplay');
-        if(el){el.textContent=timeLeft;if(timeLeft<=10)el.className='vote-timer-value urgent';}
-        if(timeLeft<=0){
-            clearInterval(voteTimerInterval);
-            const te=document.getElementById('voteTimerDisplay');if(te){te.textContent='⏰';te.className='vote-timer-value urgent';}
-            voteSubmitted=true;
-            const cb=document.getElementById('voteConfirmBtn');if(cb)cb.disabled=true;
-            document.querySelectorAll('.vote-row').forEach(r=>{r.style.pointerEvents='none';r.style.opacity='0.6';});
-            if(gs.isHost){const rb=document.getElementById('seeResultsBtn');if(rb)rb.disabled=false;}
-            else{const vs=document.getElementById('voteStatusMsg');if(vs)vs.textContent='⏰ دەم خلاس بو!';}
-        }
-    },1000);
+function playAgain() {
+    startNewGame(gs.playerNames);
 }
-function renderVoteList(gameData,votes){
-    const list=document.getElementById('voteList');if(!list)return;
-    const names=gameData.playerNames;const eliminated=gameData._eliminatedPlayers||gs.eliminatedPlayers||[];
-    const tally={};Object.values(votes).forEach(v=>{tally[v]=(tally[v]||0)+1;});
-    list.innerHTML='';
-    names.forEach((name,idx)=>{
-        if(eliminated.includes(idx))return;
-        const isSelected=myVoteChoice===idx;
-        const div=document.createElement('div');
-        const vAv=getAvatarForIndex((gameData.playerAvatars||[])[idx]??idx);
-        div.className='vote-row'+(isSelected?' selected':'');
-        div.innerHTML=`<div class="avatar-circle sm" style="background:${vAv.c};flex-shrink:0;">${vAv.e}</div><span class="vote-name">${name}</span>`;
-        if(!voteSubmitted)div.onclick=()=>selectVoteCandidate(idx,gameData,votes);
+
+// Discussion functions
+function openDiscussionPage(gameData) {
+    showPage('discussion-page');
+    const starterName = gameData.playerNames[gameData.starterIndex ?? 0] || '—';
+    document.getElementById('disc-starter-name').textContent = starterName;
+    document.getElementById('discChatBox').innerHTML = '';
+    
+    const voteBtn = document.getElementById('disc-vote-btn');
+    const waitMsg = document.getElementById('disc-wait-msg');
+    if (gs.isHost) {
+        voteBtn.classList.remove('hidden');
+        waitMsg.classList.add('hidden');
+    } else {
+        voteBtn.classList.add('hidden');
+        waitMsg.classList.remove('hidden');
+    }
+    
+    firebase.database().ref(`rooms/${gs.roomCode}/discussionChat`).off();
+    firebase.database().ref(`rooms/${gs.roomCode}/discussionChat`).on('child_added', (snap) => {
+        const msg = snap.val();
+        const box = document.getElementById('discChatBox');
+        if (!box) return;
+        const d = document.createElement('div');
+        d.className = 'dbubble ' + (msg.senderId === myPlayerId ? 'me' : 'other');
+        d.innerHTML = '<div class="bname">' + msg.name + '</div>' + msg.text;
+        box.appendChild(d);
+        box.scrollTop = box.scrollHeight;
+    });
+    
+    firebase.database().ref(`rooms/${gs.roomCode}/discussionDone`).on('value', (snap) => {
+        if (snap.val() === true) {
+            startVotingPhase(gameData);
+        }
+    });
+}
+
+function sendDiscMsg() {
+    const inp = document.getElementById('discChatInput');
+    const txt = inp.value.trim();
+    if (!txt || !gs.roomCode) return;
+    inp.value = '';
+    firebase.database().ref(`rooms/${gs.roomCode}/discussionChat`).push({
+        senderId: myPlayerId,
+        name: gs.myNickname,
+        text: txt,
+        ts: Date.now()
+    });
+}
+
+function hostStartVoting() {
+    if (!gs.isHost) return;
+    firebase.database().ref(`rooms/${gs.roomCode}/discussionDone`).set(true);
+}
+
+// Voting functions
+function startVotingPhase(gameData) {
+    voteGameData = gameData;
+    myVoteChoice = null;
+    voteSubmitted = false;
+    showPage('voting-page');
+    
+    document.getElementById('voteConfirmBtn').disabled = true;
+    document.getElementById('voteTimerDisplay').textContent = '30';
+    document.getElementById('voteTimerDisplay').className = 'vote-timer-value';
+    document.getElementById('voteStatusMsg').textContent = 'دەنگێ خۆ بدە!';
+    
+    const seeBtn = document.getElementById('seeResultsBtn');
+    if (gs.isHost) {
+        seeBtn.classList.remove('hidden');
+        seeBtn.disabled = true;
+    } else {
+        seeBtn.classList.add('hidden');
+    }
+    
+    if (gs.isHost) {
+        firebase.database().ref(`rooms/${gs.roomCode}/votes`).set(null);
+    }
+    
+    renderVoteList(gameData, {});
+    
+    firebase.database().ref(`rooms/${gs.roomCode}/votes`).off();
+    firebase.database().ref(`rooms/${gs.roomCode}/votes`).on('value', (snap) => {
+        const votes = snap.val() || {};
+        renderVoteList(gameData, votes);
+        checkVotingComplete(gameData, votes);
+    });
+    
+    firebase.database().ref(`rooms/${gs.roomCode}/voteResult`).off();
+    firebase.database().ref(`rooms/${gs.roomCode}/voteResult`).on('value', (snap) => {
+        if (!snap.exists() || !snap.val()) return;
+        showOnlineVoteResults(snap.val());
+    });
+    
+    let timeLeft = 30;
+    clearInterval(voteTimerInterval);
+    voteTimerInterval = setInterval(() => {
+        timeLeft--;
+        const el = document.getElementById('voteTimerDisplay');
+        if (el) {
+            el.textContent = timeLeft;
+            if (timeLeft <= 10) el.className = 'vote-timer-value urgent';
+        }
+        if (timeLeft <= 0) {
+            clearInterval(voteTimerInterval);
+            const te = document.getElementById('voteTimerDisplay');
+            if (te) {
+                te.textContent = '⏰';
+                te.className = 'vote-timer-value urgent';
+            }
+            voteSubmitted = true;
+            const cb = document.getElementById('voteConfirmBtn');
+            if (cb) cb.disabled = true;
+            document.querySelectorAll('.vote-row').forEach(r => {
+                r.style.pointerEvents = 'none';
+                r.style.opacity = '0.6';
+            });
+            if (gs.isHost) {
+                const rb = document.getElementById('seeResultsBtn');
+                if (rb) rb.disabled = false;
+            } else {
+                const vs = document.getElementById('voteStatusMsg');
+                if (vs) vs.textContent = '⏰ دەم خلاس بو!';
+            }
+        }
+    }, 1000);
+}
+
+function renderVoteList(gameData, votes) {
+    const list = document.getElementById('voteList');
+    if (!list) return;
+    const names = gameData.playerNames;
+    const eliminated = gameData._eliminatedPlayers || gs.eliminatedPlayers || [];
+    const tally = {};
+    Object.values(votes).forEach(v => { tally[v] = (tally[v] || 0) + 1; });
+    
+    list.innerHTML = '';
+    names.forEach((name, idx) => {
+        if (eliminated.includes(idx)) return;
+        const isSelected = myVoteChoice === idx;
+        const div = document.createElement('div');
+        const vAv = getAvatarForIndex((gameData.playerAvatars || [])[idx] ?? idx);
+        div.className = 'vote-row' + (isSelected ? ' selected' : '');
+        div.innerHTML = `<div class="avatar-circle sm" style="background:${vAv.c};flex-shrink:0;">${vAv.e}</div><span class="vote-name">${name}</span>`;
+        if (!voteSubmitted) {
+            div.onclick = () => selectVoteCandidate(idx, gameData, votes);
+        }
         list.appendChild(div);
     });
 }
-function selectVoteCandidate(idx,gameData,votes){
-    if(voteSubmitted)return;myVoteChoice=idx;
-    document.getElementById('voteConfirmBtn').disabled=false;
-    renderVoteList(gameData,votes);
-    document.getElementById('voteStatusMsg').textContent=`✅ ${gameData.playerNames[idx]} — هەلبژێرە`;
+
+function selectVoteCandidate(idx, gameData, votes) {
+    if (voteSubmitted) return;
+    myVoteChoice = idx;
+    document.getElementById('voteConfirmBtn').disabled = false;
+    renderVoteList(gameData, votes);
+    document.getElementById('voteStatusMsg').textContent = `✅ ${gameData.playerNames[idx]} — هەلبژێرە`;
 }
-function submitVote(){
-    if(myVoteChoice===null||voteSubmitted)return;voteSubmitted=true;
-    document.getElementById('voteConfirmBtn').disabled=true;
-    document.getElementById('voteStatusMsg').textContent='✅ دەنگێ تە هاتە دان!';
-    update(ref(db,`rooms/${gs.roomCode}/votes`),{[myPlayerId]:myVoteChoice});
+
+function submitVote() {
+    if (myVoteChoice === null || voteSubmitted) return;
+    voteSubmitted = true;
+    document.getElementById('voteConfirmBtn').disabled = true;
+    document.getElementById('voteStatusMsg').textContent = '✅ دەنگێ تە هاتە دان!';
+    firebase.database().ref(`rooms/${gs.roomCode}/votes`).update({ [myPlayerId]: myVoteChoice });
 }
-function checkVotingComplete(gameData,votes){
-    const activePlayers=gameData.playerNames.length-(gs.eliminatedPlayers||[]).length;
-    const totalVotes=Object.keys(votes).length;
-    const voteStatus=document.getElementById('voteStatusMsg');
-    if(voteStatus){if(voteSubmitted)voteStatus.textContent=`✅ دەنگێ تە هاتە تومارکرن! (${totalVotes}/${activePlayers})`;else voteStatus.textContent=`${totalVotes}/${activePlayers} دەنگێن دای`;}
-    if(totalVotes>=activePlayers&&gs.isHost){clearInterval(voteTimerInterval);const te=document.getElementById('voteTimerDisplay');if(te){te.textContent='✓';te.className='vote-timer-value';}const seeBtn=document.getElementById('seeResultsBtn');if(seeBtn)seeBtn.disabled=false;}
+
+function checkVotingComplete(gameData, votes) {
+    const activePlayers = gameData.playerNames.length - (gs.eliminatedPlayers || []).length;
+    const totalVotes = Object.keys(votes).length;
+    const voteStatus = document.getElementById('voteStatusMsg');
+    
+    if (voteStatus) {
+        if (voteSubmitted) {
+            voteStatus.textContent = `✅ دەنگێ تە هاتە تومارکرن! (${totalVotes}/${activePlayers})`;
+        } else {
+            voteStatus.textContent = `${totalVotes}/${activePlayers} دەنگێن دای`;
+        }
+    }
+    
+    if (totalVotes >= activePlayers && gs.isHost) {
+        clearInterval(voteTimerInterval);
+        const te = document.getElementById('voteTimerDisplay');
+        if (te) {
+            te.textContent = '✓';
+            te.className = 'vote-timer-value';
+        }
+        const seeBtn = document.getElementById('seeResultsBtn');
+        if (seeBtn) seeBtn.disabled = false;
+    }
 }
-function openOnlineResults(){
-    if(!gs.isHost)return;clearInterval(voteTimerInterval);
-    get(ref(db,`rooms/${gs.roomCode}/votes`)).then(snap=>{
-        const votes=snap.val()||{};const gameData=voteGameData;const names=gameData.playerNames;
-        const spyIndices=gameData.spyIndices;
-        // Use _eliminatedPlayers if set (carries over from previous rounds)
-        const eliminated=gameData._eliminatedPlayers||gs.eliminatedPlayers||[];
-        gs.eliminatedPlayers=eliminated;
-        const tally={};Object.values(votes).forEach(v=>{tally[v]=(tally[v]||0)+1;});
-        let maxVotes=0,chosenIdx=-1;
-        Object.entries(tally).forEach(([idx,cnt])=>{if(!eliminated.includes(parseInt(idx))&&cnt>maxVotes){maxVotes=cnt;chosenIdx=parseInt(idx);}});
-        const chosenName=chosenIdx>=0?names[chosenIdx]:'—';const chosenIsSpy=spyIndices.includes(chosenIdx);
-        const newEliminated=[...eliminated,chosenIdx];gs.eliminatedPlayers=newEliminated;
-        let outcome='';
-        if(chosenIsSpy){gs.spiesEliminated=(gs.spiesEliminated||0)+1;const rem=spyIndices.filter(i=>!newEliminated.includes(i)).length;outcome=rem===0?'civils_win':'spy_out_continue';}
-        else outcome='civil_out';
-        const spyNames=spyIndices.map(i=>names[i]).join(', ');
-        const tally2={};Object.values(votes).forEach(v=>{tally2[v]=(tally2[v]||0)+1;});
-        set(ref(db,`rooms/${gs.roomCode}/voteResult`),{chosenIdx,chosenName,chosenIsSpy,outcome,spyNames,maxVotes,tally:tally2,eliminatedPlayers:newEliminated,playerNames:names,spyIndices,secretWord:gameData.secretWord,differentWord:gameData.differentWord||'',mode:gameData.mode,playerAvatars:gameData.playerAvatars||[]});
+
+function openOnlineResults() {
+    if (!gs.isHost) return;
+    clearInterval(voteTimerInterval);
+    
+    firebase.database().ref(`rooms/${gs.roomCode}/votes`).get().then((snap) => {
+        const votes = snap.val() || {};
+        const gameData = voteGameData;
+        const names = gameData.playerNames;
+        const spyIndices = gameData.spyIndices;
+        const eliminated = gameData._eliminatedPlayers || gs.eliminatedPlayers || [];
+        gs.eliminatedPlayers = eliminated;
+        
+        const tally = {};
+        Object.values(votes).forEach(v => { tally[v] = (tally[v] || 0) + 1; });
+        
+        let maxVotes = 0, chosenIdx = -1;
+        Object.entries(tally).forEach(([idx, cnt]) => {
+            if (!eliminated.includes(parseInt(idx)) && cnt > maxVotes) {
+                maxVotes = cnt;
+                chosenIdx = parseInt(idx);
+            }
+        });
+        
+        const chosenName = chosenIdx >= 0 ? names[chosenIdx] : '—';
+        const chosenIsSpy = spyIndices.includes(chosenIdx);
+        const newEliminated = [...eliminated, chosenIdx];
+        gs.eliminatedPlayers = newEliminated;
+        
+        let outcome = '';
+        if (chosenIsSpy) {
+            gs.spiesEliminated = (gs.spiesEliminated || 0) + 1;
+            const rem = spyIndices.filter(i => !newEliminated.includes(i)).length;
+            outcome = rem === 0 ? 'civils_win' : 'spy_out_continue';
+        } else {
+            outcome = 'civil_out';
+        }
+        
+        const spyNames = spyIndices.map(i => names[i]).join(', ');
+        const tally2 = {};
+        Object.values(votes).forEach(v => { tally2[v] = (tally2[v] || 0) + 1; });
+        
+        firebase.database().ref(`rooms/${gs.roomCode}/voteResult`).set({
+            chosenIdx,
+            chosenName,
+            chosenIsSpy,
+            outcome,
+            spyNames,
+            maxVotes,
+            tally: tally2,
+            eliminatedPlayers: newEliminated,
+            playerNames: names,
+            spyIndices,
+            secretWord: gameData.secretWord,
+            differentWord: gameData.differentWord || '',
+            mode: gameData.mode,
+            playerAvatars: gameData.playerAvatars || []
+        });
     });
 }
-function showOnlineVoteResults(result){
-    const{chosenIdx,chosenName,chosenIsSpy,outcome,spyNames,maxVotes,tally,eliminatedPlayers,playerNames,spyIndices,secretWord,differentWord,mode}=result;
-    gs.eliminatedPlayers=eliminatedPlayers||[];
-    // Update voteGameData eliminatedPlayers so next round excludes them
-    if(voteGameData) voteGameData._eliminatedPlayers = gs.eliminatedPlayers;
+
+function showOnlineVoteResults(result) {
+    const { chosenIdx, chosenName, chosenIsSpy, outcome, spyNames, maxVotes, tally, eliminatedPlayers, playerNames, spyIndices, secretWord, differentWord, mode } = result;
+    gs.eliminatedPlayers = eliminatedPlayers || [];
+    if (voteGameData) voteGameData._eliminatedPlayers = gs.eliminatedPlayers;
 
     showPage('online-results-page');
-    const container=document.getElementById('online-results-container');
-    let html='';
+    const container = document.getElementById('online-results-container');
+    let html = '';
 
-    if(outcome==='civils_win'){
-        // FINAL: show everything including spy identity
-        html=`<div class="result-win-card"><div class="result-big-icon">🎉</div><div class="result-big-title">مەدەنیا سیخوڕ گرت!</div><div style="font-size:1.1rem;color:#333;margin:8px 0;">هەمی سیخوڕ هاتنە دیتن! 🏆</div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:10px;"><div style="font-size:0.9rem;color:#555;">هەلبژارتی</div><div style="font-size:1.8rem;font-weight:bold;color:#00994d;">${chosenName} 🕵️</div></div></div>`;
-        html+='<div class="results-container">';
-        playerNames.forEach((name,idx)=>{const cnt=tally[idx]||0;const isSpy=spyIndices.includes(idx);const isElim=eliminatedPlayers.includes(idx);const rAv=getAvatarForIndex((result.playerAvatars||[])[idx]??idx);html+=`<div class="player-result" style="${isElim?'opacity:0.5;':''}"><div class="avatar-circle sm" style="background:${rAv.c};flex-shrink:0;">${rAv.e}</div><span>${isElim?'❌ ':''}${name}</span><span style="display:flex;align-items:center;gap:8px;"><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span>${isSpy?'<span class="spy-badge">سیخوڕ</span>':'<span class="civilian-badge">مەدەنی</span>'}</span></div>`;});
-        html+=`</div><div class="word-box"><div class="word-value">${secretWord}</div></div>`;
-    }
-    else if(outcome==='spy_out_continue'){
-        // PARTIAL: one spy kicked — DON'T reveal remaining spies!
-        html=`<div class="result-win-card" style="border-color:#ffcc00;"><div class="result-big-icon">✅</div><div class="result-big-title" style="color:#cc8800;">سیخوڕەک هاتە دەرکەفتن!</div><div style="font-size:1.1rem;color:#333;margin:8px 0;">یارییا بەردەوامە — سیخوڕ هێشتا مایە! ⚠️</div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:10px;"><div style="font-size:0.9rem;color:#555;">دەرکەفتی</div><div style="font-size:1.8rem;font-weight:bold;color:#cc8800;">${chosenName} 🕵️</div></div><div style="font-size:0.9rem;color:#666;margin-top:8px;">دەنگدانەکا دی پێویستە!</div></div>`;
-        // Show vote counts but NO spy/civilian badges (would reveal remaining spy)
-        html+='<div class="results-container">';
-        playerNames.forEach((name,idx)=>{const cnt=tally[idx]||0;const isElim=eliminatedPlayers.includes(idx);html+=`<div class="player-result" style="${isElim?'opacity:0.5;':''}"><span>${isElim?'❌ ':''}${name}</span><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span></div>`;});
-        html+='</div>';
-        // Host button to start next round
-        if(gs.isHost) html+=`<button class="btn btn-blue" onclick="startNextVotingRound()" style="margin-top:10px;">🗳️ دەنگدانەکا دی دەستپێبکە</button>`;
-        else html+=`<div style="text-align:center;padding:16px;color:#666;background:#f5f9ff;border-radius:30px;margin-top:10px;">⏳ چاڤەریێ هۆستێ بکەن بو دەنگدانەکا دی...</div>`;
-    }
-    else{
-        // FINAL: civilian kicked — reveal all spies
-        html=`<div class="result-lose-card"><div class="result-big-icon">💀</div><div class="result-big-title">مەدەنی هاتە دەرکەفتن!</div><div style="font-size:1.1rem;color:#333;margin:8px 0;">سیخوڕ هێشتا مایە! 🕵️</div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:10px;"><div style="font-size:0.9rem;color:#555;">هەلبژارتی (مەدەنی بوو)</div><div style="font-size:1.8rem;font-weight:bold;color:#cc0000;">${chosenName}</div></div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:8px;"><div style="font-size:0.9rem;color:#555;">سیخوڕ ئەڤانە : </div><div style="font-size:1.8rem;font-weight:bold;color:#cc0000;">${spyNames}</div></div></div>`;
-        html+='<div class="results-container">';
-        playerNames.forEach((name,idx)=>{const cnt=tally[idx]||0;const isSpy=spyIndices.includes(idx);const isElim=eliminatedPlayers.includes(idx);const rAv=getAvatarForIndex((result.playerAvatars||[])[idx]??idx);html+=`<div class="player-result" style="${isElim?'opacity:0.5;':''}"><div class="avatar-circle sm" style="background:${rAv.c};flex-shrink:0;">${rAv.e}</div><span>${isElim?'❌ ':''}${name}</span><span style="display:flex;align-items:center;gap:8px;"><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span>${isSpy?'<span class="spy-badge">سیخوڕ</span>':'<span class="civilian-badge">مەدەنی</span>'}</span></div>`;});
-        html+=`</div><div class="word-box"><div class="word-value">${secretWord}</div></div>`;
+    if (outcome === 'civils_win') {
+        html = `<div class="result-win-card"><div class="result-big-icon">🎉</div><div class="result-big-title">مەدەنیا سیخوڕ گرت!</div><div style="font-size:1.1rem;color:#333;margin:8px 0;">هەمی سیخوڕ هاتنە دیتن! 🏆</div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:10px;"><div style="font-size:0.9rem;color:#555;">هەلبژارتی</div><div style="font-size:1.8rem;font-weight:bold;color:#00994d;">${chosenName} 🕵️</div></div></div>`;
+        html += '<div class="results-container">';
+        playerNames.forEach((name, idx) => {
+            const cnt = tally[idx] || 0;
+            const isSpy = spyIndices.includes(idx);
+            const isElim = eliminatedPlayers.includes(idx);
+            const rAv = getAvatarForIndex((result.playerAvatars || [])[idx] ?? idx);
+            html += `<div class="player-result" style="${isElim ? 'opacity:0.5;' : ''}"><div class="avatar-circle sm" style="background:${rAv.c};flex-shrink:0;">${rAv.e}</div><span>${isElim ? '❌ ' : ''}${name}</span><span style="display:flex;align-items:center;gap:8px;"><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span>${isSpy ? '<span class="spy-badge">سیخوڕ</span>' : '<span class="civilian-badge">مەدەنی</span>'}</span></div>`;
+        });
+        html += `</div><div class="word-box"><div class="word-value">${secretWord}</div></div>`;
+    } else if (outcome === 'spy_out_continue') {
+        html = `<div class="result-win-card" style="border-color:#ffcc00;"><div class="result-big-icon">✅</div><div class="result-big-title" style="color:#cc8800;">سیخوڕەک هاتە دەرکەفتن!</div><div style="font-size:1.1rem;color:#333;margin:8px 0;">یارییا بەردەوامە — سیخوڕ هێشتا مایە! ⚠️</div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:10px;"><div style="font-size:0.9rem;color:#555;">دەرکەفتی</div><div style="font-size:1.8rem;font-weight:bold;color:#cc8800;">${chosenName} 🕵️</div></div><div style="font-size:0.9rem;color:#666;margin-top:8px;">دەنگدانەکا دی پێویستە!</div></div>`;
+        html += '<div class="results-container">';
+        playerNames.forEach((name, idx) => {
+            const cnt = tally[idx] || 0;
+            const isElim = eliminatedPlayers.includes(idx);
+            html += `<div class="player-result" style="${isElim ? 'opacity:0.5;' : ''}"><span>${isElim ? '❌ ' : ''}${name}</span><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span></div>`;
+        });
+        html += '</div>';
+        if (gs.isHost) {
+            html += `<button class="btn btn-blue" onclick="startNextVotingRound()" style="margin-top:10px;">🗳️ دەنگدانەکا دی دەستپێبکە</button>`;
+        } else {
+            html += `<div style="text-align:center;padding:16px;color:#666;background:#f5f9ff;border-radius:30px;margin-top:10px;">⏳ چاڤەریێ هۆستێ بکەن بو دەنگدانەکا دی...</div>`;
+        }
+    } else {
+        html = `<div class="result-lose-card"><div class="result-big-icon">💀</div><div class="result-big-title">مەدەنی هاتە دەرکەفتن!</div><div style="font-size:1.1rem;color:#333;margin:8px 0;">سیخوڕ هێشتا مایە! 🕵️</div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:10px;"><div style="font-size:0.9rem;color:#555;">هەلبژارتی (مەدەنی بوو)</div><div style="font-size:1.8rem;font-weight:bold;color:#cc0000;">${chosenName}</div></div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:8px;"><div style="font-size:0.9rem;color:#555;">سیخوڕ ئەڤانە : </div><div style="font-size:1.8rem;font-weight:bold;color:#cc0000;">${spyNames}</div></div></div>`;
+        html += '<div class="results-container">';
+        playerNames.forEach((name, idx) => {
+            const cnt = tally[idx] || 0;
+            const isSpy = spyIndices.includes(idx);
+            const isElim = eliminatedPlayers.includes(idx);
+            const rAv = getAvatarForIndex((result.playerAvatars || [])[idx] ?? idx);
+            html += `<div class="player-result" style="${isElim ? 'opacity:0.5;' : ''}"><div class="avatar-circle sm" style="background:${rAv.c};flex-shrink:0;">${rAv.e}</div><span>${isElim ? '❌ ' : ''}${name}</span><span style="display:flex;align-items:center;gap:8px;"><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span>${isSpy ? '<span class="spy-badge">سیخوڕ</span>' : '<span class="civilian-badge">مەدەنی</span>'}</span></div>`;
+        });
+        html += `</div><div class="word-box"><div class="word-value">${secretWord}</div></div>`;
     }
 
-    container.innerHTML=html;
-    // DON'T null voteResult immediately — let all clients read it first
-    // Host nulls it only when starting next round
+    container.innerHTML = html;
 }
 
-function startNextVotingRound(){
-    if(!gs.isHost) return;
-    // Clear voteResult FIRST before starting new round to prevent re-triggering
-    set(ref(db,`rooms/${gs.roomCode}/voteResult`), null).then(() => {
-        gs.currentRound = (gs.currentRound||1) + 1;
-        // Pass eliminatedPlayers into next round
-        if(voteGameData) voteGameData._eliminatedPlayers = gs.eliminatedPlayers;
-        update(ref(db,`rooms/${gs.roomCode}`),{votingRound: gs.currentRound});
+function startNextVotingRound() {
+    if (!gs.isHost) return;
+    firebase.database().ref(`rooms/${gs.roomCode}/voteResult`).set(null).then(() => {
+        gs.currentRound = (gs.currentRound || 1) + 1;
+        if (voteGameData) voteGameData._eliminatedPlayers = gs.eliminatedPlayers;
+        firebase.database().ref(`rooms/${gs.roomCode}`).update({ votingRound: gs.currentRound });
         startVotingPhase(voteGameData);
     });
 }
 
-async function playAgainOnline(){
-    clearInterval(voteTimerInterval);gs.eliminatedPlayers=[];gs.currentRound=1;gs.spiesEliminated=0;
-    try { sessionStorage.removeItem('sikhur_room'); } catch(e){}
-    if(!gs.roomCode)return;
-    await update(ref(db,`rooms/${gs.roomCode}/players/${myPlayerId}`),{wantPlayAgain:true,ready:false});
-    const snap=await get(ref(db,`rooms/${gs.roomCode}/players`));
-    let total=0,wantCount=0;snap.forEach(c=>{total++;if(c.val().wantPlayAgain)wantCount++;});
-    if(wantCount>=total&&gs.isHost){
-        try{
-            await update(ref(db,`rooms/${gs.roomCode}`),{status:'waiting',gameData:null,gameState:null,votes:null,voteResult:null,votingRound:null,discussionDone:null,discussionChat:null,webrtc:null,voiceState:null});
-            const snapP=await get(ref(db,`rooms/${gs.roomCode}/players`));
-            if(snapP.exists()){const updates={};snapP.forEach(child=>{updates[`${child.key}/ready`] = false; updates[`${child.key}/wantPlayAgain`] = false;});await update(ref(db,`rooms/${gs.roomCode}/players`),updates);}
-        }catch(e){}
+async function playAgainOnline() {
+    clearInterval(voteTimerInterval);
+    gs.eliminatedPlayers = [];
+    gs.currentRound = 1;
+    gs.spiesEliminated = 0;
+    
+    try { sessionStorage.removeItem('sikhur_room'); } catch (e) { }
+    if (!gs.roomCode) return;
+    
+    await firebase.database().ref(`rooms/${gs.roomCode}/players/${myPlayerId}`).update({ wantPlayAgain: true, ready: false });
+    
+    const snap = await firebase.database().ref(`rooms/${gs.roomCode}/players`).get();
+    let total = 0, wantCount = 0;
+    snap.forEach(c => {
+        total++;
+        if (c.val().wantPlayAgain) wantCount++;
+    });
+    
+    if (wantCount >= total && gs.isHost) {
+        try {
+            await firebase.database().ref(`rooms/${gs.roomCode}`).update({
+                status: 'waiting',
+                gameData: null,
+                gameState: null,
+                votes: null,
+                voteResult: null,
+                votingRound: null,
+                discussionDone: null,
+                discussionChat: null
+            });
+            const snapP = await firebase.database().ref(`rooms/${gs.roomCode}/players`).get();
+            if (snapP.exists()) {
+                const updates = {};
+                snapP.forEach(child => {
+                    updates[`${child.key}/ready`] = false;
+                    updates[`${child.key}/wantPlayAgain`] = false;
+                });
+                await firebase.database().ref(`rooms/${gs.roomCode}/players`).update(updates);
+            }
+        } catch (e) { }
     }
 }
-function returnToLobbyAfterGame(){
-    stopDiscMic();
-    document.getElementById('lobby-title').textContent='🏠 ژوورا یاریێ';
-    document.getElementById('room-code-display').textContent = formatRoomCodeDisplay(gs.roomCode);
-    document.getElementById('host-controls').classList.toggle('hidden',!gs.isHost);
-    document.getElementById('chatBox').innerHTML='';
-    showPage('online-lobby-page');
-    sysMsg('🔁 هەمی ئامادەن! یارییەکا نو دەستپێدکات...');
-}
 
-async function openLobby(isHost, code){
-    detachAll(); // clear all previous listeners before re-entering lobby
-    gs.isHost = isHost;
-    gs.roomCode = isHost ? genCode() : code;
-    gs.isOnlineGame = true;
-    gs.onlinePlayers = [];
-    try { sessionStorage.setItem('sikhur_room', JSON.stringify({code:gs.roomCode,isHost})); } catch(e){}
-    document.getElementById('room-code-display').textContent = formatRoomCodeDisplay(gs.roomCode);
+function returnToLobbyAfterGame() {
     document.getElementById('lobby-title').textContent = '🏠 ژوورا یاریێ';
-    document.getElementById('host-controls').classList.toggle('hidden', !isHost);
+    document.getElementById('room-code-display').textContent = formatRoomCodeDisplay(gs.roomCode);
+    document.getElementById('host-controls').classList.toggle('hidden', !gs.isHost);
     document.getElementById('chatBox').innerHTML = '';
     showPage('online-lobby-page');
-    const roomRef = `rooms/${gs.roomCode}`;
-    const myAvatarIdx = userProfile?.avatarIdx ?? 0;
-    if(isHost){
-        gs.hostPlayerId = myPlayerId;
-        await set(ref(db, roomRef), {
-            host: myPlayerId, hostId: myPlayerId,
-            mode: 1, status: 'waiting',
-            createdAt: Date.now(), expiresAt: Date.now()+(2*60*60*1000)
-        });
-        push(ref(db,`${roomRef}/chat`),{senderId:'system',name:'سیستەم',
-            text:`🏠 ${gs.myNickname} ژوور دروست کر — کۆدی شەیر بکە دگەل هەڤاڵان 📤`,type:'system',ts:Date.now()});
-    } else {
-        const roomSnap = await get(ref(db, roomRef));
-        if(!roomSnap.exists()){ showToast('ژوور نەدۆزرایەوە ❌',true); showPage('home-page'); return; }
-        gs.hostPlayerId = roomSnap.val().hostId || roomSnap.val().host || '';
-        push(ref(db,`${roomRef}/chat`),{senderId:'system',name:'سیستەم',
-            text:`👋 خێر هاتی ${gs.myNickname}!`,type:'system',ts:Date.now()});
-    }
-    // Write my player node
-    await set(ref(db,`${roomRef}/players/${myPlayerId}`),{
-        name: gs.myNickname, joinedAt: Date.now(), ready: false, avatarIdx: myAvatarIdx
-    });
-    // Host marks ready after player node is written
-    if(isHost) setTimeout(()=>markReady(), 800);
-    // Players listener — fires for EVERY player change on ALL clients
-    fbListen(`${roomRef}/players`, snap=>{
-        gs.onlinePlayers = [];
-        snap.forEach(child=>{
-            const v = child.val();
-            gs.onlinePlayers.push({
-                id: child.key, name: v.name||'?',
-                ready: !!(v.ready), wantPlayAgain: v.wantPlayAgain||false, avatarIdx: v.avatarIdx??0
-            });
-        });
-        // Host migration if original host left
-        if(gs.onlinePlayers.length > 0 && !gs.onlinePlayers.find(p=>p.id===gs.hostPlayerId)){
-            const newHost = gs.onlinePlayers[0];
-            gs.hostPlayerId = newHost.id;
-            if(newHost.id === myPlayerId){
-                gs.isHost = true;
-                document.getElementById('host-controls').classList.remove('hidden');
-                update(ref(db,`rooms/${gs.roomCode}`),{hostId:newHost.id});
-                showToast('👑 تۆ بویتە هۆست!', false);
-            }
-        }
-        renderPlayers();
-        updateReadyStatus();
-        // Always ensure host-controls visibility is correct
-        if(gs.isHost) document.getElementById('host-controls').classList.remove('hidden');
-    });
-    fbListen(`${roomRef}/mode`, snap=>{
-        if(snap.val()){
-            gs.onlineMode=snap.val();
-            document.getElementById('omBtn1').classList.toggle('selected',gs.onlineMode===1);
-            document.getElementById('omBtn2').classList.toggle('selected',gs.onlineMode===2);
-        }
-    });
-    fbListen(`${roomRef}/hostId`, snap=>{
-        if(snap.exists()){
-            gs.hostPlayerId = snap.val();
-            if(gs.hostPlayerId === myPlayerId){
-                gs.isHost = true;
-                document.getElementById('host-controls').classList.remove('hidden');
-            }
-        }
-    });
-    fbListen(`${roomRef}/status`, snap=>{
-        if(snap.val()==='waiting'){
-            clearInterval(voteTimerInterval);myVoteChoice=null;voteSubmitted=false;
-            gs.eliminatedPlayers=[];gs.currentRound=1;
-            gs.onlinePlayers.forEach(p=>{p.ready=false;p.wantPlayAgain=false;});
-            renderPlayers();updateReadyStatus();returnToLobbyAfterGame();
-        }
-        if(snap.val()==='started'){
-            get(ref(db,`${roomRef}/gameData`)).then(gSnap=>{
-                if(!gSnap.exists())return;
-                const gd=gSnap.val();
-                gs.gameMode=gd.mode;gs.secretWord=gd.secretWord;gs.differentWord=gd.differentWord||'';
-                const names=gd.playerNames;currentPlayerCount=names.length;gs.playerNames=[...names];
-                gs.players=names.map((name,i)=>({id:i+1,name,
-                    isSpy:gd.mode===1?gd.spyIndices.includes(i):false,
-                    hasDifferentWord:gd.mode===2?gd.spyIndices.includes(i):false}));
-                gs.spies=gd.spyIndices.map(i=>i+1);gs.currentPlayerIndex=0;
-                gs.gameOver=false;gs.starterPlayer=null;
-                gs.myPlayerIndex=names.indexOf(gs.onlinePlayers.find(p=>p.id===myPlayerId)?.name);
-                showPage('game-page');listenGameState(gd);
-            });
-        }
-    });
-    fbListenChild(`${roomRef}/chat`, snap=>{
-        const msg=snap.val(); if(!msg) return;
-        const box=document.getElementById('chatBox'); if(!box) return;
-        const d=document.createElement('div');
-        d.className=msg.type==='system'?'bubble system':(msg.senderId===myPlayerId?'bubble me':'bubble other');
-        if(msg.type==='system') d.textContent=msg.text;
-        else d.innerHTML=`<div class="bname">${msg.name}</div>${msg.text}`;
-        box.appendChild(d); box.scrollTop=box.scrollHeight;
-    });
 }
 
-function renderPlayers(){
-    const box=document.getElementById('waiting-players-list');
-    if(!box) return;
-    let html=`<div class="players-box-title">یارییکەر: (${gs.onlinePlayers.length}) 👥</div>`;
-    gs.onlinePlayers.forEach(p=>{
-        const isMe   = p.id === myPlayerId;
-        const isHostP= p.id === gs.hostPlayerId;
-        const av     = getAvatarForIndex(p.avatarIdx ?? 0);
-        // Green dot if ready, red dot if not
-        const dot = p.ready
-            ? `<span style="display:inline-block;width:13px;height:13px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;flex-shrink:0;"></span>`
-            : `<span style="display:inline-block;width:13px;height:13px;border-radius:50%;background:#ef4444;box-shadow:0 0 6px #ef4444;flex-shrink:0;"></span>`;
-        // Avatar — crown sits on top of avatar for host
-        const avatarHtml = isHostP
-            ? `<div style="position:relative;flex-shrink:0;width:42px;height:42px;">
-                <div class="avatar-circle sm" style="background:${av.c};width:42px;height:42px;line-height:42px;">${av.e}</div>
-                <span style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-size:1rem;line-height:1;pointer-events:none;">👑</span>
-               </div>`
-            : `<div class="avatar-circle sm" style="background:${av.c};flex-shrink:0;">${av.e}</div>`;
-        // Right side: ready button only for me if not yet ready
-        let right = '';
-        if(!p.ready && isMe){
-            right = `<button id="myReadyBtn" style="background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;border:none;border-radius:30px;padding:8px 18px;font-size:0.95rem;font-weight:bold;cursor:pointer;white-space:nowrap;">حازرم ✅</button>`;
-        }
-        html += `<div style="display:flex;align-items:center;gap:10px;padding:10px 8px;border-bottom:1px solid #f0f0f0;">
-            ${avatarHtml}
-            <span style="flex:1;font-size:1rem;font-weight:${isMe?'bold':'normal'};color:#222;">
-                ${p.name}${isMe?' (تۆ)':''}
-            </span>
-            ${dot}
-            ${right}
-        </div>`;
-    });
-    box.innerHTML = html;
-    const btn = document.getElementById('myReadyBtn');
-    if(btn){
-        btn.onclick = function(){
-            btn.textContent = '⏳';
-            btn.disabled = true;
-            markReady();
-        };
-    }
-}
-
-function markReady(){
-    if(!gs.roomCode || !myPlayerId) return;
-    set(ref(db, `rooms/${gs.roomCode}/players/${myPlayerId}/ready`), true)
-        .catch(()=>{});
-}
-window.markReady = markReady;
-
-function updateReadyStatus(){
-    const total  = gs.onlinePlayers.length;
-    const readyN = gs.onlinePlayers.filter(p=>!!p.ready).length;
-    const allReady = total >= 2 && readyN === total;
-    const msg = document.getElementById('readyCountMsg');
-    const btn = document.getElementById('startGameBtn');
-    if(msg){
-        if(allReady){
-            msg.innerHTML = `✅ هەمی ئامادەن! &nbsp;<strong>(${readyN}/${total})</strong>`;
-            msg.style.cssText = 'display:block;color:#15803d;font-weight:bold;background:#dcfce7;border:2px solid #22c55e;border-radius:30px;padding:10px 18px;text-align:center;margin:10px 0;font-size:1rem;';
-        } else {
-            msg.innerHTML = `چاوەڕوانی یارییکەران... &nbsp;<strong>(${readyN}/${total} حازرن)</strong>`;
-            msg.style.cssText = 'display:block;color:#92400e;background:#fef3c7;border:2px solid #f59e0b;border-radius:30px;padding:10px 18px;text-align:center;margin:10px 0;font-size:1rem;';
-        }
-    }
-    if(btn) btn.disabled = !allReady;
-}
-
-function listenGameState(gameData){
-    fbListen(`rooms/${gs.roomCode}/gameState`,snap=>{
-        // Save phase for reconnection
-        if(snap.exists()) {
-            try { sessionStorage.setItem('sikhur_phase', snap.val().phase||'lobby'); } catch(e){}
-        }
-        if(!snap.exists())return;
-        const state=snap.val();
-        const turnIndex=state.turnIndex??0;
-        const revealedArr=state.revealed??[];
-        gameData._currentTurn=turnIndex;
-        if(turnIndex>=gameData.playerNames.length) showOnlineTurnScreen(gameData,gameData.playerNames.length,revealedArr);
-        else showOnlineTurnScreen(gameData,turnIndex,revealedArr);
-    });
-}
-
-
-function copyRoomCode(){
+function copyRoomCode() {
     const displayCode = formatRoomCodeDisplay(gs.roomCode);
-    navigator.clipboard.writeText(displayCode).then(()=>{
-        const el=document.querySelector('.copy-hint');el.textContent='✅ هاتە کوپیکرن!';
-        setTimeout(()=>{el.textContent='📋 کۆپیکرن';},2000);
-    }).catch(()=>alert('کۆد: '+displayCode));
-}
-function setOnlineMode(mode){ gs.onlineMode=mode; update(ref(db,`rooms/${gs.roomCode}`),{mode}); }
-
-async function startOnlineGame(){
-    const names=gs.onlinePlayers.map(p=>p.name);
-    if(names.length<3){showToast('پێویستە ب کێمی 3 یارییکەر بن! ❌',true);return;}
-    const mode=gs.onlineMode;
-    let secretWord,differentWord='',spyIndices=[];
-    if(mode===1){
-        let spyCount=1;
-        if(names.length>=6&&names.length<=8)spyCount=2;
-        if(names.length>=9)spyCount=3;
-        while(spyIndices.length<spyCount){const r=Math.floor(Math.random()*names.length);if(!spyIndices.includes(r))spyIndices.push(r);}
-        secretWord=kurdishWords[Math.floor(Math.random()*kurdishWords.length)];
-    } else {
-        spyIndices=[Math.floor(Math.random()*names.length)];
-        const pair=wordPairs[Math.floor(Math.random()*wordPairs.length)];
-        secretWord=pair.normal;differentWord=pair.different;
-    }
-    await update(ref(db,`rooms/${gs.roomCode}`),{
-        status:'started',
-        gameData:{mode,secretWord,differentWord,spyIndices,playerNames:names,
-            starterIndex:Math.floor(Math.random()*names.length),
-            playerAvatars:gs.onlinePlayers.map(p=>p.avatarIdx??0)},
-        gameState:{turnIndex:0,revealed:names.map(()=>false),currentPhase:'revealing'}
-    });
+    navigator.clipboard.writeText(displayCode).then(() => {
+        const el = document.querySelector('.copy-hint');
+        el.textContent = '✅ هاتە کوپیکرن!';
+        setTimeout(() => { el.textContent = '📋 کۆپیکرن'; }, 2000);
+    }).catch(() => alert('کۆد: ' + displayCode));
 }
 
-async function leaveRoom(){
-    // Confirm before leaving
+async function leaveRoom() {
     const confirmed = await showConfirmModal(
         'دەرکەفتن 🚪',
-        'ئایا دڵنیایتی دەتەوێ ژوور بچووتە دەرەوە؟',
+        'ئەرێ تویێ تەئکیدی تە دڤێت ژ ژوورێ بدەرکەڤی؟',
         'بەلێ، دەرکەفتن',
         'نەخێر، بمێنەوە'
     );
     if (!confirmed) return;
+    
     detachAll();
-    try{await remove(ref(db,`rooms/${gs.roomCode}/players/${myPlayerId}`));if(gs.isHost)await remove(ref(db,`rooms/${gs.roomCode}`));}catch(e){}
-    gs.roomCode='';gs.isOnlineGame=false;
-    try { sessionStorage.removeItem('sikhur_room'); } catch(e){}
+    try {
+        await firebase.database().ref(`rooms/${gs.roomCode}/players/${myPlayerId}`).remove();
+        if (gs.isHost) await firebase.database().ref(`rooms/${gs.roomCode}`).remove();
+    } catch (e) { }
+    
+    gs.roomCode = '';
+    gs.isOnlineGame = false;
+    try { sessionStorage.removeItem('sikhur_room'); } catch (e) { }
     showPage('home-page');
 }
 
 function showConfirmModal(title, message, confirmText, cancelText) {
     return new Promise(resolve => {
-        // Remove any existing modal
         const old = document.getElementById('confirmModal');
         if (old) old.remove();
+        
         const modal = document.createElement('div');
         modal.id = 'confirmModal';
         modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
@@ -2574,133 +2609,200 @@ function showConfirmModal(title, message, confirmText, cancelText) {
                 <div style="font-size:1.3rem;font-weight:bold;color:#1a1a2e;margin-bottom:10px;">${title}</div>
                 <div style="font-size:1rem;color:#555;margin-bottom:22px;line-height:1.5;">${message}</div>
                 <div style="display:flex;gap:10px;">
-                    <button id="confirmNo"  style="flex:1;padding:14px;border-radius:30px;border:2px solid #ccc;background:white;color:#555;font-size:1rem;cursor:pointer;font-family:inherit;">${cancelText}</button>
+                    <button id="confirmNo" style="flex:1;padding:14px;border-radius:30px;border:2px solid #ccc;background:white;color:#555;font-size:1rem;cursor:pointer;font-family:inherit;">${cancelText}</button>
                     <button id="confirmYes" style="flex:1;padding:14px;border-radius:30px;border:none;background:linear-gradient(135deg,#ff4444,#cc0000);color:white;font-size:1rem;cursor:pointer;font-family:inherit;box-shadow:0 4px 0 #990000;">${confirmText}</button>
                 </div>
             </div>`;
+        
         document.body.appendChild(modal);
-        modal.querySelector('#confirmYes').onclick = () => { modal.remove(); resolve(true);  };
-        modal.querySelector('#confirmNo').onclick  = () => { modal.remove(); resolve(false); };
-        modal.onclick = e => { if(e.target === modal) { modal.remove(); resolve(false); } };
+        modal.querySelector('#confirmYes').onclick = () => { modal.remove(); resolve(true); };
+        modal.querySelector('#confirmNo').onclick = () => { modal.remove(); resolve(false); };
+        modal.onclick = e => { if (e.target === modal) { modal.remove(); resolve(false); } };
     });
 }
 
-function sysMsg(text){
-    const box=document.getElementById('chatBox');
-    const d=document.createElement('div');d.className='bubble system';d.textContent=text;
-    box.appendChild(d);box.scrollTop=box.scrollHeight;
-}
-function sendMsg(){
-    const inp=document.getElementById('chatInput');const txt=inp.value.trim();
-    if(!txt||!gs.roomCode)return;inp.value='';
-    push(ref(db,`rooms/${gs.roomCode}/chat`),{senderId:myPlayerId,name:gs.myNickname,text:txt,type:'chat',ts:Date.now()});
+function sendMsg() {
+    const inp = document.getElementById('chatInput');
+    const txt = inp.value.trim();
+    if (!txt || !gs.roomCode) return;
+    inp.value = '';
+    firebase.database().ref(`rooms/${gs.roomCode}/chat`).push({
+        senderId: myPlayerId,
+        name: gs.myNickname,
+        text: txt,
+        type: 'chat',
+        ts: Date.now()
+    });
 }
 
-function showHowToPlayOptions(){ document.getElementById('how-to-play-modal').classList.remove('hidden'); }
-function closeHowToPlayOptions(){ document.getElementById('how-to-play-modal').classList.add('hidden'); }
-function showHowToPlayInstructions(mode){
-    closeHowToPlayOptions();
-    const icon=document.getElementById('instructions-icon');
-    const title=document.getElementById('instructions-title');
-    const text=document.getElementById('instructions-text');
-    if(mode===1){
-        icon.textContent='';title.textContent='یارییا سیخوڕی ';title.style.color='#0066cc';
-        text.innerHTML=`<strong>🎯 ئارمانج:</strong> سیخوڕی بگرن!<br><strong>📋 چەوا دێ یاریێ کەی؟:</strong><br>- سیخوڕ پەیڤێ نزانیت، لێ دێ هەولدەت ل تشتێن مەدەنیا پەیڤێ بزانیت.<br>- نابیت پەیڤ بخو بهێتە گوتن لێ تشتێن ب پەیڤێ ڤە گرێدایی و نزیک درستن.<br>- ب گشتی راوند (فەرە) بدلێ هنگو نە، و هەر فەرێ تە ئێک کەلیمە یاهەی نە زێدەتر!!<br>- نابیت مناقشە بهێتە کرن، دناڤ راوندا (فەر)ا دا.!`;
-    } else {
-        icon.textContent='';title.textContent='یارییا پەییڤێن جیاواز 🎭';title.style.color='#cc0000';
-        text.innerHTML=`<strong>🎯 ئارمانج:</strong> کەسێ جیاواز بگرن!<br><strong>📋 چەوا دێ یاریێ کەی؟:</strong><br>- بتنێ ئێک نەفەر پەیڤا جیاواز یا هەی کو ئەوژی نزانیت ئەو یێ جیاوازە.<br>- نموونە وەک [تەیارە، عەلیکوپتەر] گەلەک تشتا ڤە وەکی ئێکن!<br>- ب گشتی راوند (فەرە) بدلێ هنگو نە، و هەر فەرێ تە ئێک کەلیمە یاهەی نە زێدەتر!!<br>- نابیت مناقشە بهێتە کرن، دناڤ راوندا (فەر)ا دا.!`;
+function detachAll() {
+    if (gs.roomCode) {
+        firebase.database().ref(`rooms/${gs.roomCode}`).off();
     }
+}
+
+// How to play functions
+function showHowToPlayOptions() {
+    document.getElementById('how-to-play-modal').classList.remove('hidden');
+}
+
+function closeHowToPlayOptions() {
+    document.getElementById('how-to-play-modal').classList.add('hidden');
+}
+
+function showHowToPlayInstructions(mode) {
+    closeHowToPlayOptions();
+    const title = document.getElementById('instructions-title');
+    const text = document.getElementById('instructions-text');
+    
+    if (mode === 1) {
+        title.textContent = 'یارییا سیخوڕی';
+        title.style.color = '#0066cc';
+        text.innerHTML = `<strong>🎯 ئارمانج:</strong> سیخوڕی بگرن!<br><strong>📋 چەوا دێ یاریێ کەی؟:</strong><br>- سیخوڕ پەیڤێ نزانیت، لێ دێ هەولدەت ل تشتێن مەدەنیا پەیڤێ بزانیت.<br>- نابیت پەیڤ بخو بهێتە گوتن لێ تشتێن ب پەیڤێ ڤە گرێدایی و نزیک درستن.<br>- ب گشتی راوند (فەرە) بدلێ هنگو نە، و هەر فەرێ تە ئێک کەلیمە یاهەی نە زێدەتر!!<br>- نابیت مناقشە بهێتە کرن، دناڤ راوندا (فەر)ا دا.!`;
+    } else {
+        title.textContent = 'یارییا پەییڤێن جیاواز 🎭';
+        title.style.color = '#cc0000';
+        text.innerHTML = `<strong>🎯 ئارمانج:</strong> کەسێ جیاواز بگرن!<br><strong>📋 چەوا دێ یاریێ کەی؟:</strong><br>- بتنێ ئێک نەفەر پەیڤا جیاواز یا هەی کو ئەوژی نزانیت ئەو یێ جیاوازە.<br>- نموونە وەک [تەیارە، عەلیکوپتەر] گەلەک تشتا ڤە وەکی ئێکن!<br>- ب گشتی راوند (فەرە) بدلێ هنگو نە، و هەر فەرێ تە ئێک کەلیمە یاهەی نە زێدەتر!!<br>- نابیت مناقشە بهێتە کرن، دناڤ راوندا (فەر)ا دا.!`;
+    }
+    
     document.getElementById('how-to-play-instructions-modal').classList.remove('hidden');
 }
-function closeHowToPlayInstructions(){ document.getElementById('how-to-play-instructions-modal').classList.add('hidden'); }
 
+function closeHowToPlayInstructions() {
+    document.getElementById('how-to-play-instructions-modal').classList.add('hidden');
+}
 
+// Leaderboard functions
 let _leaderboardFrom = "home-page";
+
 async function openLeaderboard(from) {
     _leaderboardFrom = from || "home-page";
     showPage('leaderboard-page');
     const container = document.getElementById('leaderboard-container');
     container.innerHTML = '<div style="text-align:center;padding:30px;color:#999;">⏳ چاوەڕوان بە...</div>';
+    
     try {
-        // Get top players ordered by wins
-        const snap = await get(ref(db, 'users'));
-        if(!snap.exists()) { container.innerHTML='<p style="text-align:center;color:#999;">هێشتا کەس نییە 😅</p>'; return; }
+        const snap = await firebase.database().ref('users').get();
+        if (!snap.exists()) {
+            container.innerHTML = '<p style="text-align:center;color:#999;">هێشتا کەس نییە 😅</p>';
+            return;
+        }
+        
         const players = [];
         snap.forEach(child => {
             const d = child.val();
-            if(d.nickname && d.gamesPlayed > 0) players.push({...d, uid: child.key});
+            if (d.nickname && d.gamesPlayed > 0) players.push({ ...d, uid: child.key });
         });
-        players.sort((a,b) => (b.wins||0) - (a.wins||0));
-        const top = players.slice(0,10);
-        const medals = ['🥇','🥈','🥉'];
-        const rowClass = ['gold','silver','bronze'];
+        
+        players.sort((a, b) => (b.wins || 0) - (a.wins || 0));
+        const top = players.slice(0, 10);
+        const medals = ['🥇', '🥈', '🥉'];
+        const rowClass = ['gold', 'silver', 'bronze'];
         let html = '';
-        top.forEach((p,i) => {
-            const av = getAvatarForIndex(p.avatarIdx??0);
-            const rate = p.gamesPlayed > 0 ? Math.round((p.wins/p.gamesPlayed)*100) : 0;
+        
+        top.forEach((p, i) => {
+            const av = getAvatarForIndex(p.avatarIdx ?? 0);
+            const rate = p.gamesPlayed > 0 ? Math.round((p.wins / p.gamesPlayed) * 100) : 0;
             const isMe = currentUser && p.uid === currentUser.uid;
-            html += `<div class="leaderboard-row ${rowClass[i]||''}" style="${isMe?'border-color:#0066cc;box-shadow:0 0 0 2px rgba(0,102,204,0.2);':''}">
-                <div class="lb-rank">${medals[i]||('#'+(i+1))}</div>
+            html += `<div class="leaderboard-row ${rowClass[i] || ''}" style="${isMe ? 'border-color:#0066cc;box-shadow:0 0 0 2px rgba(0,102,204,0.2);' : ''}">
+                <div class="lb-rank">${medals[i] || ('#' + (i + 1))}</div>
                 <div class="avatar-circle sm" style="background:${av.c};">${av.e}</div>
                 <div style="flex:1;">
-                    <div class="lb-name">${p.nickname}${isMe?' (تۆ)':''}</div>
+                    <div class="lb-name">${p.nickname}${isMe ? ' (تۆ)' : ''}</div>
                     <div class="lb-games">${p.gamesPlayed} یاری · ${rate}% بردن</div>
                 </div>
-                <div class="lb-wins">🏆 ${p.wins||0}</div>
+                <div class="lb-wins">🏆 ${p.wins || 0}</div>
             </div>`;
         });
+        
         container.innerHTML = html || '<p style="text-align:center;color:#999;">هێشتا کەس نییە 😅</p>';
-    } catch(e) {
+    } catch (e) {
         container.innerHTML = '<p style="text-align:center;color:#cc0000;">❌ هەڵە ڕووی دا</p>';
     }
 }
 
-// Register service worker for PWA
-if('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(()=>{});
-    });
+function goBackFromLeaderboard() {
+    showPage(_leaderboardFrom || 'home-page');
 }
 
-document.addEventListener('DOMContentLoaded',()=>{
-    showPage('auth-page'); // onAuthStateChanged will redirect if logged in
-    // Auto-join via invite link ?room=XXXXXX
+function goBackToHome() {
+    showPage('home-page');
+}
+
+function goToHomePage() {
+    showPage('home-page');
+}
+
+// Make functions global
+window.switchAuthTab = switchAuthTab;
+window.doLogin = doLogin;
+window.doSignup = doSignup;
+window.doGoogleLogin = doGoogleLogin;
+window.doSignOut = doSignOut;
+window.confirmPickedNickname = confirmPickedNickname;
+window.submitVerifyCode = submitVerifyCode;
+window.resendVerificationEmail = resendVerificationEmail;
+window.cancelVerification = cancelVerification;
+window.openLeaderboard = openLeaderboard;
+window.goBackFromLeaderboard = goBackFromLeaderboard;
+window.formatRoomCodeInput = formatRoomCodeInput;
+window.joinRoomClick = joinRoomClick;
+window.goToNickname = goToNickname;
+window.showPage = showPage;
+window.goBackToHome = goBackToHome;
+window.goToHomePage = goToHomePage;
+window.startOfflineSetup = startOfflineSetup;
+window.changePlayerCount = changePlayerCount;
+window.startGame = startGame;
+window.copyRoomCode = copyRoomCode;
+window.setOnlineMode = setOnlineMode;
+window.startOnlineGame = startOnlineGame;
+window.leaveRoom = leaveRoom;
+window.markReady = markReady;
+window.nextPlayerAction = nextPlayerAction;
+window.revealOfflineCard = revealOfflineCard;
+window.goToRevealPage = goToRevealPage;
+window.showFinalResults = showFinalResults;
+window.playAgain = playAgain;
+window.submitVote = submitVote;
+window.openOnlineResults = openOnlineResults;
+window.playAgainOnline = playAgainOnline;
+window.startNextVotingRound = startNextVotingRound;
+window.sendDiscMsg = sendDiscMsg;
+window.hostStartVoting = hostStartVoting;
+window.sendMsg = sendMsg;
+window.showHowToPlayOptions = showHowToPlayOptions;
+window.closeHowToPlayOptions = closeHowToPlayOptions;
+window.showHowToPlayInstructions = showHowToPlayInstructions;
+window.closeHowToPlayInstructions = closeHowToPlayInstructions;
+
+// DOM Ready
+document.addEventListener('DOMContentLoaded', () => {
+    showPage('auth-page');
+    
     const urlParams = new URLSearchParams(window.location.search);
     const inviteCode = urlParams.get('room');
-    if(inviteCode) {
+    if (inviteCode) {
         const cleanInvite = inviteCode.replace(/[^0-9]/g, '');
-        if(cleanInvite.length === 6) {
+        if (cleanInvite.length === 6) {
             sessionStorage.setItem('sikhur_invite', cleanInvite);
         }
-        // Clean URL without reload
         window.history.replaceState({}, '', window.location.pathname);
     }
-    document.getElementById('how-to-play-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeHowToPlayOptions();});
-    document.getElementById('how-to-play-instructions-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeHowToPlayInstructions();});
+    
+    document.getElementById('how-to-play-modal').addEventListener('click', e => {
+        if (e.target === e.currentTarget) closeHowToPlayOptions();
+    });
+    
+    document.getElementById('how-to-play-instructions-modal').addEventListener('click', e => {
+        if (e.target === e.currentTarget) closeHowToPlayInstructions();
+    });
+    
+    setTimeout(() => {
+        const t = document.getElementById('welcomeToast');
+        if (t) t.remove();
+    }, 5000);
 });
-
-function goBackFromLeaderboard() { showPage(_leaderboardFrom || 'home-page'); }
-
-// Add missing playSound function
-function playSound(type) {
-    // Optional: implement sound effects
-    console.log('Sound:', type);
-}
-
-// FIX: Add missing decrement operator fix and ensure all functions are in global scope
-Object.assign(window,{
-    switchAuthTab,doLogin,doSignup,doGoogleLogin,doSignOut,confirmPickedNickname,
-    submitVerifyCode,resendVerificationEmail,cancelVerification,
-    openLeaderboard,goBackFromLeaderboard,formatRoomCodeInput,formatRoomCodeDisplay,cleanRoomCode,
-    joinRoomClick,goToNickname,confirmNickname,
-    showPage,goBackToHome,goToHomePage,
-    startOfflineSetup,changePlayerCount,startGame,
-    copyRoomCode,setOnlineMode,startOnlineGame,leaveRoom,markReady,
-    nextPlayerAction,revealOfflineCard,goToRevealPage,showFinalResults,playAgain,
-    submitVote,openOnlineResults,playAgainOnline,startNextVotingRound,returnToLobbyAfterGame,
-    sendDiscMsg,hostStartVoting,toggleDiscMic,
-    showHowToPlayOptions,closeHowToPlayOptions,showHowToPlayInstructions,closeHowToPlayInstructions,
-    sendMsg,playSound
-});
-</script></body>
+</script>
+</body>
 </html>
