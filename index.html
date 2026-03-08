@@ -1163,44 +1163,70 @@ function _setupFpcBoxes(){
 }
 
 async function sendResetCode(){
-    const email=document.getElementById('fp-email').value.trim();
-    const errEl=document.getElementById('fp-error');
-    const hintEl=document.getElementById('fp-signup-hint');
+    const email = document.getElementById('fp-email').value.trim();
+    const errEl = document.getElementById('fp-error');
+    const hintEl = document.getElementById('fp-signup-hint');
+    
+    // Clear previous messages
+    errEl.textContent = '';
     hintEl.classList.add('hidden');
-    if(!email){errEl.textContent='⚠️ تکایە ئیمەیڵەکەت بنڤیسە';return;}
-    errEl.textContent='⏳ چاڤەرێ بە...';
-    // Check if email exists in Firebase without using fetchSignInMethodsForEmail
-    try{
-        // Use Realtime DB to check if email exists (by indexing)
-        const _uSnap = await db.ref('users').orderByChild('email').equalTo(email).limitToFirst(1).get();
-        let _accountExists = _uSnap.exists();
+    
+    if (!email) {
+        errEl.textContent = '⚠️ تکایە ئیمەیڵەکەت بنڤیسە';
+        return;
+    }
+    
+    errEl.textContent = '⏳ چاڤەرێ بە...';
+    
+    try {
+        // Check if email exists in Firebase using database lookup
+        const usersSnapshot = await db.ref('users').orderByChild('email').equalTo(email).once('value');
+        const accountExists = usersSnapshot.exists();
         
-        if(!_accountExists){
-            errEl.textContent='';
+        if (!accountExists) {
+            errEl.textContent = '';
             hintEl.classList.remove('hidden');
             return;
         }
-
-        _fpEmail=email;
-        _fpCode=_gen4Code();
-        const key=btoa(email).replace(/[^a-zA-Z0-9]/g,'_');
-        try{await db.ref('resetCodes/'+key).set({code:_fpCode,createdAt:Date.now(),expiresAt:Date.now()+600000});}catch(e){}
-        const sent=await _sendCodeEmail(email,_fpCode);
-        errEl.textContent='';
+        
+        // Email exists, proceed with reset code
+        _fpEmail = email;
+        _fpCode = _gen4Code();
+        
+        // Store code in database
+        const key = btoa(email).replace(/[^a-zA-Z0-9]/g, '_');
+        await db.ref('resetCodes/' + key).set({
+            code: _fpCode,
+            createdAt: Date.now(),
+            expiresAt: Date.now() + 600000
+        });
+        
+        // Send email with code
+        const sent = await _sendCodeEmail(email, _fpCode);
+        
+        errEl.textContent = '';
+        
         // Show step 2
-        document.getElementById('fp-email-display').textContent=email;
-        for(let i=0;i<4;i++){const b=document.getElementById('fpc'+i);if(b){b.value='';b.style.borderColor='#9b59b6';}}
-        document.getElementById('fp-code-error').textContent='';
+        document.getElementById('fp-email-display').textContent = email;
+        for (let i = 0; i < 4; i++) {
+            const box = document.getElementById('fpc' + i);
+            if (box) {
+                box.value = '';
+                box.style.borderColor = '#9b59b6';
+            }
+        }
+        document.getElementById('fp-code-error').textContent = '';
         _fpShowStep(2);
         _setupFpcBoxes();
-        setTimeout(()=>document.getElementById('fpc0').focus(),150);
-        if(!sent){
-            document.getElementById('fp-code-error').innerHTML=
+        setTimeout(() => document.getElementById('fpc0').focus(), 150);
+        
+        if (!sent) {
+            document.getElementById('fp-code-error').innerHTML = 
                 `<div style="background:#fff3cd;border:2px solid #ffc107;border-radius:14px;padding:10px;font-size:0.85rem;color:#856404;">📧 ئیمەیڵ نەچوو — کۆدت: <strong style="font-size:1.6rem;letter-spacing:6px;">${_fpCode}</strong></div>`;
         }
-    } catch(e) {
-        console.error('Error in sendResetCode:', e);
-        errEl.textContent='❌ خەلەتیەک پەیدا بوو';
+    } catch (error) {
+        console.error('Error in sendResetCode:', error);
+        errEl.textContent = '❌ خەلەتیەک پەیدا بوو';
     }
 }
 
