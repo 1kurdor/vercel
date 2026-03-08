@@ -93,8 +93,8 @@
         .game-modal { position:fixed; top:0; left:0; right:0; bottom:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); z-index:10000; display:flex; justify-content:center; align-items:center; padding:20px; }
         .game-modal-content { background:white; border-radius:48px; padding:35px 25px; max-width:380px; width:100%; text-align:center; box-shadow:0 30px 60px rgba(0,0,0,0.5); border:3px solid #ffcc00; animation:modalPop 0.3s ease; }
         @keyframes modalPop { from{opacity:0;transform:scale(0.8)} to{opacity:1;transform:scale(1)} }
-        .how-to-play-modal { position:fixed; top:0; left:0; right:0; bottom:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); z-index:10001; display:flex; justify-content:center; align-items:center; padding:20px; }
-        .how-to-play-content { background:white; border-radius:48px; padding:30px 25px; max-width:380px; width:100%; text-align:center; box-shadow:0 30px 60px rgba(0,0,0,0.5); border:3px solid #ffcc00; animation:modalPop 0.3s ease; overflow-y:auto; max-height:90vh; }
+        .how-to-play-modal { position:fixed; top:0; left:0; right:0; bottom:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); z-index:10001; display:flex; justify-content:center; align-items:flex-start; padding:16px; overflow-y:auto; }
+        .how-to-play-content { background:white; border-radius:36px; padding:28px 22px; max-width:400px; width:100%; text-align:center; box-shadow:0 30px 60px rgba(0,0,0,0.5); border:3px solid #ffcc00; animation:modalPop 0.3s ease; margin:auto; }
         .how-to-play-option { width:100%; padding:20px; margin:10px 0; border:none; border-radius:40px; font-size:1.3rem; font-weight:500; cursor:pointer; transition:all 0.2s; font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif; }
         .how-to-play-option:hover { transform:translateY(-2px); }
         .how-to-play-close { margin-top:15px; padding:12px; background:#f0f0f0; border:none; border-radius:40px; font-size:1.1rem; cursor:pointer; width:100%; font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif; }
@@ -412,36 +412,46 @@
 </div>
 </div>
 
-<!-- ══════════════ FORGOT PASSWORD MODAL ══════════════ -->
+<!-- ══════════════ FORGOT PASSWORD — FULL SCREEN PAGE ══════════════ -->
 
-<!-- FIX: Uses frc0-frc3 (not rc0-rc3) to avoid ID conflict with room code boxes -->
-
-<div id="forgot-password-modal" class="how-to-play-modal hidden">
-    <div class="how-to-play-content" style="max-width:360px;">
-        <div style="font-size:3rem;margin-bottom:8px;">🔐</div>
-        <h2 style="color:#9b59b6;margin-bottom:8px;font-size:1.5rem;">پاسووردت لەبیر چووە؟</h2>
+<div id="forgot-password-page" class="hidden">
+<div style="padding:8px 0;">
 
 
-    <!-- STEP 1: Enter email -->
-    <div id="fp-step-1">
-        <div style="font-size:0.88rem;color:#666;margin-bottom:16px;line-height:1.5;">ئیمەیڵەکەت بنڤیسە — لینکی گەڕانەوەی پاسوورد دەنێردرێت بۆت</div>
-        <input type="email" id="fp-email" class="auth-input" placeholder="ئیمەیڵەکەت لێرە بنڤیسە..." style="margin-bottom:10px;" onkeydown="if(event.key==='Enter')sendResetLink()">
-        <div id="fp-error" style="color:#cc0000;font-size:0.85rem;margin-bottom:10px;min-height:20px;"></div>
-        <button class="btn btn-pink-purple" onclick="sendResetLink()" style="margin-bottom:8px;font-size:1.1rem;">📨 لینکی گەڕانەوە بنێرە</button>
-        <button onclick="closeForgotPasswordModal()" style="width:100%;padding:10px;border:none;background:none;color:#aaa;font-size:0.85rem;cursor:pointer;font-family:inherit;">← گەڕانەوە</button>
+<!-- STEP 1: Enter email -->
+<div id="fp-step-1" style="width:100%;">
+    <div style="text-align:center;margin-bottom:28px;">
+        <div style="font-size:5rem;margin-bottom:12px;">🔐</div>
+        <div style="font-size:1.8rem;font-weight:bold;color:#9b59b6;margin-bottom:8px;">پاسووردت لەبیر چووە؟</div>
+        <div style="font-size:0.95rem;color:#777;line-height:1.6;">ئیمەیڵەکەت بنڤیسە<br>لینکی گەڕانەوەی پاسوورد دەنێردرێت بۆت</div>
     </div>
-
-    <!-- STEP 2: Success message -->
-    <div id="fp-step-2" class="hidden">
-        <div style="font-size:4rem;margin:10px 0;">✅</div>
-        <div style="font-size:1.1rem;font-weight:bold;color:#00994d;margin-bottom:10px;">لینک هنارتراوە!</div>
-        <div id="fp-sent-msg" style="font-size:0.9rem;color:#555;background:#f0fff4;border:1px solid #00cc66;border-radius:16px;padding:12px 16px;margin-bottom:16px;line-height:1.6;direction:rtl;"></div>
-        <div style="font-size:0.82rem;color:#888;margin-bottom:16px;direction:rtl;">پاشان دووبارە بگەڕێ و پاسووردی نوێت بنڤیسە</div>
-        <button class="btn btn-blue" onclick="closeForgotPasswordModal()" style="margin-bottom:0;">← گەڕانەوە بو داخلبوون</button>
+    <div class="auth-input-group">
+        <label class="auth-input-label">ئیمەیڵ 📧</label>
+        <input type="email" id="fp-email" class="auth-input" placeholder="ئیمەیڵەکەت لێرە بنڤیسە..." onkeydown="if(event.key==='Enter')sendResetLink()">
     </div>
+    <div id="fp-error" style="color:#cc0000;font-size:0.88rem;margin:8px 0 4px;min-height:20px;text-align:center;padding:0 8px;"></div>
+    <!-- "No account? Sign up" hint — shown dynamically -->
+    <div id="fp-signup-hint" class="hidden" style="background:#fff3e0;border:2px solid #ff9800;border-radius:20px;padding:14px 16px;margin:8px 0 14px;text-align:center;direction:rtl;">
+        <div style="font-size:0.9rem;color:#e65100;margin-bottom:10px;">ئەم ئیمەیڵە هیچ هەژمارێک تێدا نییە.<br>دەتەوێ هەژمارێ نوی بکەیتەوە؟</div>
+        <button onclick="closeForgotPasswordPage();switchAuthTab('signup')" style="padding:10px 24px;border:none;border-radius:30px;background:linear-gradient(135deg,#0066cc,#0099ff);color:white;font-size:1rem;cursor:pointer;font-family:inherit;box-shadow:0 3px 0 #003366;">✅ دروستکرنا هەژمارا نوی</button>
+    </div>
+    <button class="btn btn-pink-purple" onclick="sendResetLink()" style="font-size:1.15rem;margin-top:6px;">📨 لینکی گەڕانەوە بنێرە</button>
+    <button onclick="closeForgotPasswordPage()" style="width:100%;padding:12px;border:none;background:none;color:#aaa;font-size:0.9rem;cursor:pointer;font-family:inherit;margin-top:4px;">← گەڕانەوە بو داخلبوون</button>
+</div>
+
+<!-- STEP 2: Sent success -->
+<div id="fp-step-2" class="hidden" style="width:100%;text-align:center;">
+    <div style="font-size:5rem;margin-bottom:16px;">📨</div>
+    <div style="font-size:1.8rem;font-weight:bold;color:#00994d;margin-bottom:12px;">ئیمەیڵ هنارتراوە! ✅</div>
+    <div id="fp-sent-msg" style="background:#f0fff4;border:2px solid #00cc66;border-radius:24px;padding:20px;margin:16px 0;font-size:0.95rem;color:#333;line-height:1.7;direction:rtl;text-align:right;"></div>
+    <div style="background:#fff8e1;border:1px solid #ffcc00;border-radius:20px;padding:14px 16px;margin-bottom:20px;font-size:0.85rem;color:#555;direction:rtl;text-align:right;">
+        💡 ئەگەر ئیمەیڵ نەهاتە — سەرەدانا فۆلدەری Spam / Junk بکە
+    </div>
+    <button class="btn btn-blue" onclick="closeForgotPasswordPage()">← گەڕانەوە بو داخلبوون</button>
 </div>
 
 
+</div>
 </div>
 
 <!-- ══════════════ PROFILE PAGE ══════════════ -->
@@ -734,12 +744,34 @@ const kurdishWords = [
     "دڵشاد","مال","فۆتۆ","سەیارە بچووک","شەربەت","پێک","پەنیر","مەڕ","مانگ",
     "بازاڕ","جووتیار"
 ];
-const categoryNames = ['خواردن','وەرزش','تەکنەلۆجیا','ئۆتۆمبێل'];
+const categoryNames = [
+    'خواردن 🍽️','وەرزش ⚽','تەکنەلۆجیا 💻','ئۆتۆمبێل 🚗',
+    'فیلم و سینەما 🎬','موزیک 🎵','ئاژەڵ 🐾','شار و جوگرافیا 🌍',
+    'کەرەستەی مال 🏠','جل و بەرگ 👗','خواردنەوە 🥤','یاری و مۆبایل 🎮',
+    'بەرهەم و مارکا 🏷️','نەخۆشی و دەرمان 💊','مێشک و زانست 🧠','کوردستان 🌄',
+    'رووداوی جیهانی 🌐','ئاواتەی ژیان 💭','ئاین و باوەڕ ☪️','تاریخ 📜'
+];
 const wordPairsByCategory = {
-    'خواردن':[{normal:"بریانی",different:"کوفتە"},{normal:"ماست",different:"دۆ"},{normal:"دۆ",different:"شیر"},{normal:"نانی",different:"ئارد"},{normal:"کڵۆچە",different:"پیت"},{normal:"شەکر",different:"خێ"},{normal:"چیپس",different:"پەپکی خوێ"}],
-    'وەرزش':[{normal:"مەسی",different:"ڕۆناڵدۆ"},{normal:"ڕۆناڵدینیۆ",different:"کاکا"},{normal:"گۆگ",different:"بالۆن"},{normal:"ئێمباپێ",different:"ڕۆدری"},{normal:"بێڵینگهام",different:"کاماوینگا"}],
-    'تەکنەلۆجیا':[{normal:"سامسۆنگ",different:"ئایفۆن"},{normal:"ئینستاگرام",different:"فیسبوک"},{normal:"زیرەک",different:"شارەزا"},{normal:"کۆلێژ",different:"زانکۆ"}],
-    'ئۆتۆمبێل':[{normal:"تۆیۆتا",different:"بێنز"},{normal:"تاکسی",different:"پاسکیل"},{normal:"نایکی",different:"ئەدیداس"},{normal:"پاییز",different:"زستان"}],
+    'خواردن 🍽️':[{normal:"بریانی",different:"کوفتە"},{normal:"ماست",different:"دۆ"},{normal:"دۆ",different:"شیر"},{normal:"نانی تازە",different:"نانی وشک"},{normal:"کڵۆچە",different:"پیت"},{normal:"شەکر",different:"خێ"},{normal:"چیپس",different:"پەپکی خوێ"},{normal:"پیتزا",different:"هامبەرگەر"},{normal:"سوشی",different:"شاورما"},{normal:"ئاوی مەوە",different:"شەربەت"}],
+    'وەرزش ⚽':[{normal:"مەسی",different:"ڕۆناڵدۆ"},{normal:"ڕۆناڵدینیۆ",different:"کاکا"},{normal:"گۆگ",different:"بالۆن"},{normal:"ئێمباپێ",different:"ڕۆدری"},{normal:"بێڵینگهام",different:"کاماوینگا"},{normal:"بەسکەتبۆل",different:"وۆلیبۆل"},{normal:"یاری تێنس",different:"بەدمینتۆن"},{normal:"مراوانە",different:"بێشداری"},{normal:"شناکردن",different:"دوومەیل"}],
+    'تەکنەلۆجیا 💻':[{normal:"سامسۆنگ",different:"ئایفۆن"},{normal:"ئینستاگرام",different:"فیسبوک"},{normal:"گوگل",different:"بینگ"},{normal:"ویندۆز",different:"مەک"},{normal:"ChatGPT",different:"Gemini"},{normal:"YouTube",different:"TikTok"},{normal:"WhatsApp",different:"Telegram"},{normal:"Nintendo",different:"PlayStation"},{normal:"Intel",different:"AMD"}],
+    'ئۆتۆمبێل 🚗':[{normal:"تۆیۆتا",different:"بێنز"},{normal:"تاکسی",different:"پاسکیل"},{normal:"BMW",different:"Audi"},{normal:"ئەڤانتی",different:"لامبۆرگینی"},{normal:"ئێلکتریک",different:"بێنزینی"},{normal:"سووپارکار",different:"SUV"},{normal:"Kia",different:"Hyundai"},{normal:"فۆرد",different:"شەڤرۆلێ"}],
+    'فیلم و سینەما 🎬':[{normal:"ئاکشن",different:"ئەنیمیشن"},{normal:"ئەڤاتار",different:"تایتانیک"},{normal:"نێتفلیکس",different:"Prime Video"},{normal:"ئۆسکار",different:"کانز"},{normal:"کۆمیدیا",different:"ترسناک"},{normal:"Batman",different:"Superman"},{normal:"Marvel",different:"DC"},{normal:"کردارمەند",different:"ئەکتەر"}],
+    'موزیک 🎵':[{normal:"گیتار",different:"پیانۆ"},{normal:"راپ",different:"ڕۆک"},{normal:"Spotify",different:"Apple Music"},{normal:"کۆنسێرت",different:"ئالبۆم"},{normal:"کەمان",different:"داف"},{normal:"خوێندنی کوردی",different:"خوێندنی عەرەبی"},{normal:"دیجێی",different:"خوێندکار"},{normal:"بێیتی",different:"سروود"}],
+    'ئاژەڵ 🐾':[{normal:"کوتک",different:"سەگ"},{normal:"شێر",different:"پیلەڤان"},{normal:"چیتا",different:"پوز"},{normal:"دۆلفین",different:"کەوچ"},{normal:"کۆنگا",different:"مەیمون"},{normal:"قاز",different:"مریشک"},{normal:"گوری",different:"عەقاب"},{normal:"مامناوەند",different:"پژاندرووک"}],
+    'شار و جوگرافیا 🌍':[{normal:"دهوک",different:"زاخۆ"},{normal:"پاریس",different:"لۆندەن"},{normal:"دوبەی",different:"ئەبووزەبی"},{normal:"ئیستانبوڵ",different:"ئەنقەرە"},{normal:"بەغدا",different:"بەسرە"},{normal:"ئامریکا",different:"کەنەدا"},{normal:"چین",different:"یابان"},{normal:"ئەلمانیا",different:"فەرەنسا"},{normal:"کوردستان",different:"بەلوچستان"}],
+    'کەرەستەی مال 🏠':[{normal:"کووکەر",different:"مایکرۆوێڤ"},{normal:"کەتانی",different:"بالشت"},{normal:"تەلەفزیۆن",different:"مۆنیتۆر"},{normal:"ڤێنتیلاتەر",different:"کۆلدیری"},{normal:"مەسوو",different:"چەکوش"},{normal:"قووتکان",different:"زنجیر"},{normal:"سقف",different:"دیوار"},{normal:"باخچە",different:"تەراس"}],
+    'جل و بەرگ 👗':[{normal:"کراوات",different:"پاپیۆن"},{normal:"نایکی",different:"ئەدیداس"},{normal:"کوێستی",different:"کاپۆت"},{normal:"کانژووف",different:"کفش"},{normal:"شاڵ",different:"کووڵ"},{normal:"Zara",different:"H&M"},{normal:"جلی کوردی",different:"جلی تورکی"},{normal:"شۆرت",different:"پانتۆل"}],
+    'خواردنەوە 🥤':[{normal:"چای",different:"قاوە"},{normal:"ئاوی پرتەقاڵ",different:"دۆی مێو"},{normal:"کۆکاکۆلا",different:"پێپسی"},{normal:"شیر",different:"دۆ"},{normal:"ئاوی سووچ",different:"ئاوی گەڕم"},{normal:"ئیسپرێسۆ",different:"لاتێ"},{normal:"ئێنەرجی درینک",different:"شەربەتی تازە"},{normal:"Starbucks",different:"Costa"}],
+    'یاری و مۆبایل 🎮':[{normal:"فۆرت نایت",different:"PUBG"},{normal:"ماینکرافت",different:"ڕۆبلۆکس"},{normal:"فیفا",different:"eFootball"},{normal:"PS5",different:"Xbox"},{normal:"Steam",different:"Epic Games"},{normal:"GTA",different:"RDR"},{normal:"مۆبایل گەیم",different:"کۆنسۆڵ گەیم"},{normal:"Clash of Clans",different:"Brawl Stars"}],
+    'بەرهەم و مارکا 🏷️':[{normal:"Apple",different:"Samsung"},{normal:"Pepsi",different:"Coca-Cola"},{normal:"McDonald's",different:"KFC"},{normal:"IKEA",different:"Home Centre"},{normal:"Amazon",different:"eBay"},{normal:"Gucci",different:"Louis Vuitton"},{normal:"Rolex",different:"Omega"},{normal:"Toyota",different:"Honda"}],
+    'نەخۆشی و دەرمان 💊':[{normal:"پاراسیتامۆل",different:"ئیبووپرۆفین"},{normal:"دەرمانخانە",different:"نەخۆشخانە"},{normal:"دکتۆر",different:"پەرەستار"},{normal:"واکسین",different:"ئەنتیبایۆتیک"},{normal:"کۆران",different:"تاون"},{normal:"بینی",different:"گوێ"},{normal:"کەلک",different:"بەرز"}],
+    'مێشک و زانست 🧠':[{normal:"فیزیک",different:"کیمیا"},{normal:"مارس",different:"زۆهرە"},{normal:"DNA",different:"RNA"},{normal:"دارون",different:"هاوکنگ"},{normal:"نیوتن",different:"ئایستاین"},{normal:"گەردوون",different:"ستێرە"},{normal:"ماتماتیک",different:"بایۆلۆجی"},{normal:"ئاتۆم",different:"موولێکیوڵ"}],
+    'کوردستان 🌄':[{normal:"دهوک",different:"سلێمانی"},{normal:"هەولێر",different:"کەرکووک"},{normal:"زاخۆ",different:"ئامێدی"},{normal:"کەلی",different:"دزە"},{normal:"ئاوزارو",different:"جڤاتکا"},{normal:"شنگال",different:"مەخمور"},{normal:"Zakho FC",different:"Duhok FC"},{normal:"پانا",different:"بازاری سەرا"}],
+    'رووداوی جیهانی 🌐':[{normal:"ئوکراین",different:"ڕووسیا"},{normal:"CNN",different:"BBC"},{normal:"NATO",different:"UN"},{normal:"Trump",different:"Biden"},{normal:"سەعووی",different:"ئێران"},{normal:"G7",different:"G20"},{normal:"WHO",different:"IMF"},{normal:"جهانگەرمی",different:"ئاوهەوا"}],
+    'ئاواتەی ژیان 💭':[{normal:"خەوباش",different:"شڤان"},{normal:"خانوو",different:"شوقە"},{normal:"مریجکانی",different:"کورسی"},{normal:"هاوسەر",different:"هاوژین"},{normal:"مێرد",different:"خێزان"},{normal:"باوک",different:"دایک"},{normal:"برا",different:"خوشک"},{normal:"کۆمەڵایەتی",different:"تەنهایی"}],
+    'ئاین و باوەڕ ☪️':[{normal:"مزگەوت",different:"کلیسا"},{normal:"مەکە",different:"مەدینە"},{normal:"ڕۆژووی",different:"نوێژ"},{normal:"قورئان",different:"ئینجیل"},{normal:"حاج",different:"زیارەت"},{normal:"ئیسلام",different:"مەسیحی"},{normal:"سواره",different:"شینزان"}],
+    'تاریخ 📜':[{normal:"مەلا مصطفی بارزانی",different:"شێخ سەعید"},{normal:"عوسمانی",different:"سەفەوی"},{normal:"شەڕی دووەم",different:"شەڕی یەکەم"},{normal:"نەپۆلیۆن",different:"ئادۆڵف هیتلەر"},{normal:"مەدینی",different:"مەکەی"},{normal:"فیرعەون",different:"نیمرود"},{normal:"رووم",different:"ئیسلامی"}],
 };
 function getWordPairsByCategory(cat){ return(!cat||cat==='هەمی')?wordPairs:(wordPairsByCategory[cat]||wordPairs); }
 
@@ -885,7 +917,7 @@ auth.onAuthStateChanged(async(user)=>{
 function _resetAuthUI(){
     const tabs=document.querySelector('.auth-tabs');
     if(tabs)tabs.style.display='';
-    ['auth-verify-email','auth-nickname-picker','forgot-password-modal'].forEach(id=>{
+    ['auth-verify-email','auth-nickname-picker'].forEach(id=>{
         const el=document.getElementById(id);if(el)el.classList.add('hidden');
     });
     switchAuthTab('login');
@@ -1039,42 +1071,57 @@ async function confirmPickedNickname(){
 }
 
 // ══════════════════════════════
-//  FORGOT PASSWORD
-//  FIX: Uses Firebase's sendPasswordResetEmail — the ONLY reliable client-side reset
-//  No temporary-password hack. Clean, works properly.
+//  FORGOT PASSWORD — full-screen page (not modal)
 // ══════════════════════════════
+let _fpFrom='auth-page';
 function showForgotPasswordModal(){
+    _fpFrom='auth-page';
     document.getElementById('fp-step-1').classList.remove('hidden');
     document.getElementById('fp-step-2').classList.add('hidden');
     document.getElementById('fp-email').value='';
     document.getElementById('fp-error').textContent='';
-    document.getElementById('forgot-password-modal').classList.remove('hidden');
+    document.getElementById('fp-signup-hint').classList.add('hidden');
+    showPage('forgot-password-page');
     setTimeout(()=>document.getElementById('fp-email').focus(),200);
 }
-function closeForgotPasswordModal(){
-    document.getElementById('forgot-password-modal').classList.add('hidden');
+function closeForgotPasswordPage(){
+    document.getElementById('fp-email').value='';
+    document.getElementById('fp-error').textContent='';
+    document.getElementById('fp-signup-hint').classList.add('hidden');
+    document.getElementById('fp-step-1').classList.remove('hidden');
+    document.getElementById('fp-step-2').classList.add('hidden');
+    showPage(_fpFrom||'auth-page');
 }
+// Keep old name working too
+function closeForgotPasswordModal(){ closeForgotPasswordPage(); }
 
 async function sendResetLink(){
     const email=document.getElementById('fp-email').value.trim();
     const errEl=document.getElementById('fp-error');
+    const hintEl=document.getElementById('fp-signup-hint');
+    hintEl.classList.add('hidden');
     if(!email){errEl.textContent='⚠️ تکایە ئیمەیڵەکەت بنڤیسە';return;}
     errEl.textContent='⏳ چاڤەرێ بە...';
     try{
-        // Firebase sends a proper reset link — no hacks needed
         await auth.sendPasswordResetEmail(email);
         document.getElementById('fp-step-1').classList.add('hidden');
         document.getElementById('fp-step-2').classList.remove('hidden');
         document.getElementById('fp-sent-msg').innerHTML=
-            `📧 لینکی گەڕانەوەی پاسوورد بۆ:<br><strong style="direction:ltr;display:inline-block;">${email}</strong><br>هاتە ناردن ✅<br><br>سەرەدانا ئیمەیلەکەت بکە و لینکەکە کلیک بکە بۆ نوێکردنەوەی پاسووردت.`;
+            `📧 لینکی گەڕانەوەی پاسوورد بۆ:<br><strong style="direction:ltr;display:inline-block;margin:4px 0;">${email}</strong><br>هاتە ناردن ✅<br><br>سەرەدانا ئیمەیلەکەت بکە و لینکەکە کلیک بکە بۆ نوێکردنەوەی پاسووردت.`;
         errEl.textContent='';
     }catch(e){
         const map={
-            'auth/user-not-found':'❌ ئەم ئیمەیڵە نادۆزرێتەوە',
+            'auth/user-not-found':'',
+            'auth/invalid-credential':'',
             'auth/invalid-email':'❌ ئیمەیڵ یێ خەلەتە',
             'auth/too-many-requests':'⚠️ زۆر جار هەوڵ دراوە — کەمێک چاوەڕوان بە',
         };
-        errEl.textContent=map[e.code]||('❌ '+e.message);
+        if(e.code==='auth/user-not-found'||e.code==='auth/invalid-credential'){
+            errEl.textContent='';
+            hintEl.classList.remove('hidden');
+        } else {
+            errEl.textContent=map[e.code]||('❌ '+e.message);
+        }
     }
 }
 
@@ -1146,7 +1193,7 @@ function showConfirmModal(title,message,confirmText,cancelText){
 // ══════════════════════════════
 const PAGES=['auth-page','home-page','profile-page','leaderboard-page','offline-mode-page',
              'online-lobby-page','setup-page','game-page','discussion-page','reveal-page',
-             'results-page','voting-page','online-results-page'];
+             'results-page','voting-page','online-results-page','forgot-password-page'];
 function showPage(id){
     PAGES.forEach(p=>{const el=document.getElementById(p);if(el)el.classList.add('hidden');});
     const page=document.getElementById(id);if(page)page.classList.remove('hidden');
@@ -1785,7 +1832,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     }
     document.getElementById('how-to-play-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeHowToPlayOptions();});
     document.getElementById('how-to-play-instructions-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeHowToPlayInstructions();});
-    document.getElementById('forgot-password-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeForgotPasswordModal();});
+
     setTimeout(()=>{const t=document.getElementById('welcomeToast');if(t)t.remove();},5000);
 });
 
@@ -1795,7 +1842,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 Object.assign(window,{
     switchAuthTab,doLogin,doSignup,doGoogleLogin,doSignOut,confirmPickedNickname,
     submitVerifyCode,resendVerificationEmail,cancelVerification,
-    showForgotPasswordModal,closeForgotPasswordModal,sendResetLink,
+    showForgotPasswordModal,closeForgotPasswordModal,closeForgotPasswordPage,sendResetLink,
     openLeaderboard,goBackFromLeaderboard,
     joinRoomClick,goToNickname,showPage,goBackToHome,goToHomePage,
     startOfflineSetup,changePlayerCount,startGame,
