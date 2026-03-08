@@ -93,8 +93,8 @@
         .game-modal { position:fixed; top:0; left:0; right:0; bottom:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); z-index:10000; display:flex; justify-content:center; align-items:center; padding:20px; }
         .game-modal-content { background:white; border-radius:48px; padding:35px 25px; max-width:380px; width:100%; text-align:center; box-shadow:0 30px 60px rgba(0,0,0,0.5); border:3px solid #ffcc00; animation:modalPop 0.3s ease; }
         @keyframes modalPop { from{opacity:0;transform:scale(0.8)} to{opacity:1;transform:scale(1)} }
-        .how-to-play-modal { position:fixed; top:0; left:0; right:0; bottom:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); z-index:10001; display:flex; justify-content:center; align-items:flex-start; padding:16px; overflow-y:auto; }
-        .how-to-play-content { background:white; border-radius:36px; padding:28px 22px; max-width:400px; width:100%; text-align:center; box-shadow:0 30px 60px rgba(0,0,0,0.5); border:3px solid #ffcc00; animation:modalPop 0.3s ease; margin:auto; }
+        .how-to-play-modal { position:fixed; top:0; left:0; right:0; bottom:0; width:100vw; height:100vh; background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); z-index:10001; display:flex; flex-direction:column; justify-content:flex-start; align-items:center; padding:16px; overflow-y:auto; }
+        .how-to-play-content { background:white; border-radius:36px; padding:28px 22px; max-width:400px; width:100%; text-align:center; box-shadow:0 30px 60px rgba(0,0,0,0.5); border:3px solid #ffcc00; animation:modalPop 0.3s ease; margin:16px auto; flex-shrink:0; }
         .how-to-play-option { width:100%; padding:20px; margin:10px 0; border:none; border-radius:40px; font-size:1.3rem; font-weight:500; cursor:pointer; transition:all 0.2s; font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif; }
         .how-to-play-option:hover { transform:translateY(-2px); }
         .how-to-play-close { margin-top:15px; padding:12px; background:#f0f0f0; border:none; border-radius:40px; font-size:1.1rem; cursor:pointer; width:100%; font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif; }
@@ -438,7 +438,7 @@
         <button onclick="closeForgotPasswordPage();switchAuthTab('signup')" style="padding:10px 24px;border:none;border-radius:30px;background:linear-gradient(135deg,#0066cc,#0099ff);color:white;font-size:1rem;cursor:pointer;font-family:inherit;box-shadow:0 3px 0 #003366;">✅ دروستکرنا هەژمارا نوی</button>
     </div>
     <button class="btn btn-pink-purple" onclick="sendResetCode()" style="font-size:1.1rem;margin-top:4px;">📨 کۆدی پنێرە</button>
-    <button onclick="closeForgotPasswordPage()" style="width:100%;padding:12px;border:none;background:none;color:#aaa;font-size:0.9rem;cursor:pointer;font-family:inherit;margin-top:2px;">← گەڕانەوە</button>
+    <button onclick="closeForgotPasswordPage()" style="width:100%;padding:12px;border:none;background:none;color:#aaa;font-size:0.9rem;cursor:pointer;font-family:inherit;margin-top:2px;">← زڤرین</button>
 </div>
 
 <!-- STEP 2: Enter 4-digit code -->
@@ -458,7 +458,7 @@
     <div id="fp-code-error" style="color:#cc0000;font-size:0.88rem;margin:6px 0 10px;min-height:20px;text-align:center;"></div>
     <button class="btn btn-pink-purple" onclick="submitResetCode()" style="font-size:1.1rem;">✅ پشتراستکرن</button>
     <button onclick="fpResendCode()" style="width:100%;padding:11px;border:none;background:#f0f0f0;border-radius:30px;color:#555;font-size:0.92rem;cursor:pointer;font-family:inherit;margin-top:8px;">📨 دووبارە کۆدی پنێرە</button>
-    <button onclick="fpGoBack(1)" style="width:100%;padding:10px;border:none;background:none;color:#aaa;font-size:0.85rem;cursor:pointer;font-family:inherit;margin-top:4px;">← گەڕانەوە</button>
+    <button onclick="fpGoBack(1)" style="width:100%;padding:10px;border:none;background:none;color:#aaa;font-size:0.85rem;cursor:pointer;font-family:inherit;margin-top:4px;">← زڤرین</button>
 </div>
 
 <!-- STEP 3: Set new password -->
@@ -522,7 +522,7 @@
         <div class="phb-avatar" id="homeProfileBtn" style="background:#0066cc;">?</div>
         <div class="phb-info">
             <div class="phb-name" id="homeProfileName">...</div>
-            <div class="phb-sub">👤 پروفایلێ تە (کلیک بکە)</div>
+            <div class="phb-sub">👤 پروفایلێ تە ( کلیک بکە بو دیتنا زانیاریێن خۆ)</div>
         </div>
         <div class="phb-arrow">‹</div>
     </div>
@@ -540,7 +540,7 @@
             <input type="tel" inputmode="numeric" maxlength="1" class="code-box" id="jc3">
             <input type="tel" inputmode="numeric" maxlength="1" class="code-box" id="jc4">
             <input type="tel" inputmode="numeric" maxlength="1" class="code-box" id="jc5">
-            <button class="join-btn" onclick="joinRoomClick()">چوونەژوور</button>
+            <button class="join-btn" onclick="joinRoomClick()">چوونەژوور (Join)</button>
         </div>
     </div>
     <hr style="border:0;height:1px;background:rgba(0,0,0,0.1);margin:20px 0;">
@@ -585,7 +585,7 @@
             <button class="online-mode-btn selected" id="omBtn1" onclick="setOnlineMode(1)" style="background:linear-gradient(135deg,#00c853,#2196f3);color:white;border:none;">🕵️ سیخوڕ</button>
             <button class="online-mode-btn" id="omBtn2" onclick="setOnlineMode(2)" style="background:linear-gradient(135deg,#ff3b3b,#ffd93d);color:white;border:none;">🎭 پەیڤێن جیاواز</button>
         </div>
-        <button class="btn btn-blue" id="startGameBtn" onclick="startOnlineGame()" style="margin-top:8px;" disabled>دەستپێکرنی یاریێ 🎬</button>
+        <button class="btn btn-blue" id="startGameBtn" onclick="startOnlineGame()" style="margin-top:8px;" disabled>دەستپێکرنا یاریێ 🎬</button>
     </div>
     <div class="ready-count-msg" id="readyCountMsg">چاڤەرێی هەمی یارییکەران... (0/0 حازرن)</div>
     <div class="chat-box" id="chatBox"></div>
@@ -1169,33 +1169,38 @@ async function sendResetCode(){
     hintEl.classList.add('hidden');
     if(!email){errEl.textContent='⚠️ تکایە ئیمەیڵەکەت بنڤیسە';return;}
     errEl.textContent='⏳ چاڤەرێ بە...';
-    // Check if email exists in Firebase
+    // Check if email exists in Firebase without using fetchSignInMethodsForEmail
     try{
-        const methods=await auth.fetchSignInMethodsForEmail(email);
-        if(!methods||methods.length===0){
+        // Use Realtime DB to check if email exists (by indexing)
+        const _uSnap = await db.ref('users').orderByChild('email').equalTo(email).limitToFirst(1).get();
+        let _accountExists = _uSnap.exists();
+        
+        if(!_accountExists){
             errEl.textContent='';
             hintEl.classList.remove('hidden');
             return;
         }
-    }catch(e){
-        if(e.code==='auth/invalid-email'){errEl.textContent='❌ ئیمەیڵ یێ خەلەتە';return;}
-    }
-    _fpEmail=email;
-    _fpCode=_gen4Code();
-    const key=btoa(email).replace(/[^a-zA-Z0-9]/g,'_');
-    try{await db.ref('resetCodes/'+key).set({code:_fpCode,createdAt:Date.now(),expiresAt:Date.now()+600000});}catch(e){}
-    const sent=await _sendCodeEmail(email,_fpCode);
-    errEl.textContent='';
-    // Show step 2
-    document.getElementById('fp-email-display').textContent=email;
-    for(let i=0;i<4;i++){const b=document.getElementById('fpc'+i);if(b){b.value='';b.style.borderColor='#9b59b6';}}
-    document.getElementById('fp-code-error').textContent='';
-    _fpShowStep(2);
-    _setupFpcBoxes();
-    setTimeout(()=>document.getElementById('fpc0').focus(),150);
-    if(!sent){
-        document.getElementById('fp-code-error').innerHTML=
-            `<div style="background:#fff3cd;border:2px solid #ffc107;border-radius:14px;padding:10px;font-size:0.85rem;color:#856404;">📧 ئیمەیڵ نەچوو — کۆدت: <strong style="font-size:1.6rem;letter-spacing:6px;">${_fpCode}</strong></div>`;
+
+        _fpEmail=email;
+        _fpCode=_gen4Code();
+        const key=btoa(email).replace(/[^a-zA-Z0-9]/g,'_');
+        try{await db.ref('resetCodes/'+key).set({code:_fpCode,createdAt:Date.now(),expiresAt:Date.now()+600000});}catch(e){}
+        const sent=await _sendCodeEmail(email,_fpCode);
+        errEl.textContent='';
+        // Show step 2
+        document.getElementById('fp-email-display').textContent=email;
+        for(let i=0;i<4;i++){const b=document.getElementById('fpc'+i);if(b){b.value='';b.style.borderColor='#9b59b6';}}
+        document.getElementById('fp-code-error').textContent='';
+        _fpShowStep(2);
+        _setupFpcBoxes();
+        setTimeout(()=>document.getElementById('fpc0').focus(),150);
+        if(!sent){
+            document.getElementById('fp-code-error').innerHTML=
+                `<div style="background:#fff3cd;border:2px solid #ffc107;border-radius:14px;padding:10px;font-size:0.85rem;color:#856404;">📧 ئیمەیڵ نەچوو — کۆدت: <strong style="font-size:1.6rem;letter-spacing:6px;">${_fpCode}</strong></div>`;
+        }
+    } catch(e) {
+        console.error('Error in sendResetCode:', e);
+        errEl.textContent='❌ خەلەتیەک پەیدا بوو';
     }
 }
 
@@ -1488,7 +1493,7 @@ function updateReadyStatus(){
     const msg=document.getElementById('readyCountMsg'),btn=document.getElementById('startGameBtn');
     if(msg){
         if(allReady){msg.innerHTML=`✅ هەمی ئامادەن! &nbsp;<strong>(${readyN}/${total})</strong>`;msg.style.cssText='display:block;color:#15803d;font-weight:bold;background:#dcfce7;border:2px solid #22c55e;border-radius:30px;padding:10px 18px;text-align:center;margin:10px 0;font-size:1rem;';}
-        else{msg.innerHTML=`چاوەڕوانی یارییکەران... &nbsp;<strong>(${readyN}/${total} حازرن)</strong>`;msg.style.cssText='display:block;color:#92400e;background:#fef3c7;border:2px solid #f59e0b;border-radius:30px;padding:10px 18px;text-align:center;margin:10px 0;font-size:1rem;';}
+        else{msg.innerHTML=`چاڤەرێی یارییکەران... &nbsp;<strong>(${readyN}/${total} حازرن)</strong>`;msg.style.cssText='display:block;color:#92400e;background:#fef3c7;border:2px solid #f59e0b;border-radius:30px;padding:10px 18px;text-align:center;margin:10px 0;font-size:1rem;';}
     }
     if(btn)btn.disabled=!allReady;
 }
@@ -1503,9 +1508,9 @@ function markReady(){
 async function leaveRoom(){
     const confirmed=await showConfirmModal(
         'دەرکەفتن ل ژوورێ 🚪',
-        'ئایا دڵنیایتی دەتەوێ ژوور بچوێتە دەرەوە؟',
-        'بەڵێ، دەردەکەڤم',
-        'نەخێر، دەمێنمەوە'
+        'تویێ تەئکیدی تە دڤێت ژ ژوورێ بدەرکەڤی؟',
+        'بەڵێ، دێ دەرکەڤم',
+        'نەخێر، دێ مینم'
     );
     if(!confirmed)return;
     db.ref(`rooms/${gs.roomCode}/players`).off();
