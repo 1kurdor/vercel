@@ -922,7 +922,7 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
         <button class="how-to-play-close" onclick="closeHowToPlayInstructions()">گرتن</button>
     </div>
 </div><script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script><script>
-    // Initialize EmailJS immediately after load with app name
+    // Initialize EmailJS immediately after load
     (function initEJS() {
         if (window.emailjs) {
             window.emailjs.init({ publicKey: 'ypT0M2Rd5t-T8iYwO' });
@@ -1134,7 +1134,7 @@ let _resendCooldown   = false;
 let _pendingPassword  = null;   // keep password so we can create account after verify
 
 // ─────────────────────────────────────────────
-// EmailJS Configuration - Using Sikhur App credentials
+// EmailJS Configuration
 // ─────────────────────────────────────────────
 const EMAILJS_SERVICE_ID  = 'service_cxf35pq';
 const EMAILJS_TEMPLATE_ID = 'template_qffo8w2';
@@ -1152,26 +1152,28 @@ async function _sendCodeEmail(email, code) {
             code, createdAt: Date.now(), expiresAt: Date.now() + 10 * 60 * 1000
         });
     } catch(e) { console.warn('Firebase store error:', e); }
-    // Send via EmailJS SDK (more reliable than raw fetch)
+    
+    // Send via EmailJS
     try {
         if (!window.emailjs) throw new Error('EmailJS not loaded');
+        
         const result = await window.emailjs.send(
             EMAILJS_SERVICE_ID,
             EMAILJS_TEMPLATE_ID,
             {
                 to_email: email,
-                email:    email,
-                name:     'سیخوڕ یارییکەر',
-                code:     String(code),
-                app_name: 'سیخوڕ | Sikhur',
-                reply_to: 'sikhurapp@gmail.com'
+                email: email,
+                name: 'سیخوڕ یارییکەر',
+                code: String(code),
+                app_name: 'سیخوڕ | Sikhur'
             },
             { publicKey: EMAILJS_PUBLIC_KEY }
         );
-        console.log('✅ Email sent:', result.status, result.text);
+        
+        console.log('✅ Email sent:', result);
         return true;
     } catch(e) {
-        console.warn('❌ EmailJS error:', e);
+        console.error('❌ EmailJS error:', e);
         return false;
     }
 }
@@ -2546,7 +2548,7 @@ async function leaveRoom(){
     // Confirm before leaving
     const confirmed = await showConfirmModal(
         'دەرکەفتن 🚪',
-        'تویێ تەئکیدی تە دڤێت ژ ژوورێ بچییە دەر؟',
+        'ئایا دڵنیایتی دەتەوێ ژوور بچووتە دەرەوە؟',
         'بەلێ، دەرکەفتن',
         'نەخێر، بمێنەوە'
     );
