@@ -789,7 +789,7 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
     <div style="margin-bottom:20px;">
         <button class="btn btn-blue" onclick="goToNickname('create')" style="background:linear-gradient(135deg,#56ab2f,#a8e063);">دروستکرنا ژوورێ (Create Room) 🏠</button>
         <div style="display:flex;gap:10px;margin-top:10px;">
-            <input type="text" id="join-room-id" class="player-input" placeholder="کۆدێ ژوورێ [XXX-XXX]" style="margin:0;flex:2;" inputmode="text" onkeydown="if(event.key==='Enter') joinRoomClick()" oninput="formatRoomCodeInput(this)">
+            <input type="text" id="join-room-id" class="player-input" placeholder="کۆدێ ژوورێ لێرە بنڤیسە..." style="margin:0;flex:2;" inputmode="numeric" pattern="[0-9]*" onkeydown="if(event.key==='Enter') joinRoomClick()" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
             <button class="btn btn-yellow" onclick="joinRoomClick()" style="margin:0;flex:1;padding:14px;background:linear-gradient(135deg,#36d1dc,#5b86e5);color:white;border:none;">چوونەژوور (Join)</button>
         </div>
     </div>
@@ -981,9 +981,6 @@ let myPlayerId = 'p_' + Math.random().toString(36).substr(2,9);
 let currentUser = null; // Firebase Auth user
 let userProfile = null; // { nickname, gamesPlayed, wins }
 
-// Track if we're already processing a reconnection
-let isReconnecting = false;
-
 /* ══════════════════════════════════════════
    AUTH — email/password + Google
    Flow A (email):   signup → pick nickname → home
@@ -1004,50 +1001,38 @@ onAuthStateChanged(auth, async (user) => {
             gs.myNickname    = userProfile.nickname;
             _pendingNewUser  = false;
             updateProfileUI();
-            
             // Check for invite link first
             try {
                 const invite = sessionStorage.getItem('sikhur_invite');
                 if(invite) {
                     sessionStorage.removeItem('sikhur_invite');
-                    const cleanInvite = invite.replace(/[^0-9]/g, '');
-                    if(cleanInvite.length === 6) {
-                        const iSnap = await get(ref(db,'rooms/'+cleanInvite));
-                        if(iSnap.exists()) {
-                            document.getElementById('join-room-id').value = formatRoomCodeDisplay(cleanInvite);
-                            showToast('🔗 لینکی دەعوەتێ هاتە دیتن!', false);
-                            await openLobby(false, cleanInvite);
-                            return;
-                        }
+                    const iSnap = await get(ref(db,'rooms/'+invite));
+                    if(iSnap.exists()) {
+                        document.getElementById('join-room-id').value = invite;
+                        showToast('🔗 لینکی دەعوەتێ هاتە دیتن!', false);
+                        await openLobby(false, invite);
+                        return;
                     }
                 }
             } catch(e) {}
-            
             // Check if user was in a room before refresh
-            if (!isReconnecting) {
-                try {
-                    const savedRoom = sessionStorage.getItem('sikhur_room');
-                    if (savedRoom) {
-                        isReconnecting = true;
-                        const {code, isHost} = JSON.parse(savedRoom);
-                        if (code) {
-                            const cleanCode = code.replace(/[^0-9]/g, '');
-                            if(cleanCode.length === 6) {
-                                const roomSnap = await get(ref(db, 'rooms/' + cleanCode));
-                                if (roomSnap.exists() && roomSnap.val().status !== 'waiting_end') {
-                                    showToast('🔄 ژوورا خۆ دوبارە ڤەدبینیت...', false);
-                                    await openLobby(isHost, cleanCode);
-                                    isReconnecting = false;
-                                    return;
-                                }
-                            }
+            try {
+                const savedRoom = sessionStorage.getItem('sikhur_room');
+                if (savedRoom) {
+                    const {code, isHost} = JSON.parse(savedRoom);
+                    if (code) {
+                        const roomSnap = await get(ref(db, 'rooms/' + code));
+                        if (roomSnap.exists() && roomSnap.val().status !== 'waiting_end') {
+                            showToast('🔄 ژوورا خۆ دوبارە ڤەدبینیت...', false);
+                            sessionStorage.removeItem('sikhur_room');
+                            await openLobby(false, code);
+                            return;
+                        } else {
+                            sessionStorage.removeItem('sikhur_room');
                         }
                     }
-                } catch(e) { 
-                    sessionStorage.removeItem('sikhur_room');
                 }
-                isReconnecting = false;
-            }
+            } catch(e) { sessionStorage.removeItem('sikhur_room'); }
             showPage('home-page');
         } else {
             // New user — must pick nickname
@@ -1540,30 +1525,6 @@ function showToast(msg, isError=false) {
     setTimeout(() => d.remove(), 5000);
 }
 
-// Room code formatting functions
-function formatRoomCodeInput(input) {
-    let value = input.value.replace(/[^0-9]/g, '');
-    if (value.length > 6) value = value.slice(0, 6);
-    if (value.length >= 4) {
-        input.value = value.slice(0, 3) + '-' + value.slice(3);
-    } else {
-        input.value = value;
-    }
-}
-
-function formatRoomCodeDisplay(code) {
-    if (!code) return '------';
-    const clean = code.replace(/[^0-9]/g, '');
-    if (clean.length === 6) {
-        return clean.slice(0, 3) + '-' + clean.slice(3);
-    }
-    return code;
-}
-
-function cleanRoomCode(code) {
-    return code.replace(/[^0-9]/g, '');
-}
-
 // FIXED: All wordPairs objects now have commas between them
 const wordPairs = [
     {normal:"بریانی", different:"کوفتە"},
@@ -1618,10 +1579,7 @@ let fbListeners = [];
 function fbListen(path, cb) { fbListeners.push(path); onValue(ref(db,path), cb); }
 function fbListenChild(path, cb) { fbListeners.push(path); onChildAdded(ref(db,path), cb); }
 function detachAll() { fbListeners.forEach(p=>off(ref(db,p))); fbListeners=[]; }
-function genCode() { 
-    // Generate 6-digit code
-    return String(Math.floor(100000 + Math.random() * 900000));
-}
+function genCode() { return String(Math.floor(100000+Math.random()*900000)); }
 
 let voteListeners = [];
 function detachVoteListeners() { voteListeners.forEach(p=>off(ref(db,p))); voteListeners=[]; }
@@ -1642,29 +1600,15 @@ function goToHomePage()  { showPage('home-page'); }
 
 async function joinRoomClick() {
     const input = document.getElementById('join-room-id');
-    const rawCode = input.value.trim();
-    const cleanCode = cleanRoomCode(rawCode);
-    
-    if (cleanCode.length !== 6) { 
-        showToast('کۆدێ ژوورێ پێویستە 6 ژمارە بێت! ⌨️', true); 
-        input.style.borderColor='#ff4444'; 
-        setTimeout(()=>{input.style.borderColor='';},2000); 
-        return; 
-    }
-    
+    const code = input.value.trim();
+    if (!code) { showToast('کۆدێ ژوورێ بنڤیسە! ⌨️',true); input.style.borderColor='#ff4444'; setTimeout(()=>{input.style.borderColor='';},2000); return; }
     if (!gs.myNickname && userProfile) gs.myNickname = userProfile.nickname;
     if (!gs.myNickname) { showToast(' داخل ببە! ❌',true); showPage('auth-page'); return; }
-    
     try {
-        const snap = await get(ref(db,`rooms/${cleanCode}`));
-        if (!snap.exists()) { 
-            showToast('کۆد یێ خەلەتە! ❌',true); 
-            input.style.borderColor='#ff4444'; 
-            setTimeout(()=>{input.style.borderColor='';},2000); 
-            return; 
-        }
+        const snap = await get(ref(db,`rooms/${code}`));
+        if (!snap.exists()) { showToast('کۆد یێ خەلەتە! ❌',true); input.style.borderColor='#ff4444'; setTimeout(()=>{input.style.borderColor='';},2000); return; }
         input.style.borderColor='';
-        openLobby(false, cleanCode);
+        openLobby(false, code);
     } catch(e) { showToast('خەلەتی!',true); }
 }
 
@@ -1672,16 +1616,12 @@ function goToNickname(flow) {
     if (!gs.myNickname && userProfile) gs.myNickname = userProfile.nickname;
     if (!gs.myNickname) { showToast(' پێشتر داخلبە! ❌', true); showPage('auth-page'); return; }
     if (flow === 'create') openLobby(true, null);
-    else if (flow === 'join') {
-        const input = document.getElementById('join-room-id');
-        const rawCode = input.value.trim();
-        const cleanCode = cleanRoomCode(rawCode);
-        if (cleanCode.length !== 6) {
-            showToast('کۆدێ ژوورێ پێویستە 6 ژمارە بێت! ⌨️', true);
-            return;
-        }
-        openLobby(false, cleanCode);
-    }
+    else if (flow === 'join') openLobby(false, document.getElementById('join-room-id').value.trim());
+}
+function confirmNickname() {
+    if (!gs.myNickname && userProfile) gs.myNickname = userProfile.nickname;
+    if (gs.pendingFlow==='create') openLobby(true,null);
+    else if (gs.pendingFlow==='join') openLobby(false, document.getElementById('join-room-id').value.trim());
 }
 
 function startOfflineSetup(mode) {
@@ -2305,7 +2245,7 @@ async function playAgainOnline(){
 function returnToLobbyAfterGame(){
     stopDiscMic();
     document.getElementById('lobby-title').textContent='🏠 ژوورا یاریێ';
-    document.getElementById('room-code-display').textContent = formatRoomCodeDisplay(gs.roomCode);
+    document.getElementById('room-code-display').textContent=gs.roomCode;
     document.getElementById('host-controls').classList.toggle('hidden',!gs.isHost);
     document.getElementById('chatBox').innerHTML='';
     showPage('online-lobby-page');
@@ -2319,7 +2259,7 @@ async function openLobby(isHost, code){
     gs.isOnlineGame = true;
     gs.onlinePlayers = [];
     try { sessionStorage.setItem('sikhur_room', JSON.stringify({code:gs.roomCode,isHost})); } catch(e){}
-    document.getElementById('room-code-display').textContent = formatRoomCodeDisplay(gs.roomCode);
+    document.getElementById('room-code-display').textContent = gs.roomCode;
     document.getElementById('lobby-title').textContent = '🏠 ژوورا یاریێ';
     document.getElementById('host-controls').classList.toggle('hidden', !isHost);
     document.getElementById('chatBox').innerHTML = '';
@@ -2511,11 +2451,10 @@ function listenGameState(gameData){
 
 
 function copyRoomCode(){
-    const displayCode = formatRoomCodeDisplay(gs.roomCode);
-    navigator.clipboard.writeText(displayCode).then(()=>{
+    navigator.clipboard.writeText(gs.roomCode).then(()=>{
         const el=document.querySelector('.copy-hint');el.textContent='✅ هاتە کوپیکرن!';
         setTimeout(()=>{el.textContent='📋 کۆپیکرن';},2000);
-    }).catch(()=>alert('کۆد: '+displayCode));
+    }).catch(()=>alert('کۆد: '+gs.roomCode));
 }
 function setOnlineMode(mode){ gs.onlineMode=mode; update(ref(db,`rooms/${gs.roomCode}`),{mode}); }
 
@@ -2548,7 +2487,7 @@ async function leaveRoom(){
     // Confirm before leaving
     const confirmed = await showConfirmModal(
         'دەرکەفتن 🚪',
-        'ئایا دڵنیایتی دەتەوێ ژوور بچووتە دەرەوە؟',
+        'تۆیێ تەئکیدی تە دڤێت ل ژوورێ بچییە دەرێ؟',
         'بەلێ، دەرکەفتن',
         'نەخێر، بمێنەوە'
     );
@@ -2668,10 +2607,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     const urlParams = new URLSearchParams(window.location.search);
     const inviteCode = urlParams.get('room');
     if(inviteCode) {
-        const cleanInvite = inviteCode.replace(/[^0-9]/g, '');
-        if(cleanInvite.length === 6) {
-            sessionStorage.setItem('sikhur_invite', cleanInvite);
-        }
+        sessionStorage.setItem('sikhur_invite', inviteCode);
         // Clean URL without reload
         window.history.replaceState({}, '', window.location.pathname);
     }
@@ -2691,7 +2627,7 @@ function playSound(type) {
 Object.assign(window,{
     switchAuthTab,doLogin,doSignup,doGoogleLogin,doSignOut,confirmPickedNickname,
     submitVerifyCode,resendVerificationEmail,cancelVerification,
-    openLeaderboard,goBackFromLeaderboard,formatRoomCodeInput,formatRoomCodeDisplay,cleanRoomCode,
+    openLeaderboard,goBackFromLeaderboard,
     joinRoomClick,goToNickname,confirmNickname,
     showPage,goBackToHome,goToHomePage,
     startOfflineSetup,changePlayerCount,startGame,
