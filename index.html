@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-
-<html lang="ckb">
+<!DOCTYPE html><html lang="ckb">
 <head>
     <meta charset="UTF-8">
     <link rel="manifest" href="/manifest.json">
@@ -57,18 +55,15 @@
         background:radial-gradient(circle,rgba(255,215,0,0.1),transparent 70%);
         border-radius:50%; z-index:0;
     }
-    .content { position:relative; z-index:2; }
-
-h2 {
+    .content { position:relative; z-index:2; }h2 {
 font-size:1.6rem; text-align:center; margin-bottom:18px;
 color:#0066cc; position:relative; padding-bottom:8px; font-weight:500;
 }
 h2::after {
-content:””; position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+content:""; position:absolute; bottom:0; left:50%; transform:translateX(-50%);
 width:50px; height:2px;
 background:linear-gradient(90deg,#0066cc,#ffcc00); border-radius:2px;
 }
-
 .animated-icon { text-align:center; margin:10px 0 20px 0; }
 .game-icon {
 width:300px; height:auto;
@@ -78,17 +73,15 @@ border-radius:30px; transition:all 0.3s ease; cursor:pointer;
 }
 .game-icon:hover { animation:none; transform:scale(1.05); filter:drop-shadow(0 0 20px #ffcc00); }
 @keyframes gentlePulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
-
 .how-to-play-link {
 text-align:center; margin:5px 0 15px 0; font-size:1rem;
 color:#666; cursor:pointer; text-decoration:underline; transition:color 0.2s;
 }
 .how-to-play-link:hover { color:#0066cc; }
-
 .btn {
 width:100%; padding:16px 20px; border:none; border-radius:40px;
 font-size:1.2rem; font-weight:500; cursor:pointer; transition:all 0.2s;
-margin:10px 0; font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+margin:10px 0; font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif;
 box-shadow:0 4px 10px rgba(0,102,204,0.1);
 }
 .btn-blue  { background:linear-gradient(135deg,#0066cc,#0099ff); color:white; box-shadow:0 4px 0 #003366; }
@@ -99,7 +92,6 @@ box-shadow:0 4px 10px rgba(0,102,204,0.1);
 .btn-yellow{ background:linear-gradient(135deg,#ffcc00,#ffaa00); color:#1a2a3a; box-shadow:0 4px 0 #996600; }
 .btn-yellow:hover{ transform:translateY(-2px); box-shadow:0 6px 0 #996600; }
 .btn-secondary { background:white; color:#0066cc; border:1px solid #ffcc00; }
-
 .counter-container {
 display:flex; justify-content:center; align-items:center; gap:15px;
 margin:20px 0; background:white; padding:12px; border-radius:50px;
@@ -114,17 +106,15 @@ display:flex; justify-content:center; align-items:center;
 }
 .counter-btn:active { transform:scale(0.95); }
 .counter-value { font-size:2.5rem; font-weight:500; color:#0066cc; min-width:60px; text-align:center; }
-
 .player-input {
 width:100%; padding:14px 18px; margin:8px 0;
 border:1px solid rgba(0,102,204,0.2); border-radius:40px;
 background:white; font-size:1rem; text-align:right; direction:rtl;
-font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif;
 transition:all 0.2s; box-shadow:0 2px 5px rgba(0,0,0,0.02);
 }
 .player-input:focus { outline:none; border-color:#ffcc00; box-shadow:0 0 0 3px rgba(255,204,0,0.1); }
 .player-input::placeholder { color:#99b8d9; font-size:0.95rem; }
-
 .card {
 background:white; border-radius:32px; padding:40px 20px; margin:18px 0;
 text-align:center; transition:all 0.3s;
@@ -133,7 +123,6 @@ box-shadow:0 15px 30px rgba(0,102,204,0.1);
 touch-action:pan-x;
 }
 @keyframes gentleFade { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-
 .player-name { font-size:2rem; color:#0066cc; margin-bottom:20px; font-weight:500; }
 .tap-message {
 font-size:1.1rem; color:#666; margin:25px 0; background:#f5f9ff;
@@ -142,7 +131,6 @@ border:1px solid rgba(255,204,0,0.2);
 }
 .role-icon { font-size:4rem; margin-bottom:15px; animation:gentleBounce 0.4s ease; }
 @keyframes gentleBounce { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
-
 .card-spy-revealed {
 background:linear-gradient(145deg,rgba(255,68,68,0.25),rgba(204,0,0,0.25));
 color:white; border:2px solid #ffcc00;
@@ -157,7 +145,6 @@ padding:40px 20px; border-radius:32px; text-align:center; backdrop-filter:blur(2
 }
 .card-spy-revealed .player-name, .card-civilian-revealed .player-name { color:white; }
 .card-spy-revealed .tap-message, .card-civilian-revealed .tap-message { background:rgba(255,255,255,0.2); color:white; }
-
 .word-display {
 font-size:3rem; font-weight:bold; padding:20px 30px;
 border-radius:40px; display:inline-block; margin:15px 0;
@@ -169,7 +156,6 @@ box-shadow:0 15px 30px rgba(0,102,204,0.1); cursor:default;
 padding:40px 20px; border-radius:32px; text-align:center;
 }
 .card-white-revealed .word-display { background:#f0f7ff; color:#00AA00; border:2px solid #ffcc00; }
-
 .waiting-turn-box {
 background:linear-gradient(145deg,#f0f7ff,#e6f0ff);
 border:2px solid #0066cc; border-radius:32px;
@@ -179,7 +165,6 @@ animation:gentleFade 0.4s ease;
 .waiting-turn-box .wt-icon { font-size:4rem; margin-bottom:15px; }
 .waiting-turn-box .wt-name { font-size:1.8rem; color:#0066cc; font-weight:500; margin:10px 0; }
 .waiting-turn-box .wt-msg  { font-size:1rem; color:#666; }
-
 .progress {
 background:white; padding:12px; border-radius:40px; text-align:center;
 margin:18px 0; font-size:1rem; color:#0066cc; font-weight:500;
@@ -192,15 +177,13 @@ border:3px solid #ffcc00; box-shadow:0 10px 20px rgba(0,102,204,0.3);
 }
 .starter-name { font-size:2.5rem; font-weight:bold; margin:10px 0; color:#ffcc00; }
 .starter-message { font-size:1.3rem; margin-bottom:10px; }
-
 .reveal-btn {
 background:linear-gradient(135deg,#ffcc00,#ffaa00); color:#1a2a3a;
 font-size:1.3rem; padding:18px; border-radius:40px; border:none;
 width:100%; margin:20px 0; cursor:pointer; box-shadow:0 4px 0 #996600;
-transition:all 0.3s; font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif; font-weight:bold;
+transition:all 0.3s; font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif; font-weight:bold;
 }
 .reveal-btn:hover { transform:translateY(-2px); box-shadow:0 6px 0 #996600; }
-
 .reveal-card {
 background:linear-gradient(145deg,#1a1a1a,#333333); border:3px solid #ffcc00;
 border-radius:32px; padding:30px 20px; text-align:center;
@@ -209,7 +192,6 @@ animation:gentleReveal 0.5s ease; box-shadow:0 20px 40px rgba(0,0,0,0.3); margin
 @keyframes gentleReveal { from{opacity:0;transform:scale(0.95)} to{opacity:1;transform:scale(1)} }
 .reveal-card .role-icon { font-size:5rem; }
 .person-name { font-size:2.2rem; margin:15px 0; font-weight:500; color:#ffcc00; }
-
 .results-container { background:#f8fbff; border-radius:32px; padding:20px; margin:20px 0; border:1px solid rgba(255,204,0,0.2); }
 .player-result {
 display:flex; justify-content:space-between; align-items:center;
@@ -220,13 +202,11 @@ font-size:1.1rem; border:1px solid rgba(0,102,204,0.1);
 .civilian-badge { background:linear-gradient(135deg,#00cc66,#00994d); color:white; padding:6px 18px; border-radius:30px; font-size:1rem; }
 .different-badge{ background:linear-gradient(135deg,#ff4444,#cc0000); color:white; padding:6px 18px; border-radius:30px; font-size:1rem; }
 .normal-badge   { background:linear-gradient(135deg,#0066cc,#0099ff); color:white; padding:6px 18px; border-radius:30px; font-size:1rem; }
-
 .hidden { display:none !important; }
 .welcome-text { color:#4a5a6a; text-align:center; margin:15px 0 25px 0; font-size:1.1rem; line-height:1.5; }
 .word-box { background:white; border:2px solid #ffcc00; border-radius:32px; padding:20px; margin:15px 0; text-align:center; }
 .word-value          { color:#333;   font-size:2.5rem; font-weight:bold; }
 .word-value-different{ color:#cc0000; font-size:2.5rem; font-weight:bold; }
-
 .game-modal {
 position:fixed; top:0; left:0; right:0; bottom:0; width:100vw; height:100vh;
 background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); z-index:10000;
@@ -250,13 +230,12 @@ background:#f5f9ff; border-radius:30px; border:1px solid #ffcc00; text-align:rig
 .game-modal-btn {
 flex:1; padding:16px; border:none; border-radius:40px;
 font-size:1.2rem; font-weight:500; cursor:pointer; transition:all 0.2s;
-font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif;
 }
 .game-modal-btn.confirm { background:linear-gradient(135deg,#00cc66,#00994d); color:white; box-shadow:0 4px 0 #006633; }
 .game-modal-btn.confirm:hover { transform:translateY(-2px); box-shadow:0 6px 0 #006633; }
 .game-modal-btn.cancel  { background:white; color:#666; border:2px solid #ccc; box-shadow:0 4px 0 #999; }
 .game-modal-btn.cancel:hover { transform:translateY(-2px); box-shadow:0 6px 0 #999; }
-
 .how-to-play-modal {
 position:fixed; top:0; left:0; right:0; bottom:0; width:100vw; height:100vh;
 background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); z-index:10001;
@@ -270,7 +249,7 @@ box-shadow:0 30px 60px rgba(0,0,0,0.5); border:3px solid #ffcc00; animation:moda
 .how-to-play-option {
 width:100%; padding:20px; margin:10px 0; border:none; border-radius:40px;
 font-size:1.3rem; font-weight:500; cursor:pointer; transition:all 0.2s;
-font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif;
 }
 .how-to-play-option.blue { background:linear-gradient(135deg,#0066cc,#0099ff); color:white; box-shadow:0 4px 0 #003366; }
 .how-to-play-option.red  { background:linear-gradient(135deg,#ff4444,#cc0000); color:white; box-shadow:0 4px 0 #990000; }
@@ -278,9 +257,8 @@ font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
 .how-to-play-close {
 margin-top:15px; padding:12px; background:#f0f0f0; border:none;
 border-radius:40px; font-size:1.1rem; cursor:pointer; width:100%;
-font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif;
 }
-
 .welcome-notification{
 position:fixed; top:18px; left:50%; transform:translateX(-50%);
 background:linear-gradient(135deg,#0f4c81,#1976d2); color:#ffffff;
@@ -297,19 +275,16 @@ to{ top:18px; opacity:1; transform:translateX(-50%) scale(1); }
 @keyframes fadeOut{
 to{ opacity:0; transform:translateX(-50%) translateY(-10px); visibility:hidden; }
 }
-
 .nickname-big-icon { text-align:center; font-size:5rem; margin:10px 0 5px; }
-
 .mode-pick-pair { display:flex; gap:12px; margin:15px 0; }
 .mode-pick-big {
 flex:1; padding:22px 10px; border:none; border-radius:40px;
 font-size:1.2rem; font-weight:500; cursor:pointer; transition:all 0.2s;
-font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif; line-height:1.6;
+font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif; line-height:1.6;
 }
 .mode-pick-big.spy  { background:linear-gradient(135deg,#0066cc,#0099ff); color:white; box-shadow:0 4px 0 #003366; }
 .mode-pick-big.diff { background:linear-gradient(135deg,#ff4444,#cc0000); color:white; box-shadow:0 4px 0 #990000; }
 .mode-pick-big:hover { transform:translateY(-2px); }
-
 .room-code-box {
 background:linear-gradient(135deg,#0066cc,#0099ff); color:white;
 border-radius:32px; padding:20px; text-align:center; margin:12px 0;
@@ -318,7 +293,6 @@ border:3px solid #ffcc00; box-shadow:0 10px 20px rgba(0,102,204,0.25);
 .room-code-label { font-size:0.95rem; opacity:0.85; margin-bottom:6px; }
 .room-code-value { font-size:3rem; font-weight:bold; color:#ffcc00; letter-spacing:8px; }
 .copy-hint { font-size:0.82rem; opacity:0.7; margin-top:6px; cursor:pointer; text-decoration:underline; }
-
 .players-box {
 background:white; border-radius:28px; padding:14px; margin:10px 0;
 border:1px solid rgba(255,204,0,0.3);
@@ -331,35 +305,31 @@ font-size:1rem; color:#333;
 }
 .waiting-row .wr-name { flex:1; }
 .online-dot { width:10px; height:10px; background:#00cc66; border-radius:50%; flex-shrink:0; }
-
 .ready-btn {
 padding:6px 14px; border:none; border-radius:30px; font-size:0.85rem;
 cursor:pointer; transition:all 0.2s; flex-shrink:0;
-font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif;
 background:linear-gradient(135deg,#0066cc,#0099ff); color:white;
 box-shadow:0 3px 0 #003366;
 }
 .ready-btn:hover { transform:translateY(-1px); }
 .ready-btn.is-ready { background:linear-gradient(135deg,#00cc66,#00994d); box-shadow:0 3px 0 #006633; cursor:default; }
 .ready-check { color:#00cc66; font-size:1.2rem; flex-shrink:0; }
-
 .ready-count-msg {
 text-align:center; font-size:0.9rem; color:#666;
 margin:-4px 0 8px 0; padding:8px 16px;
 background:#f5f9ff; border-radius:30px; border:1px solid rgba(255,204,0,0.2);
 }
-
 .online-mode-row { display:flex; gap:10px; margin:10px 0; }
 .online-mode-btn {
 flex:1; padding:15px 8px; border:none; border-radius:40px;
 font-size:1.1rem; font-weight:500; cursor:pointer; transition:all 0.2s;
-font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif;
 }
 .online-mode-btn.spy  { background:linear-gradient(135deg,#0066cc,#0099ff); color:white; box-shadow:0 4px 0 #003366; }
 .online-mode-btn.diff { background:linear-gradient(135deg,#ff4444,#cc0000); color:white; box-shadow:0 4px 0 #990000; }
 .online-mode-btn:hover { transform:translateY(-2px); }
 .online-mode-btn.selected { outline:4px solid #ffcc00; outline-offset:2px; }
-
 .voice-bar {
 display:flex; align-items:center; gap:12px; background:white;
 border-radius:40px; padding:10px 18px; margin:10px 0;
@@ -374,7 +344,6 @@ border:1px solid rgba(255,204,0,0.3); box-shadow:0 2px 8px rgba(0,102,204,0.05);
 .speak-bar:nth-child(2){ animation-delay:0.15s; }
 .speak-bar:nth-child(3){ animation-delay:0.3s; }
 @keyframes speakAnim { 0%,100%{height:4px} 50%{height:20px} }
-
 .chat-box {
 background:white; border-radius:28px; border:1px solid rgba(0,102,204,0.12);
 height:185px; overflow-y:auto; padding:10px 12px; margin:8px 0;
@@ -385,7 +354,6 @@ display:flex; flex-direction:column; gap:6px; scroll-behavior:smooth;
 .bubble.other { background:#f0f7ff; color:#333; align-self:flex-start; border-bottom-left-radius:6px; border:1px solid rgba(0,102,204,0.1); }
 .bubble .bname{ font-size:0.75rem; opacity:0.65; margin-bottom:2px; }
 .bubble.system{ background:transparent; color:#aaa; font-size:0.8rem; align-self:center; text-align:center; max-width:100%; }
-
 .chat-row { display:flex; gap:8px; margin-top:6px; align-items:center; }
 .chat-row input { flex:1; margin:0; }
 .send-btn {
@@ -396,16 +364,14 @@ display:flex; align-items:center; justify-content:center; flex-shrink:0;
 box-shadow:0 4px 0 #003366; transition:all 0.2s;
 }
 .send-btn:hover { transform:translateY(-2px); }
-
 .leave-btn-small {
 background:linear-gradient(135deg,#ff4444,#cc0000); color:white;
 border:none; border-radius:30px; padding:7px 14px; font-size:0.82rem;
-cursor:pointer; font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+cursor:pointer; font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif;
 box-shadow:0 3px 0 #990000; transition:all 0.2s;
 }
 .leave-btn-small:hover { transform:translateY(-1px); }
 .lobby-top-bar { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
-
 .vote-timer-box {
 background:linear-gradient(135deg,#0066cc,#0099ff); color:white;
 border-radius:32px; padding:16px; text-align:center; margin:10px 0; border:3px solid #ffcc00;
@@ -427,7 +393,7 @@ border:2px solid rgba(0,102,204,0.15); transition:all 0.2s; cursor:pointer;
 width:100%; padding:16px; border:none; border-radius:40px; margin-top:8px;
 background:linear-gradient(135deg,#ffcc00,#ffaa00); color:#1a2a3a;
 font-size:1.2rem; font-weight:500; cursor:pointer; box-shadow:0 4px 0 #996600;
-transition:all 0.2s; font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+transition:all 0.2s; font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif;
 }
 .vote-confirm-btn:hover:not(:disabled) { transform:translateY(-2px); }
 .vote-confirm-btn:disabled { opacity:0.5; cursor:not-allowed; }
@@ -436,7 +402,7 @@ transition:all 0.2s; font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI�
 width:100%; padding:16px; border:none; border-radius:40px; margin-top:8px;
 background:linear-gradient(135deg,#00cc66,#00994d); color:white;
 font-size:1.2rem; font-weight:500; cursor:pointer; box-shadow:0 4px 0 #006633;
-transition:all 0.2s; font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+transition:all 0.2s; font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif;
 }
 .see-results-btn:hover:not(:disabled) { transform:translateY(-2px); }
 .see-results-btn:disabled { background:linear-gradient(135deg,#aaa,#ccc); box-shadow:0 4px 0 #888; cursor:not-allowed; }
@@ -446,7 +412,6 @@ transition:all 0.2s; font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI�
 .result-big-title { font-size:2rem; font-weight:bold; margin:10px 0; }
 .result-win-card .result-big-title { color:#00994d; }
 .result-lose-card .result-big-title { color:#cc0000; }
-
 /* CARD FACE DOWN */
 .card-face-down {
 background:linear-gradient(145deg,#0a2a5e,#0066cc);
@@ -463,7 +428,6 @@ box-shadow:0 8px 28px rgba(255,204,0,0.4);
 .card-fd-hint { font-size:1rem; color:rgba(255,255,255,0.8); background:rgba(255,255,255,0.12); padding:10px 22px; border-radius:30px; display:inline-block; margin-top:10px; }
 .card-revealed { animation:revealPop 0.4s cubic-bezier(0.34,1.56,0.64,1); }
 @keyframes revealPop { 0%{transform:scale(0.85);opacity:0} 100%{transform:scale(1);opacity:1} }
-
 /* DISCUSSION PAGE */
 .disc-box {
 background:linear-gradient(145deg,#0a2a5e,#0066cc);
@@ -476,7 +440,6 @@ box-shadow:0 8px 20px rgba(0,102,204,0.3);
 .disc-header .disc-title { font-size:1.3rem; font-weight:bold; color:#ffcc00; margin:4px 0 2px; }
 .disc-header .disc-sub { font-size:0.85rem; color:rgba(255,255,255,0.75); }
 .disc-header .disc-starter { font-size:1.5rem; font-weight:bold; color:#fff; margin-top:2px; }
-
 .disc-voice-section {
 background:rgba(0,0,0,0.25); border-radius:22px;
 padding:14px; margin-bottom:12px;
@@ -499,7 +462,6 @@ padding:8px 12px; border:2px solid transparent; transition:all 0.3s; min-width:6
 .disc-voice-player .vp-bar:nth-child(3){ animation-delay:0.3s; }
 @keyframes vbar { 0%,100%{height:3px} 50%{height:13px} }
 .disc-voice-player .vp-mute-icon { font-size:0.8rem; color:#ff6666; }
-
 .disc-mic-btn {
 width:100%; padding:13px; border:none; border-radius:30px; margin-top:10px;
 font-size:1.1rem; font-weight:bold; cursor:pointer;
@@ -509,7 +471,6 @@ display:flex; align-items:center; justify-content:center; gap:8px;
 .disc-mic-btn.mic-on { background:linear-gradient(135deg,#00cc66,#00994d); color:white; box-shadow:0 4px 0 #006633; }
 .disc-mic-btn.mic-off { background:linear-gradient(135deg,#555,#333); color:#ccc; box-shadow:0 4px 0 #111; }
 .disc-mic-btn:active { opacity:0.8; transform:scale(0.98); }
-
 .disc-chat-box {
 background:rgba(255,255,255,0.08); border-radius:20px;
 height:150px; overflow-y:auto; padding:10px 12px; margin:10px 0;
@@ -524,7 +485,7 @@ border:1px solid rgba(255,255,255,0.15);
 .disc-chat-row input {
 flex:1; padding:12px 16px; border:2px solid rgba(255,255,255,0.2); border-radius:30px;
 background:rgba(255,255,255,0.1); color:#fff; font-size:1rem; text-align:right; direction:rtl;
-font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif; outline:none;
+font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif; outline:none;
 }
 .disc-chat-row input::placeholder { color:rgba(255,255,255,0.4); }
 .disc-chat-row input:focus { border-color:#ffcc00; }
@@ -549,7 +510,6 @@ background:rgba(255,255,255,0.1); border-radius:30px;
 color:rgba(255,255,255,0.8); font-size:1rem;
 border:1px solid rgba(255,255,255,0.15);
 }
-
 /* ── PLAYER AVATARS ── */
 .avatar-circle {
 width:38px; height:38px; border-radius:50%; flex-shrink:0;
@@ -559,7 +519,6 @@ box-shadow:0 2px 6px rgba(0,0,0,0.15);
 }
 .avatar-circle.sm { width:32px; height:32px; font-size:1.1rem; }
 .avatar-circle.lg { width:56px; height:56px; font-size:2rem; border:3px solid #ffcc00; }
-
 /* ── LEADERBOARD ── */
 .leaderboard-row {
 display:flex; align-items:center; gap:10px;
@@ -574,47 +533,41 @@ transition:all 0.2s;
 .lb-name  { flex:1; font-weight:bold; font-size:1rem; color:#1a1a2e; }
 .lb-wins  { font-size:0.9rem; color:#0066cc; font-weight:bold; }
 .lb-games { font-size:0.75rem; color:#999; }
-
 /* ── AUTH PAGES ── */
 .auth-page { text-align:center; padding:10px 0; }
 .auth-logo { font-size:4rem; margin:10px 0 5px; }
 .auth-title { font-size:1.8rem; font-weight:bold; color:#0066cc; margin-bottom:4px; }
 .auth-sub { font-size:0.95rem; color:#888; margin-bottom:24px; }
-
 .auth-tabs { display:flex; background:#f0f5ff; border-radius:40px; padding:4px; margin-bottom:20px; }
 .auth-tab {
 flex:1; padding:12px; border:none; border-radius:36px; font-size:1rem;
-font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif;
 cursor:pointer; transition:all 0.2s; background:transparent; color:#888; font-weight:500;
 }
 .auth-tab.active { background:white; color:#0066cc; box-shadow:0 2px 8px rgba(0,102,204,0.15); font-weight:bold; }
-
 .auth-input-group { margin:10px 0; text-align:right; }
 .auth-input-label { font-size:0.85rem; color:#666; margin-bottom:4px; padding-right:8px; display:block; }
 .auth-input {
 width:100%; padding:14px 18px; border:2px solid rgba(0,102,204,0.15); border-radius:40px;
 background:white; font-size:16px; text-align:right; direction:rtl;
-font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif;
 transition:all 0.2s; outline:none;
 }
 .auth-input:focus { border-color:#0066cc; box-shadow:0 0 0 3px rgba(0,102,204,0.08); }
 .auth-error { color:#cc0000; font-size:0.88rem; text-align:center; margin:8px 0; min-height:20px; padding:0 8px; }
-
 .btn-google {
 width:100%; padding:18px 20px; border:2px solid #e0e0e0; border-radius:40px;
 background:white; font-size:1.15rem; font-weight:600; cursor:pointer;
 display:flex; align-items:center; justify-content:center; gap:12px;
-font-family:‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif;
 transition:all 0.25s; box-shadow:0 4px 14px rgba(0,0,0,0.08); margin:8px 0;
 color:#333;
 }
 .btn-google:hover { border-color:#4285F4; box-shadow:0 6px 18px rgba(66,133,244,0.18); transform:translateY(-2px); }
 .btn-google:active { transform:translateY(0); }
 .google-icon { width:22px; height:22px; }
-
 .auth-divider { display:flex; align-items:center; gap:10px; margin:14px 0; color:#bbb; font-size:0.85rem; }
-.auth-divider::before,.auth-divider::after { content:’’; flex:1; height:1px; background:#e8e8e8; }
-
+.auth-divider::before,.auth-divider::after { content:''; flex:1; height:1px; background:#e8e8e8; }
 /* ── PROFILE HEADER BAR ── */
 .profile-header-bar {
 display:flex; align-items:center; gap:10px;
@@ -635,7 +588,6 @@ box-shadow:0 2px 8px rgba(0,0,0,0.25);
 .phb-name { font-size:1.1rem; font-weight:bold; color:#ffcc00; line-height:1.2; }
 .phb-sub  { font-size:0.75rem; color:rgba(255,255,255,0.55); margin-top:1px; }
 .phb-arrow { color:rgba(255,255,255,0.4); font-size:0.9rem; flex-shrink:0; }
-
 /* ── PROFILE PAGE ── */
 .profile-card {
 background:linear-gradient(145deg,#0a2a5e,#0066cc);
@@ -662,149 +614,129 @@ border:1px solid rgba(255,204,0,0.3); min-width:80px;
 display:inline-block; background:rgba(255,204,0,0.2); border:1px solid #ffcc00;
 border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-top:8px;
 }
-
-
-</style>
-
-
-</head>
-<body>
-
-<a href="https://kurdor.is-a.dev" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;">
+</style></head>
+<body><a href="https://kurdor.is-a.dev" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;">
     <div id="welcomeToast" class="welcome-notification">📰- هاتییە دروستکرن ژلایێ رەشید فەرهاد. </div>
-</a>
-
-<div style="display:flex;flex-direction:column;align-items:center;width:100%;">
+</a><div style="display:flex;flex-direction:column;align-items:center;width:100%;">
 <div class="game-container">
-<div class="content" id="app">
-
-<!-- AUTH PAGE -->
-
-<div id="auth-page">
+<div class="content" id="app"><!-- AUTH PAGE --><div id="auth-page">
     <div class="auth-page">
         <div class="auth-title">سیخوڕ 🕵️</div>
         <div class="auth-sub" id="auth-sub-text">چوونەژوور یان هەژمارەکا نوی دروستبکە</div>
 
+<!-- TABS -->
+<div class="auth-tabs">
+    <button class="auth-tab active" id="tab-login"  onclick="switchAuthTab('login')">چوونەژوور</button>
+    <button class="auth-tab"        id="tab-signup" onclick="switchAuthTab('signup')">هەژمارا نوی</button>
+</div>
 
-    <!-- TABS -->
-    <div class="auth-tabs">
-        <button class="auth-tab active" id="tab-login"  onclick="switchAuthTab('login')">چوونەژوور</button>
-        <button class="auth-tab"        id="tab-signup" onclick="switchAuthTab('signup')">هەژمارا نوی</button>
+<!-- ── LOGIN ── -->
+<div id="auth-login-form">
+    <div class="auth-input-group">
+        <label class="auth-input-label">ئیمەیڵ 📧</label>
+        <input type="email" id="login-email" class="auth-input"
+            placeholder="sikhur@example.com" autocomplete="email"
+            onkeydown="if(event.key==='Enter')document.getElementById('login-password').focus()">
     </div>
+    <div class="auth-input-group">
+        <label class="auth-input-label">پاسوورد 🔒</label>
+        <input type="password" id="login-password" class="auth-input"
+            placeholder="••••••" autocomplete="current-password"
+            onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="auth-error" id="login-error"></div>
+    <button class="btn btn-blue" onclick="doLogin()" style="margin-top:4px;">چوونەژوور 🔑</button>
+    <button class="btn-google" onclick="doGoogleLogin()">
+        <svg style="width:22px;height:22px;flex-shrink:0;" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+        برێکا Google داخل ببە
+    </button>
+</div>
 
-    <!-- ── LOGIN ── -->
-    <div id="auth-login-form">
-        <div class="auth-input-group">
-            <label class="auth-input-label">ئیمەیڵ 📧</label>
-            <input type="email" id="login-email" class="auth-input"
-                placeholder="sikhur@example.com" autocomplete="email"
-                onkeydown="if(event.key==='Enter')document.getElementById('login-password').focus()">
+<!-- ── SIGNUP — email + password only ── -->
+<div id="auth-signup-form" class="hidden">
+    <div style="background:#f0f7ff;border-radius:20px;padding:12px 14px;margin-bottom:14px;border:1px solid rgba(0,102,204,0.12);font-size:0.88rem;color:#555;text-align:right;direction:rtl;">
+        📝 هەژمارا نوی پێویستی ب تەئکید کرنێ هەیە، برێکا کۆدی.       </div>
+    <div class="auth-input-group">
+        <label class="auth-input-label">ئیمەیڵ 📧</label>
+        <input type="email" id="signup-email" class="auth-input"
+            placeholder="sikhur@example.com" autocomplete="email"
+            onkeydown="if(event.key==='Enter')document.getElementById('signup-password').focus()">
+    </div>
+    <div class="auth-input-group">
+        <label class="auth-input-label">پاسوورد 🔒 (ب کێمی 6 پیت)</label>
+        <input type="password" id="signup-password" class="auth-input"
+            placeholder="••••••" autocomplete="new-password"
+            onkeydown="if(event.key==='Enter')doSignup()">
+    </div>
+    <div class="auth-error" id="signup-error"></div>
+    <button class="btn btn-blue" onclick="doSignup()" style="margin-top:4px;">دروستکرنا هەژمارا نوی ✅</button>
+    <button class="btn-google" onclick="doGoogleLogin()">
+        <svg style="width:22px;height:22px;flex-shrink:0;" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+      برێکا Google خۆ تومار بکە
+    </button>
+</div>
+
+<!-- ── 4-DIGIT CODE VERIFICATION ── -->
+<div id="auth-verify-email" class="hidden">
+    <div style="text-align:center;padding:8px 0 4px;">
+        <div style="font-size:3.5rem;margin-bottom:6px;">📨</div>
+        <div style="font-size:1.25rem;font-weight:bold;color:#0066cc;margin-bottom:6px;">کودی پشتراستبکە</div>
+        <div id="verify-email-addr" style="font-size:0.85rem;color:#555;background:#f0f7ff;padding:7px 14px;border-radius:20px;margin-bottom:12px;border:1px solid rgba(0,102,204,0.15);word-break:break-all;direction:ltr;"></div>
+        <div style="font-size:0.9rem;color:#555;margin-bottom:16px;direction:rtl;line-height:1.5;">
+            کۆدێ 4 ژماڕەیی بو ئیمەیلێ تە هاتە هنارتن!<br>سەرەدانا ئێمیلێ خو بکە!
         </div>
-        <div class="auth-input-group">
-            <label class="auth-input-label">پاسوورد 🔒</label>
-            <input type="password" id="login-password" class="auth-input"
-                placeholder="••••••" autocomplete="current-password"
-                onkeydown="if(event.key==='Enter')doLogin()">
+        <!-- 4 separate digit boxes — LTR, each auto-advances -->
+        <div id="vc-boxes" style="display:flex;gap:12px;justify-content:center;margin-bottom:16px;direction:ltr;">
+            <input id="vc0" type="tel" inputmode="numeric" maxlength="1" dir="ltr" autocomplete="off"
+                style="width:60px;height:68px;border-radius:18px;border:2.5px solid #ddd;font-size:2.2rem;font-weight:bold;text-align:center;font-family:inherit;outline:none;transition:all 0.2s;background:#fafafa;color:#0066cc;">
+            <input id="vc1" type="tel" inputmode="numeric" maxlength="1" dir="ltr" autocomplete="off"
+                style="width:60px;height:68px;border-radius:18px;border:2.5px solid #ddd;font-size:2.2rem;font-weight:bold;text-align:center;font-family:inherit;outline:none;transition:all 0.2s;background:#fafafa;color:#0066cc;">
+            <input id="vc2" type="tel" inputmode="numeric" maxlength="1" dir="ltr" autocomplete="off"
+                style="width:60px;height:68px;border-radius:18px;border:2.5px solid #ddd;font-size:2.2rem;font-weight:bold;text-align:center;font-family:inherit;outline:none;transition:all 0.2s;background:#fafafa;color:#0066cc;">
+            <input id="vc3" type="tel" inputmode="numeric" maxlength="1" dir="ltr" autocomplete="off"
+                style="width:60px;height:68px;border-radius:18px;border:2.5px solid #ddd;font-size:2.2rem;font-weight:bold;text-align:center;font-family:inherit;outline:none;transition:all 0.2s;background:#fafafa;color:#0066cc;">
         </div>
-        <div class="auth-error" id="login-error"></div>
-        <button class="btn btn-blue" onclick="doLogin()" style="margin-top:4px;">چوونەژوور 🔑</button>
-        <button class="btn-google" onclick="doGoogleLogin()">
-            <svg style="width:22px;height:22px;flex-shrink:0;" viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
-                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-            </svg>
-            برێکا Google داخل ببە
+        <div id="verify-status-msg" style="font-size:0.9rem;min-height:22px;margin-bottom:10px;"></div>
+        <button class="btn btn-blue" onclick="submitVerifyCode()" style="margin-bottom:8px;">
+            ✅ پشتراستکرن
+        </button>
+        <button onclick="resendVerificationEmail()" id="resendBtn"
+            style="width:100%;padding:12px;border:none;border-radius:30px;background:#f0f0f0;color:#555;font-size:0.95rem;cursor:pointer;font-family:inherit;margin-bottom:4px;">
+            📨 دووبارە پنێرە
+        </button>
+        <button onclick="cancelVerification()"
+            style="width:100%;padding:10px;border:none;background:none;color:#aaa;font-size:0.85rem;cursor:pointer;font-family:inherit;">
+            ← زڤرین
         </button>
     </div>
+</div>
 
-    <!-- ── SIGNUP — email + password only ── -->
-    <div id="auth-signup-form" class="hidden">
-        <div style="background:#f0f7ff;border-radius:20px;padding:12px 14px;margin-bottom:14px;border:1px solid rgba(0,102,204,0.12);font-size:0.88rem;color:#555;text-align:right;direction:rtl;">
-            📝 هەژمارا نوی پێویستی ب تەئکید کرنێ هەیە، برێکا کۆدی.       </div>
-        <div class="auth-input-group">
-            <label class="auth-input-label">ئیمەیڵ 📧</label>
-            <input type="email" id="signup-email" class="auth-input"
-                placeholder="sikhur@example.com" autocomplete="email"
-                onkeydown="if(event.key==='Enter')document.getElementById('signup-password').focus()">
-        </div>
-        <div class="auth-input-group">
-            <label class="auth-input-label">پاسوورد 🔒 (ب کێمی 6 پیت)</label>
-            <input type="password" id="signup-password" class="auth-input"
-                placeholder="••••••" autocomplete="new-password"
-                onkeydown="if(event.key==='Enter')doSignup()">
-        </div>
-        <div class="auth-error" id="signup-error"></div>
-        <button class="btn btn-blue" onclick="doSignup()" style="margin-top:4px;">دروستکرنا هەژمارا نوی ✅</button>
-        <button class="btn-google" onclick="doGoogleLogin()">
-            <svg style="width:22px;height:22px;flex-shrink:0;" viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
-                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-            </svg>
-          برێکا Google خۆ تومار بکە
-        </button>
+<!-- ── NICKNAME PICKER (after Google login, first time) ── -->
+<div id="auth-nickname-picker" class="hidden">
+    <div style="background:#f0f7ff;border-radius:24px;padding:18px 16px;border:2px solid rgba(0,102,204,0.15);margin:4px 0;">
+        <p style="color:#0066cc;font-size:1.05rem;margin-bottom:8px;text-align:center;font-weight:bold;">🎭 ناڤێ یارییکەرێ خۆ دیاری بکە </p>
+        <p style="color:#888;font-size:0.82rem;margin-bottom:14px;text-align:center;"> ناڤ یان ناسناڤەکێ بخۆ چێکە، نەشێی بگوهری یەڤە!</p>
+        <input type="text" id="pick-nickname" class="auth-input"
+            placeholder="ناڤێ خۆ..." maxlength="20"
+            oninput="this.value=this.value.replace(/\s/g,'')"
+            onkeydown="if(event.key==='Enter')confirmPickedNickname()">
+        <div class="auth-error" id="pick-nickname-error"></div>
+        <button class="btn btn-blue" style="margin-top:10px;" onclick="confirmPickedNickname()">پشتراستکرن ✅</button>
     </div>
-
-    <!-- ── 4-DIGIT CODE VERIFICATION ── -->
-    <div id="auth-verify-email" class="hidden">
-        <div style="text-align:center;padding:8px 0 4px;">
-            <div style="font-size:3.5rem;margin-bottom:6px;">📨</div>
-            <div style="font-size:1.25rem;font-weight:bold;color:#0066cc;margin-bottom:6px;">کودی پشتراستبکە</div>
-            <div id="verify-email-addr" style="font-size:0.85rem;color:#555;background:#f0f7ff;padding:7px 14px;border-radius:20px;margin-bottom:12px;border:1px solid rgba(0,102,204,0.15);word-break:break-all;direction:ltr;"></div>
-            <div style="font-size:0.9rem;color:#555;margin-bottom:16px;direction:rtl;line-height:1.5;">
-                کۆدێ 4 ژماڕەیی بو ئیمەیلێ تە هاتە هنارتن!<br>سەرەدانا ئێمیلێ خو بکە!
-            </div>
-            <!-- 4 separate digit boxes — LTR, each auto-advances -->
-            <div id="vc-boxes" style="display:flex;gap:12px;justify-content:center;margin-bottom:16px;direction:ltr;">
-                <input id="vc0" type="tel" inputmode="numeric" maxlength="1" dir="ltr" autocomplete="off"
-                    style="width:60px;height:68px;border-radius:18px;border:2.5px solid #ddd;font-size:2.2rem;font-weight:bold;text-align:center;font-family:inherit;outline:none;transition:all 0.2s;background:#fafafa;color:#0066cc;">
-                <input id="vc1" type="tel" inputmode="numeric" maxlength="1" dir="ltr" autocomplete="off"
-                    style="width:60px;height:68px;border-radius:18px;border:2.5px solid #ddd;font-size:2.2rem;font-weight:bold;text-align:center;font-family:inherit;outline:none;transition:all 0.2s;background:#fafafa;color:#0066cc;">
-                <input id="vc2" type="tel" inputmode="numeric" maxlength="1" dir="ltr" autocomplete="off"
-                    style="width:60px;height:68px;border-radius:18px;border:2.5px solid #ddd;font-size:2.2rem;font-weight:bold;text-align:center;font-family:inherit;outline:none;transition:all 0.2s;background:#fafafa;color:#0066cc;">
-                <input id="vc3" type="tel" inputmode="numeric" maxlength="1" dir="ltr" autocomplete="off"
-                    style="width:60px;height:68px;border-radius:18px;border:2.5px solid #ddd;font-size:2.2rem;font-weight:bold;text-align:center;font-family:inherit;outline:none;transition:all 0.2s;background:#fafafa;color:#0066cc;">
-            </div>
-            <div id="verify-status-msg" style="font-size:0.9rem;min-height:22px;margin-bottom:10px;"></div>
-            <button class="btn btn-blue" onclick="submitVerifyCode()" style="margin-bottom:8px;">
-                ✅ پشتراستکرن
-            </button>
-            <button onclick="resendVerificationEmail()" id="resendBtn"
-                style="width:100%;padding:12px;border:none;border-radius:30px;background:#f0f0f0;color:#555;font-size:0.95rem;cursor:pointer;font-family:inherit;margin-bottom:4px;">
-                📨 دووبارە پنێرە
-            </button>
-            <button onclick="cancelVerification()"
-                style="width:100%;padding:10px;border:none;background:none;color:#aaa;font-size:0.85rem;cursor:pointer;font-family:inherit;">
-                ← زڤرین
-            </button>
-        </div>
-    </div>
-
-    <!-- ── NICKNAME PICKER (after Google login, first time) ── -->
-    <div id="auth-nickname-picker" class="hidden">
-        <div style="background:#f0f7ff;border-radius:24px;padding:18px 16px;border:2px solid rgba(0,102,204,0.15);margin:4px 0;">
-            <p style="color:#0066cc;font-size:1.05rem;margin-bottom:8px;text-align:center;font-weight:bold;">🎭 ناڤێ یارییکەرێ خۆ دیاری بکە </p>
-            <p style="color:#888;font-size:0.82rem;margin-bottom:14px;text-align:center;"> ناڤ یان ناسناڤەکێ بخۆ چێکە، نەشێی بگوهری یەڤە!</p>
-            <input type="text" id="pick-nickname" class="auth-input"
-                placeholder="ناڤێ خۆ..." maxlength="20"
-                oninput="this.value=this.value.replace(/\s/g,'')"
-                onkeydown="if(event.key==='Enter')confirmPickedNickname()">
-            <div class="auth-error" id="pick-nickname-error"></div>
-            <button class="btn btn-blue" style="margin-top:10px;" onclick="confirmPickedNickname()">پشتراستکرن ✅</button>
-        </div>
-    </div>
-
 </div>
 
 
-</div>
-
-<!-- PROFILE PAGE -->
-
-<div id="profile-page" class="hidden">
+</div></div><!-- PROFILE PAGE --><div id="profile-page" class="hidden">
     <div class="profile-card">
         <div class="profile-avatar-big" id="profile-avatar-big" style="font-size:3rem;width:90px;height:90px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;border:4px solid #ffcc00;box-shadow:0 8px 24px rgba(0,0,0,0.3);">?</div>
         <div class="profile-nickname" id="profile-nickname-display">—</div>
@@ -840,11 +772,7 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
     <div id="leaderboard-container">
         <div style="text-align:center;padding:30px;color:#999;">⏳ چاڤەرێ بە...</div>
     </div>
-</div>
-
-<!-- HOME -->
-
-<div id="home-page" class="hidden">
+</div><!-- HOME --><div id="home-page" class="hidden">
     <!-- PROFILE HEADER BAR -->
     <div class="profile-header-bar" onclick="showPage('profile-page')" id="homeProfileBar">
         <div class="phb-avatar" id="homeProfileBtn" style="background:#0066cc;">?</div>
@@ -870,15 +798,7 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
     <a href="imposter.html" style="display:block;">
         <button class="btn btn-secondary" style="font-size:0.9rem;padding:10px;width:100%;background:linear-gradient(135deg,#11998e,#38ef7d);color:white;">یاری کرنا ناڤخۆیی (Offline) 📍</button>
     </a>
-</div>
-
-<!-- NICKNAME -->
-
-<!-- nickname-page removed — nickname comes from auth profile -->
-
-<!-- OFFLINE MODE PICKER -->
-
-<div id="offline-mode-page" class="hidden">
+</div><!-- NICKNAME --><!-- nickname-page removed — nickname comes from auth profile --><!-- OFFLINE MODE PICKER --><div id="offline-mode-page" class="hidden">
     <div class="animated-icon" style="margin-bottom:5px;">
         <img src="assets/image/sikhur.jpg" alt="سیخوڕ" class="game-icon" style="width:100px;">
     </div>
@@ -891,11 +811,7 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
         <button class="mode-pick-big diff" onclick="startOfflineSetup(2)" style="flex:1;background:linear-gradient(135deg,#ff3b3b,#ffd93d);color:white;border:none;">🎭<br>پەیڤێن جیاواز</button>
     </div>
     <button class="btn btn-red" onclick="showPage('home-page')" style="margin-top:8px;">زڤرین 🔙</button>
-</div>
-
-<!-- ONLINE LOBBY -->
-
-<div id="online-lobby-page" class="hidden">
+</div><!-- ONLINE LOBBY --><div id="online-lobby-page" class="hidden">
     <div class="lobby-top-bar">
         <h2 id="lobby-title" style="margin-bottom:0;">🏠 ژوورا یاریێ</h2>
         <button class="leave-btn-small" onclick="leaveRoom()">دەرکەفتن 🚪</button>
@@ -910,10 +826,6 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
     </div>
     <div id="host-controls" class="hidden">
         <p style="text-align:center;color:#0066cc;font-size:1rem;margin:10px 0 6px;">جۆرێ یاریێ هەلبژێرە</p>
-    <div style="margin:8px 0 4px;">
-        <p style="text-align:center;color:#666;font-size:0.85rem;margin-bottom:6px;">جورێ یاریێ دیاری بکە📚</p>
-        <div id="category-btns" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;"></div>
-    </div>
         <div class="online-mode-row">
             <button class="online-mode-btn spy selected" id="omBtn1" onclick="setOnlineMode(1)" style="background:linear-gradient(135deg,#00c853,#2196f3);color:white;border:none;">🕵️ سیخوڕ</button>
             <button class="online-mode-btn diff" id="omBtn2" onclick="setOnlineMode(2)" style="background:linear-gradient(135deg,#ff3b3b,#ffd93d);color:white;border:none;">🎭 پەیڤێن جیاواز</button>
@@ -927,11 +839,7 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
         <input type="text" id="chatInput" class="player-input" placeholder="پەیامێ بنڤیسە..." onkeydown="if(event.key==='Enter') sendMsg()">
         <button class="send-btn" onclick="sendMsg()">➤</button>
     </div>
-</div>
-
-<!-- SETUP (offline) -->
-
-<div id="setup-page" class="hidden">
+</div><!-- SETUP (offline) --><div id="setup-page" class="hidden">
     <h2 id="setup-title">⚙️ ڕێکخستن</h2>
     <div class="counter-container">
         <button class="counter-btn" onclick="changePlayerCount(-1)">−</button>
@@ -941,22 +849,14 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
     <div id="player-inputs-container"></div>
     <button class="btn btn-blue" onclick="startGame()">دەستپێکرن 🎬</button>
     <button class="btn btn-red" onclick="goBackToHome()">زڤرین 🔙</button>
-</div>
-
-<!-- GAME PAGE -->
-
-<div id="game-page" class="hidden">
+</div><!-- GAME PAGE --><div id="game-page" class="hidden">
     <h2 id="game-title">🎴 کارتەکان</h2>
     <div class="progress" id="game-progress"></div>
     <div id="card-container"></div>
     <button class="btn btn-blue hidden" id="next-player-btn" onclick="nextPlayerAction()">یارییکەرێ دویفرا ⏭️</button>
     <div id="starter-container" class="hidden"></div>
     <button class="reveal-btn hidden" id="reveal-btn" onclick="goToRevealPage()">🔍 نییشان دانا کەسێ جیاواز</button>
-</div>
-
-<!-- DISCUSSION PAGE (online) -->
-
-<div id="discussion-page" class="hidden">
+</div><!-- DISCUSSION PAGE (online) --><div id="discussion-page" class="hidden">
     <div class="disc-box">
         <div class="disc-header">
             <div class="disc-emoji">🗣️</div>
@@ -979,28 +879,16 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
         <button class="disc-vote-btn hidden" id="disc-vote-btn" onclick="hostStartVoting()">🗳️ دەستپێکرنا دەنگدانێ</button>
         <div class="disc-wait-msg hidden" id="disc-wait-msg">⏳ چاڤەریێ هۆستی بکەن بو دەستپێکرنا دەنگدانێ...</div>
     </div>
-</div>
-
-<!-- REVEAL PAGE -->
-
-<div id="reveal-page" class="hidden">
+</div><!-- REVEAL PAGE --><div id="reveal-page" class="hidden">
     <h2 id="reveal-title">🕵️ ئاشکراکرن</h2>
     <div id="reveal-container"></div>
     <button class="btn btn-blue" onclick="showFinalResults()">دییتنا ئەنجامی 📜</button>
-</div>
-
-<!-- RESULTS PAGE -->
-
-<div id="results-page" class="hidden">
+</div><!-- RESULTS PAGE --><div id="results-page" class="hidden">
     <h2>ئەنجام 🏆</h2>
     <div id="results-container"></div>
     <button class="btn btn-blue" onclick="playAgain()">دوبارە یارییکرن 🔁</button>
     <button class="btn btn-yellow" onclick="goToHomePage()">زڤرین بو دەستپێک 🏠</button>
-</div>
-
-<!-- VOTING PAGE (online) -->
-
-<div id="voting-page" class="hidden">
+</div><!-- VOTING PAGE (online) --><div id="voting-page" class="hidden">
     <h2>🗳️ دەنگدان</h2>
     <div class="vote-timer-box">
         <div class="vote-timer-label">وەختێ مایی</div>
@@ -1011,23 +899,13 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
     <div class="vote-status-msg" id="voteStatusMsg">دەنگێ خۆ هەلبژێرە</div>
     <button class="vote-confirm-btn" id="voteConfirmBtn" onclick="submitVote()" disabled>دەنگدانێ خۆ پشتراستبکە ✓</button>
     <button class="see-results-btn hidden" id="seeResultsBtn" onclick="openOnlineResults()" disabled>دییتنا ئەنجامی 🏆</button>
-</div>
-
-<!-- ONLINE RESULTS PAGE -->
-
-<div id="online-results-page" class="hidden">
+</div><!-- ONLINE RESULTS PAGE --><div id="online-results-page" class="hidden">
     <h2>ئەنجام 🏆</h2>
     <div id="online-results-container"></div>
     <div class="players-box" id="waiting-players-list-results" style="margin:10px 0;"></div>
     <button class="btn btn-blue" onclick="playAgainOnline()">دوبارە یارییکرن 🔁</button>
     <button class="btn btn-yellow" onclick="goToHomePage()">زڤرین بو دەستپێک 🏠</button>
-</div>
-
-</div></div></div>
-
-<!-- HOW TO PLAY MODALS -->
-
-<div id="how-to-play-modal" class="how-to-play-modal hidden">
+</div></div></div></div><!-- HOW TO PLAY MODALS --><div id="how-to-play-modal" class="how-to-play-modal hidden">
     <div class="how-to-play-content">
         <div class="game-modal-icon">📖</div>
         <h2 style="color:#0066cc;margin-bottom:20px;">چەوا دێ یاریی کەی؟</h2>
@@ -1043,11 +921,7 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
         <div id="instructions-text" class="game-modal-text" style="text-align:right;"></div>
         <button class="how-to-play-close" onclick="closeHowToPlayInstructions()">گرتن</button>
     </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
-<script>
+</div><script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script><script>
     // Initialize EmailJS immediately after load
     (function initEJS() {
         if (window.emailjs) {
@@ -1058,9 +932,7 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
             });
         }
     })();
-</script>
-
-<script>
+</script><script>
 (function() {
     function loadScript(src, cb) {
         var s = document.createElement('script');
@@ -1078,9 +950,7 @@ border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-to
     }
     tryNext();
 })();
-</script>
-
-<script type="module">
+</script><script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, set, get, push, onValue, onChildAdded, remove, update, off }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
@@ -1655,7 +1525,7 @@ function showToast(msg, isError=false) {
     setTimeout(() => d.remove(), 5000);
 }
 
-// BUG FIX 1: All wordPairs objects now have commas between them
+// FIXED: All wordPairs objects now have commas between them
 const wordPairs = [
     {normal:"بریانی", different:"کوفتە"},
     {normal:"ئاوی پرتەقاڵ", different:"دۆی مێو"},
@@ -1833,11 +1703,11 @@ function showNextCard() {
         starterCont.classList.remove('hidden');
         nextBtn.classList.add('hidden');
         revealBtn.classList.add('hidden');
-        // BUG FIX 2: Use -- (decrement) not – (em-dash)
+        // FIXED: Use -- (decrement) not – (em-dash)
         let _cdSec2 = 6;
         clearInterval(window._cdInterval);
         window._cdInterval = setInterval(() => {
-            _cdSec2–;
+            _cdSec2--;
             const el = document.getElementById('disc-countdown-num');
             if (el) el.textContent = _cdSec2;
             if (_cdSec2 <= 0) { clearInterval(window._cdInterval); goToRevealPage(); }
@@ -1941,7 +1811,7 @@ function onlineRevealMyCard(gameData, myIdx) {
         const word=hasDiffWord?gameData.differentWord:gameData.secretWord;
         container.innerHTML='<div class="card-white-revealed card-revealed"><div class="word-display">'+word+'</div></div>';
     }
-    update(ref(db,`rooms/${gs.roomCode}/gameState`),{[`revealed/${myIdx}`]:true});
+    update(ref(db,`rooms/${gs.roomCode}/gameState`),{ [`revealed/${myIdx}`]:true });
     nextBtn.textContent='یارییکەرێ دیڤدا ⏭️';
     nextBtn.classList.remove('hidden');
     nextBtn.onclick=()=>onlineNextTurn(gameData);
@@ -2315,7 +2185,6 @@ function showOnlineVoteResults(result){
     let html='';
 
     if(outcome==='civils_win'){
-        playSound('win');
         // FINAL: show everything including spy identity
         html=`<div class="result-win-card"><div class="result-big-icon">🎉</div><div class="result-big-title">مەدەنیا سیخوڕ گرت!</div><div style="font-size:1.1rem;color:#333;margin:8px 0;">هەمی سیخوڕ هاتنە دیتن! 🏆</div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:10px;"><div style="font-size:0.9rem;color:#555;">هەلبژارتی</div><div style="font-size:1.8rem;font-weight:bold;color:#00994d;">${chosenName} 🕵️</div></div></div>`;
         html+='<div class="results-container">';
@@ -2369,7 +2238,7 @@ async function playAgainOnline(){
         try{
             await update(ref(db,`rooms/${gs.roomCode}`),{status:'waiting',gameData:null,gameState:null,votes:null,voteResult:null,votingRound:null,discussionDone:null,discussionChat:null,webrtc:null,voiceState:null});
             const snapP=await get(ref(db,`rooms/${gs.roomCode}/players`));
-            if(snapP.exists()){const updates={};snapP.forEach(child=>{updates[`${child.key}/ready`]=false;updates[`${child.key}/wantPlayAgain`]=false;});await update(ref(db,`rooms/${gs.roomCode}/players`),updates);}
+            if(snapP.exists()){const updates={};snapP.forEach(child=>{updates[`${child.key}/ready`] = false; updates[`${child.key}/wantPlayAgain`] = false;});await update(ref(db,`rooms/${gs.roomCode}/players`),updates);}
         }catch(e){}
     }
 }
@@ -2394,7 +2263,6 @@ async function openLobby(isHost, code){
     document.getElementById('lobby-title').textContent = '🏠 ژوورا یاریێ';
     document.getElementById('host-controls').classList.toggle('hidden', !isHost);
     document.getElementById('chatBox').innerHTML = '';
-    if(isHost) setTimeout(renderCategoryBtns, 100);
     showPage('online-lobby-page');
     const roomRef = `rooms/${gs.roomCode}`;
     const myAvatarIdx = userProfile?.avatarIdx ?? 0;
@@ -2590,25 +2458,6 @@ function copyRoomCode(){
 }
 function setOnlineMode(mode){ gs.onlineMode=mode; update(ref(db,`rooms/${gs.roomCode}`),{mode}); }
 
-let selectedCategory = 'هەمی';
-function renderCategoryBtns() {
-    const box = document.getElementById('category-btns');
-    if(!box) return;
-    const cats = ['هەمی', ...categoryNames];
-    box.innerHTML = cats.map(cat =>
-        `<button onclick="selectCategory('${cat}')" id="catBtn_${cat.replace(/[^a-zA-Z]/g,'_')}"
-        style="padding:6px 12px;border-radius:20px;border:2px solid ${selectedCategory===cat?'#0066cc':'#ddd'};
-        background:${selectedCategory===cat?'#e8f0fe':'white'};font-size:0.85rem;cursor:pointer;
-        font-family:inherit;color:${selectedCategory===cat?'#0066cc':'#555'};">${cat}</button>`
-    ).join('');
-}
-function selectCategory(cat) {
-    selectedCategory = cat;
-    renderCategoryBtns();
-    update(ref(db,`rooms/${gs.roomCode}`),{category: cat});
-    showToast('📚 بابەت: ' + cat, false);
-}
-
 async function startOnlineGame(){
     const names=gs.onlinePlayers.map(p=>p.name);
     if(names.length<3){showToast('پێویستە ب کێمی 3 یارییکەر بن! ❌',true);return;}
@@ -2622,11 +2471,7 @@ async function startOnlineGame(){
         secretWord=kurdishWords[Math.floor(Math.random()*kurdishWords.length)];
     } else {
         spyIndices=[Math.floor(Math.random()*names.length)];
-        // Use category selected by host
-        const roomSnap2 = await get(ref(db,`rooms/${gs.roomCode}`));
-        const cat = roomSnap2.exists() ? (roomSnap2.val().category||'هەمی') : 'هەمی';
-        const activePairs = getWordPairsByCategory(cat);
-        const pair=activePairs[Math.floor(Math.random()*activePairs.length)];
+        const pair=wordPairs[Math.floor(Math.random()*wordPairs.length)];
         secretWord=pair.normal;differentWord=pair.different;
     }
     await update(ref(db,`rooms/${gs.roomCode}`),{
@@ -2772,10 +2617,17 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 function goBackFromLeaderboard() { showPage(_leaderboardFrom || 'home-page'); }
 
+// Add missing playSound function
+function playSound(type) {
+    // Optional: implement sound effects
+    console.log('Sound:', type);
+}
+
+// FIX: Add missing decrement operator fix and ensure all functions are in global scope
 Object.assign(window,{
     switchAuthTab,doLogin,doSignup,doGoogleLogin,doSignOut,confirmPickedNickname,
     submitVerifyCode,resendVerificationEmail,cancelVerification,
-    openLeaderboard,goBackFromLeaderboard,selectCategory,renderCategoryBtns,
+    openLeaderboard,goBackFromLeaderboard,
     joinRoomClick,goToNickname,confirmNickname,
     showPage,goBackToHome,goToHomePage,
     startOfflineSetup,changePlayerCount,startGame,
@@ -2784,9 +2636,7 @@ Object.assign(window,{
     submitVote,openOnlineResults,playAgainOnline,startNextVotingRound,returnToLobbyAfterGame,
     sendDiscMsg,hostStartVoting,toggleDiscMic,
     showHowToPlayOptions,closeHowToPlayOptions,showHowToPlayInstructions,closeHowToPlayInstructions,
-    sendMsg,
+    sendMsg,playSound
 });
-</script>
-
-</body>
+</script></body>
 </html>
