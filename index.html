@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="ckb"><head><meta charset="UTF-8">
+<!DOCTYPE html><html lang="ckb"><head>
+
+<meta charset="UTF-8">
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#0a2a5e">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -169,7 +171,7 @@
     .disc-voice-player .vp-bar:nth-child(2){ animation-delay:0.15s; }
     .disc-voice-player .vp-bar:nth-child(3){ animation-delay:0.3s; }
     @keyframes vbar { 0%,100%{height:3px} 50%{height:13px} }
-    .disc-mic-btn { width:100%; padding:13px; border:none; border-radius:30px; margin-top:10px; font-size:1.1rem; font-weight:bold; cursor:pointer; transition:all 0.2s; touch-action:manipulation; display:flex; align-items:center; justify-content:center; gap:8px; }
+    .disc-mic-btn { width:100%; padding:13px; border:none; border-radius:30px; margin-top:10px; font-size:1.1rem; font-weight:bold; cursor:pointer; transition:all 0.2s; touch-action:manipulation; display:flex; align-items:center; justify-content:center; gap:8px; font-family:'Rabar','Arial Unicode MS','Segoe UI',sans-serif; }
     .disc-mic-btn.mic-on { background:linear-gradient(135deg,#00cc66,#00994d); color:white; box-shadow:0 4px 0 #006633; }
     .disc-mic-btn.mic-off { background:linear-gradient(135deg,#555,#333); color:#ccc; box-shadow:0 4px 0 #111; }
     .disc-mic-btn:active { opacity:0.8; transform:scale(0.98); }
@@ -224,7 +226,7 @@
     .stat-box { background:rgba(255,255,255,0.12); border-radius:20px; padding:12px 18px; border:1px solid rgba(255,204,0,0.3); min-width:80px; }
     .stat-num { font-size:2rem; font-weight:bold; color:#ffcc00; }
     .stat-label { font-size:0.75rem; color:rgba(255,255,255,0.75); }
-    .profile-badge { display:inline-block; background:rgba(255,204,0,0.2); border:1px solid #ffcc00; border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-top:8px; }/* ── JOIN ROW: boxes + button all on ONE line ── */
+    .profile-badge { display:inline-block; background:rgba(255,204,0,0.2); border:1px solid #ffcc00; border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-top:8px; }
 .join-inline-row {
 display: flex;
 align-items: center;
@@ -267,12 +269,11 @@ color: white;
 box-shadow: 0 3px 0 #2563eb;
 transition: all 0.2s;
 white-space: nowrap;
-font-family: ‘Rabar’,‘Arial Unicode MS’,‘Segoe UI’,sans-serif;
+font-family: 'Rabar','Arial Unicode MS','Segoe UI',sans-serif;
 padding: 0 12px;
 }
 .join-inline-row .join-btn:hover { transform:translateY(-1px); box-shadow:0 5px 0 #2563eb; }
 .join-inline-row .join-btn:active { transform:translateY(1px); }
-/* Verification code boxes (signup) */
 .vc-box {
 width: 58px; height: 66px; border-radius: 16px;
 border: 2.5px solid #ddd; font-size: 2.1rem; font-weight: bold;
@@ -337,7 +338,7 @@ transition: all 0.2s; background: #fafafa; color: #0066cc; padding: 0;
         </svg>
         برێکا Google خۆ تومار بکە
     </button>
-</div><!-- VERIFY EMAIL (signup) --><div id="auth-verify-email" class="hidden">
+</div><!-- VERIFY EMAIL --><div id="auth-verify-email" class="hidden">
     <div style="text-align:center;padding:8px 0 4px;">
         <div style="font-size:3.5rem;margin-bottom:6px;">📨</div>
         <div style="font-size:1.25rem;font-weight:bold;color:#0066cc;margin-bottom:6px;">کودی پشتراستبکە</div>
@@ -404,7 +405,6 @@ transition: all 0.2s; background: #fafafa; color: #0066cc; padding: 0;
        <button class="btn btn-blue" onclick="goToNickname('create')" style="background:linear-gradient(135deg,#0066ff 0%,#ff2d55 33%,#00d084 66%,#ffd60a 100%); color:white;">
 دروستکرنا ژوورێ (Create Room) 🏠
 </button>
-        <!-- FIX: All 6 boxes + Join button on ONE single line -->
         <div class="join-inline-row" id="join-inline-row">
             <input type="tel" inputmode="numeric" maxlength="1" class="code-box" id="jc0">
             <input type="tel" inputmode="numeric" maxlength="1" class="code-box" id="jc1">
@@ -435,13 +435,12 @@ transition: all 0.2s; background: #fafafa; color: #0066cc; padding: 0;
 </div><!-- ══════════════ ONLINE LOBBY ══════════════ --><div id="online-lobby-page" class="hidden">
     <div class="lobby-top-bar">
         <h2 id="lobby-title" style="margin-bottom:0;">🏠 ژوورا یاریێ</h2>
-        <!-- FIX: Leave button now shows confirmation modal -->
         <button class="leave-btn-small" onclick="leaveRoom()">دەرکەفتن 🚪</button>
     </div>
     <div class="room-code-box">
         <div class="room-code-label">کۆدێ ژوورێ — شەیر بکە دگەل هەڤاڵان 📤</div>
         <div class="room-code-value" id="room-code-display">------</div>
-        <div class="copy-hint" onclick="copyRoomCode()">📋 کۆدی کۆپی بکە</div>
+        <div class="copy-hint" onclick="copyRoomCode()">📋 کۆپی بکە</div>
     </div>
     <div class="players-box" id="waiting-players-list"><div class="players-box-title">چاڤەرێی — یارییکەران 👥</div></div>
     <div id="host-controls" class="hidden">
@@ -485,35 +484,11 @@ transition: all 0.2s; background: #fafafa; color: #0066cc; padding: 0;
             <div class="disc-starter" id="disc-starter-name">—</div>
         </div>
         <div class="disc-voice-section">
-            <div class="disc-voice-title">🎙️ ئاخفتن!</div>
-            <div class="disc-voice-players" id="discVoicePlayers">
-                <!-- دەنگی یاریکەران دێرەوە -->
-                <div class="disc-voice-player speaking">
-                    <span class="vp-avatar">🦊</span>
-                    <span class="vp-name">رەشید</span>
-                    <div class="vp-bars"><span class="vp-bar"></span><span class="vp-bar"></span><span class="vp-bar"></span></div>
-                </div>
-                <div class="disc-voice-player">
-                    <span class="vp-avatar">🐺</span>
-                    <span class="vp-name">هەڤاڵ</span>
-                    <div class="vp-bars"><span class="vp-bar"></span><span class="vp-bar"></span><span class="vp-bar"></span></div>
-                </div>
-                <div class="disc-voice-player">
-                    <span class="vp-avatar">🦁</span>
-                    <span class="vp-name">ئازاد</span>
-                    <div class="vp-bars"><span class="vp-bar"></span><span class="vp-bar"></span><span class="vp-bar"></span></div>
-                </div>
-            </div>
-            <button class="disc-mic-btn mic-on" id="discMicBtn" onclick="toggleDiscMic()">🎙️ مایکروفون چالاکە - بیکە بێدەنگ</button>
-            <div style="margin-top:8px; background:rgba(255,255,255,0.15); border-radius:20px; padding:8px; text-align:center; font-size:0.9rem; color:#fff;">
-                <span>🔊 هەڤاڵان: سڵاو، دەنگێ من تێدەچیت؟</span>
-            </div>
+            <div class="disc-voice-title">🎙️ ئاخفتنا دەنگی — Voice Chat</div>
+            <div class="disc-voice-players" id="discVoicePlayers"></div>
+            <button class="disc-mic-btn mic-off" id="discMicBtn" onclick="toggleDiscMic()">🎙️ <span>مایکروفونێ چالاک بکە</span></button>
         </div>
-        <div class="disc-chat-box" id="discChatBox">
-            <div class="dbubble other"><span class="bname">هەڤاڵ</span>سڵاو چۆنن؟</div>
-            <div class="dbubble me"><span class="bname">تۆ</span>باشم سوپاس</div>
-            <div class="dbubble other"><span class="bname">ئازاد</span>کێ سیخوڕە؟</div>
-        </div>
+        <div class="disc-chat-box" id="discChatBox"></div>
         <div class="disc-chat-row">
             <input type="text" id="discChatInput" placeholder="پەیامێ بنڤیسە..." onkeydown="if(event.key==='Enter') sendDiscMsg()">
             <button class="disc-send-btn" onclick="sendDiscMsg()">➤</button>
@@ -563,9 +538,9 @@ transition: all 0.2s; background: #fafafa; color: #0066cc; padding: 0;
         <div id="instructions-text" style="font-size:1rem;line-height:1.7;color:#333;background:#f5f9ff;border-radius:20px;padding:16px;text-align:right;border:1px solid rgba(255,204,0,0.3);"></div>
         <button class="how-to-play-close" onclick="closeHowToPlayInstructions()" style="margin-top:16px;">گرتن</button>
     </div>
-</div></div></div></div><!-- Firebase Compat SDK --><script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script><script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script><script>
-// ── EmailJS init ──
-(function(){ if(window.emailjs) emailjs.init('ypT0M2Rd5t-T8iYwO'); })();// ── Firebase init ──
+</div></div></div></div><!-- Firebase Compat SDK --><script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script><script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script><script>// ── EmailJS init ──
+(function(){ if(window.emailjs) emailjs.init('ypT0M2Rd5t-T8iYwO'); })();
+// ── Firebase init ──
 const firebaseConfig = {
 apiKey:"AIzaSyA-ZxdE8YKOBH45EqfylIdRmYF47wmwWI0",
 authDomain:"sikhur-game.firebaseapp.com",
@@ -645,7 +620,6 @@ const wordPairsByCategory = {
 };
 function getWordPairsByCategory(cat){
 if(!cat||cat==='هەمی'){
-// merge all categories into one pool
 const all=[];
 Object.values(wordPairsByCategory).forEach(arr=>arr.forEach(p=>all.push(p)));
 return all.length>0?all:wordPairs;
@@ -679,9 +653,7 @@ eliminatedPlayers:[],currentRound:1,spiesEliminated:0,totalSpies:1,
 };
 let currentPlayerCount=5;
 let selectedCategory='هەمی';
-// ══════════════════════════════
-//  JOIN BOX — jc0..jc5 (unique IDs, no conflict)
-// ══════════════════════════════
+// ── JOIN BOXES ──
 function setupJoinBoxes(){
 for(let i=0;i<6;i++){
 const box=document.getElementById('jc'+i);
@@ -709,9 +681,7 @@ if(lb) lb.focus();
 }
 function getJoinCode(){ let c=''; for(let i=0;i<6;i++){const b=document.getElementById('jc'+i);c+=b?b.value:'';} return c; }
 function clearJoinBoxes(){ for(let i=0;i<6;i++){const b=document.getElementById('jc'+i);if(b)b.value='';} }
-// ══════════════════════════════
-//  VERIFY CODE BOXES — vc0..vc3
-// ══════════════════════════════
+// ── VERIFY CODE BOXES ──
 function setupVcBoxes(){
 for(let i=0;i<4;i++){
 const box=document.getElementById('vc'+i);
@@ -735,9 +705,7 @@ if(txt.length>=4)setTimeout(submitVerifyCode,80);
 });
 }
 }
-// ══════════════════════════════
-//  AUTH STATE
-// ══════════════════════════════
+// ── AUTH STATE ──
 auth.onAuthStateChanged(async(user)=>{
 if(user){
 currentUser=user; myPlayerId=user.uid;
@@ -751,7 +719,6 @@ if(invite){
 sessionStorage.removeItem('sikhur_invite');
 const clean=invite.replace(/[^0-9]/g,'');
 if(clean.length===6){
-// fill join boxes
 for(let i=0;i<6;i++){const b=document.getElementById('jc'+i);if(b)b.value=clean[i]||'';}
 showToast('🔗 لینکی دەعوەتێ هاتە دیتن!',false);
 await openLobby(false,clean); return;
@@ -838,11 +805,11 @@ try{await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());}
 catch(e){if(e.code!=='auth/popup-closed-by-user')showToast('Google داخلبوون سەرنەکەفت ❌',true);}
 }
 async function doSignOut(){ await auth.signOut(); }
-// ── Signup (email) + 4-digit code ──
+// ── Signup + 4-digit code ──
 function _gen4Code(){ return String(Math.floor(1000+Math.random()*9000)); }
-async function sendCodeEmail(email,code){
-const key=btoa(email).replace(/[^a-zA-Z0-9]/g,'_');
-try{await db.ref('verificationCodes/'+key).set({code,createdAt:Date.now(),expiresAt:Date.now()+600000});}catch(e){}
+async function _sendCodeEmail(email,code){
+const key=btoa(email).replace(/[^a-zA-Z0-9]/g,'');
+try{await db.ref(`verificationCodes/${key}`).set({code,createdAt:Date.now(),expiresAt:Date.now()+600000});}catch(e){}
 try{
 await emailjs.send(EMAILJS_SERVICE_ID,EMAILJS_TEMPLATE_ID,{to_email:email,email,name:'سیخوڕ یارییکەر',code:String(code),app_name:'سیخوڕ | Sikhur'});
 return true;
@@ -857,7 +824,7 @@ if(!email){errEl.textContent='⚠️ ئیمەیڵ یێ پێویستە';return;}
 if(pass.length<6){errEl.textContent='⚠️ پاسوورد ب کێمی 6 پیت لازمە';return;}
 errEl.textContent='📨 کۆد دهێتە هنارتن…';
 _verifyEmail=email; _pendingPassword=pass; _verifyCode=_gen4Code();
-const sent=await sendCodeEmail(email,_verifyCode);
+const sent=await _sendCodeEmail(email,_verifyCode);
 errEl.textContent='';
 _showVerifyScreen(email);
 if(!sent){
@@ -895,7 +862,7 @@ async function resendVerificationEmail(){
 if(_resendCooldown){showToast('⏳ 60 سانییا چاڤەرێ بە',true);return;}
 if(!_verifyEmail)return;
 _verifyCode=_gen4Code();
-const sent=await sendCodeEmail(_verifyEmail,_verifyCode);
+const sent=await _sendCodeEmail(_verifyEmail,_verifyCode);
 showToast(sent?'📨 کۆدێ نوی هاتە هنارتن!':'⚠️ ئیمەیڵ نەچوو — دووبارە هەولێ بو بدە',!sent);
 for(let i=0;i<4;i++){const b=document.getElementById('vc'+i);if(b)b.value='';}
 document.getElementById('vc0')?.focus();
@@ -914,7 +881,7 @@ const errEl=document.getElementById('pick-nickname-error');
 errEl.textContent='';
 if(!nick||nick.length<2){errEl.textContent='⚠️ کێمی 2 پیت پێویستە';return;}
 if(nick.length>20){errEl.textContent='⚠️ زێدەتر ل 20 پیت نابیت';return;}
-if(!/^[\w\u0600-\u06FF\s-_.]+$/.test(nick)){errEl.textContent='⚠️ ناڤ پیتێن جیاواز تێدایە';return;}
+if(!/^[\w\u0600-\u06FF\s\-_.]+$/.test(nick)){errEl.textContent='⚠️ ناڤ پیتێن جیاواز تێدایە';return;}
 errEl.textContent='⏳ چاڤەرێ بە…';errEl.style.color='#888';
 try{
 const snap=await db.ref('nicknames/'+nick.toLowerCase()).get();
@@ -929,9 +896,7 @@ updateProfileUI();showPage('home-page');
 errEl.textContent='❌ خەلەتیەک پەیدا بوو';errEl.style.color='#e53e3e';
 }
 }
-// ══════════════════════════════
-//  PROFILE UI
-// ══════════════════════════════
+// ── PROFILE UI ──
 function updateProfileUI(){
 if(!userProfile)return;
 const nick=userProfile.nickname||'?';
@@ -949,15 +914,13 @@ const sw=document.getElementById('stat-wins');if(sw)sw.textContent=wins;
 const sr=document.getElementById('stat-rate');if(sr)sr.textContent=rate+'%';
 const badge=document.getElementById('profile-badge-role');
 if(badge){
-if(wins>=50)badge.textContent='👑 لیگی ئەفسانەیی';
-else if(wins>=20)badge.textContent='🏆 یارییکەری ئەفسانە';
-else if(wins>=10)badge.textContent='⭐ یارییکەری باش';
-else badge.textContent='🎭 یارییکەری نوی';
+if(wins>=50)badge.textContent='👑 لیگی امپراتور';
+else if(wins>=20)badge.textContent='🏆 یارییکەرێ اسطورە';
+else if(wins>=10)badge.textContent='⭐ یارییکەرێ باش';
+else badge.textContent='🎭 یارییکەرێ نوی';
 }
 }
-// ══════════════════════════════
-//  TOAST & CONFIRM MODAL
-// ══════════════════════════════
+// ── TOAST & CONFIRM MODAL ──
 function showToast(msg,isError=false){
 document.querySelectorAll('.welcome-notification').forEach(e=>e.remove());
 const d=document.createElement('div');
@@ -973,20 +936,20 @@ const old=document.getElementById('_confirmModal');if(old)old.remove();
 const modal=document.createElement('div');
 modal.id='_confirmModal';
 modal.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(6px);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
-modal.innerHTML= `<div style="background:white;border-radius:36px;padding:30px 24px;max-width:340px;width:100%;text-align:center;border:3px solid #ffcc00;box-shadow:0 20px 60px rgba(0,0,0,0.4);animation:modalPop 0.25s ease;"> <div style="font-size:3rem;margin-bottom:10px;">🚪</div> <div style="font-size:1.25rem;font-weight:bold;color:#1a1a2e;margin-bottom:8px;">${title}</div> <div style="font-size:0.95rem;color:#555;margin-bottom:22px;line-height:1.55;">${message}</div> <div style="display:flex;gap:10px;"> <button id="_cnNo"  style="flex:1;padding:14px;border-radius:30px;border:2px solid #ccc;background:white;color:#555;font-size:1rem;cursor:pointer;font-family:inherit;">${cancelText}</button> <button id="_cnYes" style="flex:1;padding:14px;border-radius:30px;border:none;background:linear-gradient(135deg,#ff4444,#cc0000);color:white;font-size:1rem;cursor:pointer;font-family:inherit;box-shadow:0 4px 0 #990000;">${confirmText}</button> </div> </div>`;
+modal.innerHTML=`<div style="background:white;border-radius:36px;padding:30px 24px;max-width:340px;width:100%;text-align:center;border:3px solid #ffcc00;box-shadow:0 20px 60px rgba(0,0,0,0.4);animation:modalPop 0.25s ease;"> <div style="font-size:3rem;margin-bottom:10px;">🚪</div> <div style="font-size:1.25rem;font-weight:bold;color:#1a1a2e;margin-bottom:8px;">${title}</div> <div style="font-size:0.95rem;color:#555;margin-bottom:22px;line-height:1.55;">${message}</div> <div style="display:flex;gap:10px;"> <button id="_cnNo"  style="flex:1;padding:14px;border-radius:30px;border:2px solid #ccc;background:white;color:#555;font-size:1rem;cursor:pointer;font-family:inherit;">${cancelText}</button> <button id="_cnYes" style="flex:1;padding:14px;border-radius:30px;border:none;background:linear-gradient(135deg,#ff4444,#cc0000);color:white;font-size:1rem;cursor:pointer;font-family:inherit;box-shadow:0 4px 0 #990000;">${confirmText}</button> </div> </div>`;
 document.body.appendChild(modal);
 modal.querySelector('#_cnYes').onclick=()=>{modal.remove();resolve(true);};
 modal.querySelector('#_cnNo').onclick=()=>{modal.remove();resolve(false);};
 modal.onclick=e=>{if(e.target===modal){modal.remove();resolve(false);}};
 });
 }
-// ══════════════════════════════
-//  PAGES
-// ══════════════════════════════
+// ── PAGES ──
 const PAGES=['auth-page','home-page','profile-page','leaderboard-page','offline-mode-page',
 'online-lobby-page','setup-page','game-page','discussion-page','reveal-page',
 'results-page','voting-page','online-results-page'];
 function showPage(id){
+const wasDiscussion = !document.getElementById('discussion-page')?.classList.contains('hidden');
+if(wasDiscussion && id!=='discussion-page') stopVoiceChat();
 PAGES.forEach(p=>{const el=document.getElementById(p);if(el)el.classList.add('hidden');});
 const page=document.getElementById(id);if(page)page.classList.remove('hidden');
 if(id==='setup-page')initSetupPage();
@@ -994,9 +957,7 @@ if(id==='reveal-page'){const t=document.getElementById('reveal-title');if(t)t.te
 }
 function goBackToHome(){ showPage('home-page'); }
 function goToHomePage(){  showPage('home-page'); }
-// ══════════════════════════════
-//  JOIN ROOM
-// ══════════════════════════════
+// ── JOIN ROOM ──
 async function joinRoomClick(){
 const code=getJoinCode();
 if(code.length!==6){
@@ -1005,9 +966,9 @@ for(let i=0;i<6;i++){const b=document.getElementById('jc'+i);if(b){b.style.borde
 return;
 }
 if(!gs.myNickname&&userProfile)gs.myNickname=userProfile.nickname;
-if(!gs.myNickname){showToast(' پێشتر داخلبە! ❌',true);showPage('auth-page');return;}
+if(!gs.myNickname){showToast(' داخل ببە! ❌',true);showPage('auth-page');return;}
 try{
-const snap=await db.ref('rooms/'+code).get();
+const snap=await db.ref(`rooms/${code}`).get();
 if(!snap.exists()){showToast('کۆد یێ خەلەتە! ❌',true);return;}
 clearJoinBoxes();
 openLobby(false,code);
@@ -1020,9 +981,7 @@ if(flow==='create')openLobby(true,null);
 }
 function genCode(){ return String(Math.floor(100000+Math.random()*900000)); }
 function formatRoomCode(code){ const c=String(code).replace(/[^0-9]/g,''); return c.length===6?c.slice(0,3)+'-'+c.slice(3):code; }
-// ══════════════════════════════
-//  LOBBY
-// ══════════════════════════════
+// ── LOBBY ──
 async function openLobby(isHost,code){
 gs.isHost=isHost; gs.roomCode=isHost?genCode():code;
 gs.isOnlineGame=true; gs.onlinePlayers=[];
@@ -1032,35 +991,39 @@ document.getElementById('host-controls').classList.toggle('hidden',!isHost);
 document.getElementById('chatBox').innerHTML='';
 if(isHost)setTimeout(renderCategoryBtns,100);
 showPage('online-lobby-page');
-const roomRef='rooms/'+gs.roomCode;
+const roomRef=`rooms/${gs.roomCode}`;
 const myAvatarIdx=userProfile?.avatarIdx??0;
 if(isHost){
 gs.hostPlayerId=myPlayerId;
-await db.ref(roomRef).set({host:myPlayerId,hostId:myPlayerId,mode:1,status:'waiting',createdAt:Date.now(),expiresAt:Date.now()+(260601000)});
-db.ref(roomRef+'/chat').push({senderId:'system',name:'سیستەم',text:`🏠 ${gs.myNickname} ژوور دروست کر`,type:'system',ts:Date.now()});
+await db.ref(roomRef).set({host:myPlayerId,hostId:myPlayerId,mode:1,status:'waiting',createdAt:Date.now(),expiresAt:Date.now()+(26*60*60*1000)});
+db.ref(`${roomRef}/chat`).push({senderId:'system',name:'سیستەم',text:`🏠 ${gs.myNickname} ژوور دروست کر`,type:'system',ts:Date.now()});
 }else{
 const roomSnap=await db.ref(roomRef).get();
 if(!roomSnap.exists()){showToast('ژوور نەدۆزرایەوە ❌',true);showPage('home-page');return;}
 gs.hostPlayerId=roomSnap.val().hostId||roomSnap.val().host||'';
-db.ref(roomRef+'/chat').push({senderId:'system',name:'سیستەم',text:`👋 خێر هاتی ${gs.myNickname}!`,type:'system',ts:Date.now()});
+db.ref(`${roomRef}/chat`).push({senderId:'system',name:'سیستەم',text:`👋 خێر هاتی ${gs.myNickname}!`,type:'system',ts:Date.now()});
 }
-await db.ref(roomRef+'/players/'+myPlayerId).set({name:gs.myNickname,joinedAt:Date.now(),ready:false,avatarIdx:myAvatarIdx});
+await db.ref(`${roomRef}/players/${myPlayerId}`).set({name:gs.myNickname,joinedAt:Date.now(),ready:false,avatarIdx:myAvatarIdx});
 if(isHost)setTimeout(()=>markReady(),800);
-db.ref(roomRef+'/players').on('value',(snap)=>{
+db.ref(`${roomRef}/players`).on('value',(snap)=>{
 gs.onlinePlayers=[];
 snap.forEach(child=>{const v=child.val();gs.onlinePlayers.push({id:child.key,name:v.name||'?',ready:!!v.ready,wantPlayAgain:v.wantPlayAgain||false,avatarIdx:v.avatarIdx??0});});
 renderPlayers();updateReadyStatus();
 });
-db.ref(roomRef+'/mode').on('value',snap=>{
+db.ref(`${roomRef}/mode`).on('value',snap=>{
 if(snap.val()){gs.onlineMode=snap.val();document.getElementById('omBtn1').classList.toggle('selected',gs.onlineMode===1);document.getElementById('omBtn2').classList.toggle('selected',gs.onlineMode===2);}
 });
-db.ref(roomRef+'/status').on('value',snap=>{
+db.ref(`${roomRef}/status`).on('value',snap=>{
 if(snap.val()==='waiting'){
 gs.eliminatedPlayers=[];gs.currentRound=1;
-renderPlayers();updateReadyStatus();returnToLobbyAfterGame();
+renderPlayers();updateReadyStatus();
+// Only redirect to lobby if player is currently in a game page (not during initial lobby setup)
+const inGamePages=['game-page','discussion-page','voting-page','online-results-page','reveal-page','results-page'];
+const currentlyInGame=inGamePages.some(p=>!document.getElementById(p)?.classList.contains('hidden'));
+if(currentlyInGame) returnToLobbyAfterGame();
 }
 if(snap.val()==='started'){
-db.ref(roomRef+'/gameData').get().then(gSnap=>{
+db.ref(`${roomRef}/gameData`).get().then(gSnap=>{
 if(!gSnap.exists())return;
 const gd=gSnap.val();
 gs.gameMode=gd.mode;gs.secretWord=gd.secretWord;gs.differentWord=gd.differentWord||'';
@@ -1072,7 +1035,7 @@ showPage('game-page');listenGameState(gd);
 });
 }
 });
-db.ref(roomRef+'/chat').on('child_added',snap=>{
+db.ref(`${roomRef}/chat`).on('child_added',snap=>{
 const msg=snap.val();if(!msg)return;
 const box=document.getElementById('chatBox');if(!box)return;
 const d=document.createElement('div');
@@ -1101,18 +1064,16 @@ function updateReadyStatus(){
 const total=gs.onlinePlayers.length,readyN=gs.onlinePlayers.filter(p=>!!p.ready).length,allReady=total>=2&&readyN===total;
 const msg=document.getElementById('readyCountMsg'),btn=document.getElementById('startGameBtn');
 if(msg){
-if(allReady){msg.innerHTML=`✅ هەمی ئامادەن!  <strong>(${total})</strong>`;msg.style.cssText='display:block;color:#15803d;font-weight:bold;background:#dcfce7;border:2px solid #22c55e;border-radius:30px;padding:10px 18px;text-align:center;margin:10px 0;font-size:1rem;';}
-else{msg.innerHTML=`چاڤەرێی یارییکەران…  <strong>(${readyN}/${total} حازرن)</strong>`;msg.style.cssText='display:block;color:#92400e;background:#fef3c7;border:2px solid #f59e0b;border-radius:30px;padding:10px 18px;text-align:center;margin:10px 0;font-size:1rem;';}
+if(allReady){msg.innerHTML=`✅ هەمی ئامادەن! &nbsp;<strong>(${readyN}/${total})</strong>`;msg.style.cssText='display:block;color:#15803d;font-weight:bold;background:#dcfce7;border:2px solid #22c55e;border-radius:30px;padding:10px 18px;text-align:center;margin:10px 0;font-size:1rem;';}
+else{msg.innerHTML=`چاڤەرێی یارییکەران... &nbsp;<strong>(${readyN}/${total} حازرن)</strong>`;msg.style.cssText='display:block;color:#92400e;background:#fef3c7;border:2px solid #f59e0b;border-radius:30px;padding:10px 18px;text-align:center;margin:10px 0;font-size:1rem;';}
 }
 if(btn)btn.disabled=!allReady;
 }
 function markReady(){
 if(!gs.roomCode||!myPlayerId)return;
-db.ref('rooms/'+gs.roomCode+'/players/'+myPlayerId+'/ready').set(true).catch(()=>{});
+db.ref(`rooms/${gs.roomCode}/players/${myPlayerId}/ready`).set(true).catch(()=>{});
 }
-// ══════════════════════════════
-//  LEAVE ROOM — with confirm modal
-// ══════════════════════════════
+// ── LEAVE ROOM ──
 async function leaveRoom(){
 const confirmed=await showConfirmModal(
 'دەرکەفتن ل ژوورێ 🚪',
@@ -1121,13 +1082,14 @@ const confirmed=await showConfirmModal(
 'نەخێر، دێ مینم'
 );
 if(!confirmed)return;
-db.ref('rooms/'+gs.roomCode+'/players').off();
-db.ref('rooms/'+gs.roomCode+'/status').off();
-db.ref('rooms/'+gs.roomCode+'/mode').off();
-db.ref('rooms/'+gs.roomCode+'/chat').off();
+db.ref(`rooms/${gs.roomCode}/players`).off();
+db.ref(`rooms/${gs.roomCode}/status`).off();
+db.ref(`rooms/${gs.roomCode}/mode`).off();
+db.ref(`rooms/${gs.roomCode}/chat`).off();
+cleanupVoiceOnLeave();
 try{
-await db.ref('rooms/'+gs.roomCode+'/players/'+myPlayerId).remove();
-if(gs.isHost)await db.ref('rooms/'+gs.roomCode).remove();
+await db.ref(`rooms/${gs.roomCode}/players/${myPlayerId}`).remove();
+if(gs.isHost)await db.ref(`rooms/${gs.roomCode}`).remove();
 }catch(e){}
 gs.roomCode='';gs.isOnlineGame=false;
 try{sessionStorage.removeItem('sikhur_room');}catch(e){}
@@ -1140,10 +1102,8 @@ const el=document.querySelector('.copy-hint');
 if(el){el.textContent='✅ هاتە کوپیکرن!';setTimeout(()=>el.textContent='📋 کۆپیکرن',2000);}
 }).catch(()=>alert('کۆد: '+code));
 }
-function setOnlineMode(mode){gs.onlineMode=mode;db.ref('rooms/'+gs.roomCode).update({mode});}
-// ══════════════════════════════
-//  CATEGORIES
-// ══════════════════════════════
+function setOnlineMode(mode){gs.onlineMode=mode;db.ref(`rooms/${gs.roomCode}`).update({mode});}
+// ── CATEGORIES ──
 function renderCategoryBtns(){
 const box=document.getElementById('category-btns');if(!box)return;
 const cats=['هەمی',...categoryNames];
@@ -1151,12 +1111,10 @@ box.innerHTML=cats.map(cat=>`<button onclick="selectCategory('${cat}')" style="p
 }
 function selectCategory(cat){
 selectedCategory=cat;renderCategoryBtns();
-db.ref('rooms/'+gs.roomCode).update({category:cat});
+db.ref(`rooms/${gs.roomCode}`).update({category:cat});
 showToast('📚 بابەت: '+cat,false);
 }
-// ══════════════════════════════
-//  START ONLINE GAME
-// ══════════════════════════════
+// ── START ONLINE GAME ──
 async function startOnlineGame(){
 const names=gs.onlinePlayers.map(p=>p.name);
 if(names.length<3){showToast('پێویستە ب کێمی 3 یارییکەر بن! ❌',true);return;}
@@ -1170,21 +1128,19 @@ while(spyIndices.length<spyCount){const r=Math.floor(Math.random()*names.length)
 secretWord=kurdishWords[Math.floor(Math.random()*kurdishWords.length)];
 }else{
 spyIndices=[Math.floor(Math.random()*names.length)];
-const roomSnap=await db.ref('rooms/'+gs.roomCode).get();
+const roomSnap=await db.ref(`rooms/${gs.roomCode}`).get();
 const cat=roomSnap.exists()?(roomSnap.val().category||'هەمی'):'هەمی';
 const pairs=getWordPairsByCategory(cat);
 const pair=pairs[Math.floor(Math.random()*pairs.length)];
 secretWord=pair.normal;differentWord=pair.different;
 }
-await db.ref('rooms/'+gs.roomCode).update({
+await db.ref(`rooms/${gs.roomCode}`).update({
 status:'started',
 gameData:{mode,secretWord,differentWord,spyIndices,playerNames:names,starterIndex:Math.floor(Math.random()*names.length),playerAvatars:gs.onlinePlayers.map(p=>p.avatarIdx??0)},
 gameState:{turnIndex:0,revealed:names.map(()=>false),currentPhase:'revealing'}
 });
 }
-// ══════════════════════════════
-//  OFFLINE GAME
-// ══════════════════════════════
+// ── OFFLINE GAME ──
 function startOfflineSetup(mode){
 gs.gameMode=mode;gs.isOnlineGame=false;
 document.getElementById('setup-title').textContent=mode===1?'⚙️ ڕێکخستنا سیخوڕی 🕵️':'⚙️ ڕێکخستنا پەیڤێن جیاواز 🎭';
@@ -1199,7 +1155,7 @@ document.getElementById('player-inputs-container').innerHTML=html;
 function initSetupPage(){document.getElementById('player-count').textContent=currentPlayerCount;updatePlayerInputs();}
 function startGame(){
 const players=[];
-for(let i=1;i<=currentPlayerCount;i++){const el=document.getElementById('pname-'+i);players.push(el&&el.value.trim()?el.value.trim():`یارییکەرێ ${i}`);}
+for(let i=1;i<=currentPlayerCount;i++){const el=document.getElementById(`pname-${i}`);players.push(el&&el.value.trim()?el.value.trim():`یارییکەرێ ${i}`);}
 gs.playerNames=[...players];startNewGame(players);
 }
 function startNewGame(players){
@@ -1228,7 +1184,7 @@ const starterCont=document.getElementById('starter-container');
 const current=gs.players[gs.currentPlayerIndex];
 if(!current){
 const starter=selectStarterPlayer();
-progress.textContent=`${gs.players.length} - تەمام`;
+progress.textContent=`${gs.players.length}/${gs.players.length} - تەمام`;
 container.innerHTML=`<div class="card" style="cursor:default;background:#f0f7ff;border:2px solid #0066cc;"><div class="role-icon">🎯</div><div style="color:#0066cc;font-size:1.1rem;">هەمی کارت هاتتنە دیتن</div></div>`;
 starterCont.innerHTML=`<div class="starter-box"><div style="font-size:1.3rem;margin-bottom:10px;">🎤 دەستپێ بکە!</div><div class="starter-name">${starter.name}</div><div>🧠 مێشکێ خۆ بکاربیینە!</div><div style="margin-top:18px;"><div style="font-size:0.95rem;color:rgba(255,255,255,0.8);margin-bottom:6px;">ئاشکراکرن دەستپێدکات لە:</div><div id="disc-countdown-num" style="font-size:3.5rem;font-weight:bold;color:#ffcc00;line-height:1;">6</div></div></div>`;
 starterCont.classList.remove('hidden');nextBtn.classList.add('hidden');revealBtn.classList.add('hidden');
@@ -1303,11 +1259,9 @@ html+='</div>';container.innerHTML=html+`<div class="word-box"><div class="word-
 }
 }
 function playAgain(){startNewGame(gs.playerNames);}
-// ══════════════════════════════
-//  ONLINE GAME STATE LISTENER
-// ══════════════════════════════
+// ── ONLINE GAME STATE LISTENER ──
 function listenGameState(gameData){
-db.ref('rooms/'+gs.roomCode+'/gameState').on('value',snap=>{
+db.ref(`rooms/${gs.roomCode}/gameState`).on('value',snap=>{
 if(!snap.exists())return;
 const state=snap.val();
 const turnIndex=state.turnIndex??0;
@@ -1326,7 +1280,7 @@ const players=gameData.playerNames,totalPlayers=players.length,myIdx=gs.myPlayer
 progress.textContent=`یارییکەرێ ${turnIndex+1} / ${totalPlayers}`;
 if(turnIndex>=totalPlayers){
 const starterName=players[gameData.starterIndex??0];
-progress.textContent=`${totalPlayers} - تەمام`;
+progress.textContent=`${totalPlayers}/${totalPlayers} - تەمام`;
 container.innerHTML=`<div class="card" style="cursor:default;background:#f0f7ff;border:2px solid #0066cc;"><div class="role-icon">🎯</div><div style="color:#0066cc;font-size:1.1rem;">هەمی کارت هاتتنە دیتن</div></div>`;
 starterCont.innerHTML=`<div class="starter-box"><div style="font-size:1.3rem;margin-bottom:10px;">🎤 دەستپێ بکە!</div><div class="starter-name">${starterName}</div><div style="margin-top:18px;"><div style="font-size:0.95rem;color:rgba(255,255,255,0.8);margin-bottom:6px;">مناقشە دەستپێدکات لە:</div><div id="disc-countdown-num" style="font-size:3.5rem;font-weight:bold;color:#ffcc00;line-height:1;">6</div></div></div>`;
 starterCont.classList.remove('hidden');
@@ -1344,7 +1298,7 @@ cardEl.onclick=()=>onlineRevealMyCard(gameData,myIdx);
 container.innerHTML='';container.appendChild(cardEl);
 }else{
 const wAv=getAvatarForIndex((gameData.playerAvatars||[])[turnIndex]??0);
-container.innerHTML=`<div class="waiting-turn-box"><div style="width:64px;height:64px;border-radius:50%;background:${wAv.c};display:flex;align-items:center;justify-content:center;font-size:2.2rem;margin:0 auto 12px;border:3px solid #0066cc;">${wAv.e}</div><div class="wt-name">${activePlayerName}</div><div class="wt-msg">رولێ خۆ دبینیت… ⏳</div></div>`;
+container.innerHTML=`<div class="waiting-turn-box"><div style="width:64px;height:64px;border-radius:50%;background:${wAv.c};display:flex;align-items:center;justify-content:center;font-size:2.2rem;margin:0 auto 12px;border:3px solid #0066cc;">${wAv.e}</div><div class="wt-name">${activePlayerName}</div><div class="wt-msg">رولێ خۆ دبینیت... ⏳</div></div>`;
 }
 }
 function onlineRevealMyCard(gameData,myIdx){
@@ -1362,13 +1316,11 @@ container.innerHTML='<div class="card-civilian-revealed card-revealed"><div clas
 }else{
 container.innerHTML='<div class="card-white-revealed card-revealed"><div class="word-display">'+(hasDiff?gameData.differentWord:gameData.secretWord)+'</div></div>';
 }
-db.ref('rooms/'+gs.roomCode+'/gameState/revealed/'+myIdx).set(true);
+db.ref(`rooms/${gs.roomCode}/gameState`).update({[`revealed/${myIdx}`]:true});
 nextBtn.textContent='یارییکەرێ دیڤدا ⏭️';nextBtn.classList.remove('hidden');
-nextBtn.onclick=()=>db.ref('rooms/'+gs.roomCode+'/gameState').update({turnIndex:(gameData._currentTurn||0)+1});
+nextBtn.onclick=()=>db.ref(`rooms/${gs.roomCode}/gameState`).update({turnIndex:(gameData._currentTurn||0)+1});
 }
-// ══════════════════════════════
-//  DISCUSSION
-// ══════════════════════════════
+// ── DISCUSSION ──
 let _discChatAttached=false;
 function openDiscussionPage(gameData){
 showPage('discussion-page');
@@ -1377,248 +1329,491 @@ document.getElementById('discChatBox').innerHTML='';
 const voteBtn=document.getElementById('disc-vote-btn'),waitMsg=document.getElementById('disc-wait-msg');
 if(gs.isHost){voteBtn.classList.remove('hidden');waitMsg.classList.add('hidden');}
 else{voteBtn.classList.add('hidden');waitMsg.classList.remove('hidden');}
-db.ref('rooms/'+gs.roomCode+'/discussionDone').on('value',snap=>{if(snap.val()===true)startVotingPhase(gameData);});
-if(!_discChatAttached){
-_discChatAttached=true;
-db.ref('rooms/'+gs.roomCode+'/discussionChat').on('child_added',snap=>{
+// Always detach and re-attach discussionDone so each round gets a fresh listener
+if(gs.roomCode){
+db.ref(`rooms/${gs.roomCode}/discussionDone`).off();
+db.ref(`rooms/${gs.roomCode}/discussionDone`).on('value',snap=>{if(snap.val()===true)startVotingPhase(gameData);});
+// Show ALL players in voice panel
+_renderAllPlayersInVoice(gameData);
+// Listen for speaking updates — detach old listener first
+db.ref(`rooms/${gs.roomCode}/voicePresence`).off();
+db.ref(`rooms/${gs.roomCode}/voicePresence`).on('value',snap=>{
+_updateVoiceSpeaking(snap.val()||{}, gameData);
+});
+}
+// Re-attach chat listener for each round (reset _discChatAttached to allow re-attach)
+if(gs.roomCode){
+db.ref(`rooms/${gs.roomCode}/discussionChat`).off();
+db.ref(`rooms/${gs.roomCode}/discussionChat`).on('child_added',snap=>{
 const msg=snap.val();const box=document.getElementById('discChatBox');if(!box)return;
 const d=document.createElement('div');d.className='dbubble '+(msg.senderId===myPlayerId?'me':'other');
 d.innerHTML='<div class="bname">'+msg.name+'</div>'+msg.text;box.appendChild(d);box.scrollTop=box.scrollHeight;
 });
+_discChatAttached=true;
 }
+}
+// Show all room players in the voice panel always — mic/speaking state layered on top
+function _renderAllPlayersInVoice(gameData){
+const box=document.getElementById('discVoicePlayers');if(!box)return;
+const eliminated=gameData._eliminatedPlayers||gs.eliminatedPlayers||[];
+box.innerHTML=gameData.playerNames.map((name,idx)=>{
+if(eliminated.includes(idx))return'';
+const plObj=gs.onlinePlayers.find(p=>p.name===name);
+const av=getAvatarForIndex(plObj?.avatarIdx??(gameData.playerAvatars||[])[idx]??idx);
+const isMe=plObj?.id===myPlayerId;
+return `<div class="disc-voice-player" id="vp-${idx}" style="${isMe?'border-color:rgba(255,204,0,0.5);':''}">
+<div class="vp-avatar">${av.e}</div>
+<div class="vp-name">${name}${isMe?'<br><span style="font-size:0.6rem;opacity:0.6;">تۆ</span>':''}</div>
+<div class="vp-bars" id="vpbars-${idx}" style="visibility:hidden"><div class="vp-bar"></div><div class="vp-bar"></div><div class="vp-bar"></div></div>
+</div>`;
+}).join('');
+}
+// Update speaking rings without re-rendering the whole panel
+function _updateVoiceSpeaking(presence, gameData){
+if(!gameData)return;
+gameData.playerNames.forEach((name,idx)=>{
+const card=document.getElementById(`vp-${idx}`);
+if(!card)return;
+// find this player's presence entry by name match
+const entry=Object.values(presence).find(p=>p.name===name);
+const speaking=entry?.speaking||false;
+const bars=document.getElementById(`vpbars-${idx}`);
+if(speaking){card.classList.add('speaking');if(bars)bars.style.visibility='visible';}
+else{card.classList.remove('speaking');if(bars)bars.style.visibility='hidden';}
+// show mic icon if they have mic on
+const inVoice=Object.values(presence).some(p=>p.name===name);
+if(inVoice&&!card.querySelector('.vp-mic')){
+const mic=document.createElement('span');mic.className='vp-mic';mic.style.cssText='font-size:0.7rem;opacity:0.8;';mic.textContent='🎙️';
+card.insertBefore(mic,card.querySelector('.vp-bars'));
+}else if(!inVoice){const m=card.querySelector('.vp-mic');if(m)m.remove();}
+});
 }
 function sendDiscMsg(){
 const inp=document.getElementById('discChatInput');const txt=inp.value.trim();
 if(!txt||!gs.roomCode)return;inp.value='';
-db.ref('rooms/'+gs.roomCode+'/discussionChat').push({senderId:myPlayerId,name:gs.myNickname,text:txt,ts:Date.now()});
+db.ref(`rooms/${gs.roomCode}/discussionChat`).push({senderId:myPlayerId,name:gs.myNickname,text:txt,ts:Date.now()});
 }
-function hostStartVoting(){if(!gs.isHost)return;db.ref('rooms/'+gs.roomCode+'/discussionDone').set(true);}
+function hostStartVoting(){if(!gs.isHost)return;db.ref(`rooms/${gs.roomCode}/discussionDone`).set(true);}
+
+// ══════════════════════════════
+//  VOICE CHAT (WebRTC + Firebase signaling)
+// ══════════════════════════════
+let _vc = {localStream:null,peers:{},micOn:false,speaking:false,analyser:null,audioCtx:null,vadInterval:null};
+const RTC_CONFIG = {iceServers:[{urls:‘stun:stun.l.google.com:19302’},{urls:‘stun:stun1.l.google.com:19302’}]};
+
 function toggleDiscMic(){
-const btn=document.getElementById('discMicBtn');
-if(btn.classList.contains('mic-on')){
-btn.classList.remove('mic-on');btn.classList.add('mic-off');
-btn.innerHTML='🎙️ مایکروفونێ چالاک بکە';
-showToast('🎤 مایکروفون بێدەنگ کرا',false);
-}else{
-btn.classList.remove('mic-off');btn.classList.add('mic-on');
-btn.innerHTML='🎙️ مایکروفون چالاکە - بیکە بێدەنگ';
-showToast('🎤 مایکروفون چالاک بوو - ئێستا دەنگت تێدەچیت',false);
-// دەنگی ساختە بۆ پیشاندان
-const players=document.querySelectorAll('.disc-voice-player');
-players.forEach(p=>p.classList.add('speaking'));
-setTimeout(()=>players.forEach(p=>p.classList.remove('speaking')),3000);
+if(_vc.micOn) stopVoiceChat();
+else startVoiceChat();
+}
+
+async function startVoiceChat(){
+if(_vc.micOn)return;
+try{
+const stream = await navigator.mediaDevices.getUserMedia({audio:true,video:false});
+_vc.localStream = stream;
+_vc.micOn = true;
+_updateMicBtn(true);
+_setupVAD(stream);
+await db.ref(`rooms/${gs.roomCode}/voicePresence/${myPlayerId}`).set({name:gs.myNickname,avatarIdx:userProfile?.avatarIdx??0,speaking:false,joined:Date.now()});
+_listenVoiceSignals();
+_connectToExistingPeers();
+showToast(‘🎙️ مایکروفون چالاک بوو!’,false);
+}catch(e){
+showToast(‘❌ مایکروفون نەکار — دەستوور بدە!’,true);
 }
 }
-// ══════════════════════════════
-//  VOTING
-// ══════════════════════════════
+
+function stopVoiceChat(){
+if(!_vc.micOn&&!_vc.localStream)return;
+if(_vc.localStream){_vc.localStream.getTracks().forEach(t=>t.stop());_vc.localStream=null;}
+Object.values(_vc.peers).forEach(pc=>{try{pc.close();}catch(e){}});
+_vc.peers={};
+clearInterval(_vc.vadInterval);
+if(_vc.audioCtx){try{_vc.audioCtx.close();}catch(e){}}_vc.audioCtx=null;_vc.analyser=null;
+_vc.micOn=false;_vc.speaking=false;
+_updateMicBtn(false);
+if(gs.roomCode&&myPlayerId){
+db.ref(`rooms/${gs.roomCode}/voicePresence/${myPlayerId}`).remove().catch(()=>{});
+db.ref(`rooms/${gs.roomCode}/voiceSignals/${myPlayerId}`).remove().catch(()=>{});
+}
+const vbox=document.getElementById(‘discVoicePlayers’);
+if(vbox)vbox.innerHTML=’’;
+}
+
+function cleanupVoiceOnLeave(){ stopVoiceChat(); }
+
+function _updateMicBtn(on){
+const btn=document.getElementById(‘discMicBtn’);
+if(!btn)return;
+if(on){btn.className=‘disc-mic-btn mic-on’;btn.innerHTML=‘🎙️ <span>مایکروفون چالاکە — داخستن</span>’;}
+else{btn.className=‘disc-mic-btn mic-off’;btn.innerHTML=‘🎙️ <span>مایکروفونێ چالاک بکە</span>’;}
+}
+
+function _setupVAD(stream){
+try{
+const ctx=new(window.AudioContext||window.webkitAudioContext)();
+_vc.audioCtx=ctx;
+const src=ctx.createMediaStreamSource(stream);
+const analyser=ctx.createAnalyser();analyser.fftSize=512;_vc.analyser=analyser;
+src.connect(analyser);
+const data=new Uint8Array(analyser.frequencyBinCount);
+_vc.vadInterval=setInterval(()=>{
+analyser.getByteFrequencyData(data);
+const avg=data.reduce((a,b)=>a+b,0)/data.length;
+const speaking=avg>18;
+if(speaking!==_vc.speaking){
+_vc.speaking=speaking;
+if(gs.roomCode&&myPlayerId)db.ref(`rooms/${gs.roomCode}/voicePresence/${myPlayerId}/speaking`).set(speaking).catch(()=>{});
+const btn=document.getElementById(‘discMicBtn’);
+if(btn){if(speaking)btn.style.boxShadow=‘0 0 0 4px rgba(0,255,136,0.5)’;else btn.style.boxShadow=’’;}
+}
+},120);
+}catch(e){}
+}
+
+function _listenVoiceSignals(){
+if(!gs.roomCode||!myPlayerId)return;
+// voicePresence listener is managed by openDiscussionPage — don’t duplicate it here
+db.ref(`rooms/${gs.roomCode}/voiceSignals/${myPlayerId}/offers`).on(‘child_added’,async snap=>{
+const data=snap.val();if(!data)return;
+await _handleOffer(data.from, data.offer);
+snap.ref.remove().catch(()=>{});
+});
+db.ref(`rooms/${gs.roomCode}/voiceSignals/${myPlayerId}/answers`).on(‘child_added’,async snap=>{
+const data=snap.val();if(!data)return;
+const pc=_vc.peers[data.from];
+if(pc&&pc.signalingState===‘have-local-offer’){
+try{await pc.setRemoteDescription(new RTCSessionDescription(data.answer));}catch(e){}
+}
+snap.ref.remove().catch(()=>{});
+});
+db.ref(`rooms/${gs.roomCode}/voiceSignals/${myPlayerId}/ice`).on(‘child_added’,async snap=>{
+const data=snap.val();if(!data)return;
+const pc=_vc.peers[data.from];
+if(pc){try{await pc.addIceCandidate(new RTCIceCandidate(data.candidate));}catch(e){}}
+snap.ref.remove().catch(()=>{});
+});
+}
+
+async function _connectToExistingPeers(){
+if(!gs.roomCode)return;
+const snap=await db.ref(`rooms/${gs.roomCode}/voicePresence`).get();
+if(!snap.exists())return;
+snap.forEach(child=>{
+const peerId=child.key;
+if(peerId!==myPlayerId)_createOffer(peerId);
+});
+}
+
+async function _createOffer(peerId){
+if(_vc.peers[peerId])return;
+const pc=_createPeerConnection(peerId);
+try{
+const offer=await pc.createOffer();
+await pc.setLocalDescription(offer);
+await db.ref(`rooms/${gs.roomCode}/voiceSignals/${peerId}/offers`).push({from:myPlayerId,offer:{type:offer.type,sdp:offer.sdp}});
+}catch(e){}
+}
+
+async function _handleOffer(fromId, offer){
+if(_vc.peers[fromId])return;
+const pc=_createPeerConnection(fromId);
+try{
+await pc.setRemoteDescription(new RTCSessionDescription(offer));
+const answer=await pc.createAnswer();
+await pc.setLocalDescription(answer);
+await db.ref(`rooms/${gs.roomCode}/voiceSignals/${fromId}/answers`).push({from:myPlayerId,answer:{type:answer.type,sdp:answer.sdp}});
+}catch(e){}
+}
+
+function _createPeerConnection(peerId){
+const pc=new RTCPeerConnection(RTC_CONFIG);
+_vc.peers[peerId]=pc;
+if(_vc.localStream)_vc.localStream.getTracks().forEach(t=>pc.addTrack(t,_vc.localStream));
+pc.onicecandidate=e=>{
+if(e.candidate&&gs.roomCode){
+db.ref(`rooms/${gs.roomCode}/voiceSignals/${peerId}/ice`).push({from:myPlayerId,candidate:e.candidate.toJSON()}).catch(()=>{});
+}
+};
+pc.ontrack=e=>{
+const audio=document.createElement(‘audio’);audio.autoplay=true;audio.srcObject=e.streams[0];
+audio.style.display=‘none’;document.body.appendChild(audio);
+pc._remoteAudio=audio;
+};
+pc.onconnectionstatechange=()=>{if(pc.connectionState===‘failed’||pc.connectionState===‘closed’){try{pc.close();}catch(e){}delete _vc.peers[peerId];}};
+return pc;
+}
+
+function _renderVoicePlayers(presence){
+const box=document.getElementById(‘discVoicePlayers’);if(!box)return;
+const entries=Object.entries(presence);
+if(entries.length===0){box.innerHTML=’’;return;}
+box.innerHTML=entries.map(([id,p])=>{
+const av=getAvatarForIndex(p.avatarIdx??0);
+const speakingBars=p.speaking?’<div class="vp-bars"><div class="vp-bar"></div><div class="vp-bar"></div><div class="vp-bar"></div></div>’:’’;
+return `<div class="disc-voice-player${p.speaking?' speaking':''}"><div class="vp-avatar">${av.e}</div><div class="vp-name">${p.name||'?'}</div>${speakingBars}</div>`;
+}).join(’’);
+}
+
+// ── VOTING ──
 function startVotingPhase(gameData){
+stopVoiceChat();
+clearInterval(window._continueInterval);window._continueRunning=false;
 voteGameData=gameData;myVoteChoice=null;voteSubmitted=false;
-showPage('voting-page');
-document.getElementById('voteConfirmBtn').disabled=true;
-document.getElementById('voteTimerDisplay').textContent='30';
-document.getElementById('voteTimerDisplay').className='vote-timer-value';
-document.getElementById('voteStatusMsg').textContent='دەنگێ خۆ بدە!';
-const seeBtn=document.getElementById('seeResultsBtn');
-if(gs.isHost){seeBtn.classList.remove('hidden');seeBtn.disabled=true;}else{seeBtn.classList.add('hidden');}
-if(gs.isHost)db.ref('rooms/'+gs.roomCode+'/votes').set(null);
+showPage(‘voting-page’);
+document.getElementById(‘voteConfirmBtn’).disabled=true;
+document.getElementById(‘voteTimerDisplay’).textContent=‘30’;
+document.getElementById(‘voteTimerDisplay’).className=‘vote-timer-value’;
+document.getElementById(‘voteStatusMsg’).textContent=‘دەنگێ خۆ بدە!’;
+const seeBtn=document.getElementById(‘seeResultsBtn’);
+if(gs.isHost){seeBtn.classList.remove(‘hidden’);seeBtn.disabled=true;}else{seeBtn.classList.add(‘hidden’);}
+if(gs.isHost)db.ref(`rooms/${gs.roomCode}/votes`).set(null);
 renderVoteList(gameData,{});
-db.ref('rooms/'+gs.roomCode+'/votes').on('value',snap=>{const votes=snap.val()||{};renderVoteList(gameData,votes);checkVotingComplete(gameData,votes);});
-db.ref('rooms/'+gs.roomCode+'/voteResult').on('value',snap=>{if(snap.exists()&&snap.val())showOnlineVoteResults(snap.val());});
+// Detach old listeners before re-attaching to avoid duplicate fires
+db.ref(`rooms/${gs.roomCode}/votes`).off();
+db.ref(`rooms/${gs.roomCode}/voteResult`).off();
+db.ref(`rooms/${gs.roomCode}/votes`).on(‘value’,snap=>{const votes=snap.val()||{};renderVoteList(gameData,votes);checkVotingComplete(gameData,votes);});
+db.ref(`rooms/${gs.roomCode}/voteResult`).on(‘value’,snap=>{if(snap.exists()&&snap.val()&&snap.val().outcome)showOnlineVoteResults(snap.val());});
 let timeLeft=30;clearInterval(voteTimerInterval);
 voteTimerInterval=setInterval(()=>{
-timeLeft--;
-const el=document.getElementById('voteTimerDisplay');
-if(el){el.textContent=timeLeft;if(timeLeft<=10)el.className='vote-timer-value urgent';}
+timeLeft–;
+const el=document.getElementById(‘voteTimerDisplay’);
+if(el){el.textContent=timeLeft;if(timeLeft<=10)el.className=‘vote-timer-value urgent’;}
 if(timeLeft<=0){
 clearInterval(voteTimerInterval);voteSubmitted=true;
-const cb=document.getElementById('voteConfirmBtn');if(cb)cb.disabled=true;
-if(gs.isHost){const rb=document.getElementById('seeResultsBtn');if(rb)rb.disabled=false;}
+const cb=document.getElementById(‘voteConfirmBtn’);if(cb)cb.disabled=true;
+if(gs.isHost){const rb=document.getElementById(‘seeResultsBtn’);if(rb)rb.disabled=false;}
 }
 },1000);
 }
 function renderVoteList(gameData,votes){
-const list=document.getElementById('voteList');if(!list)return;
+const list=document.getElementById(‘voteList’);if(!list)return;
 const names=gameData.playerNames,eliminated=gameData._eliminatedPlayers||gs.eliminatedPlayers||[];
-list.innerHTML='';
+list.innerHTML=’’;
 names.forEach((name,idx)=>{
 if(eliminated.includes(idx))return;
 const isSelected=myVoteChoice===idx;
-const div=document.createElement('div');
+const div=document.createElement(‘div’);
 const vAv=getAvatarForIndex((gameData.playerAvatars||[])[idx]??idx);
-div.className='vote-row'+(isSelected?' selected':'');
+div.className=‘vote-row’+(isSelected?’ selected’:’’);
 div.innerHTML=`<div class="avatar-circle sm" style="background:${vAv.c};flex-shrink:0;">${vAv.e}</div><span class="vote-name">${name}</span>`;
 if(!voteSubmitted)div.onclick=()=>selectVoteCandidate(idx,gameData,votes);
 list.appendChild(div);
 });
 }
-function selectVoteCandidate(idx,gameData,votes){if(voteSubmitted)return;myVoteChoice=idx;document.getElementById('voteConfirmBtn').disabled=false;renderVoteList(gameData,votes);document.getElementById('voteStatusMsg').textContent=`✅ ${gameData.playerNames[idx]} — هەلبژێرە`;}
+function selectVoteCandidate(idx,gameData,votes){if(voteSubmitted)return;myVoteChoice=idx;document.getElementById(‘voteConfirmBtn’).disabled=false;renderVoteList(gameData,votes);document.getElementById(‘voteStatusMsg’).textContent=`✅ ${gameData.playerNames[idx]} — هەلبژێرە`;}
 function submitVote(){
 if(myVoteChoice===null||voteSubmitted)return;voteSubmitted=true;
-document.getElementById('voteConfirmBtn').disabled=true;
-document.getElementById('voteStatusMsg').textContent='✅ دەنگێ تە هاتە دان!';
-db.ref('rooms/'+gs.roomCode+'/votes').update({[myPlayerId]:myVoteChoice});
+document.getElementById(‘voteConfirmBtn’).disabled=true;
+document.getElementById(‘voteStatusMsg’).textContent=‘✅ دەنگێ تە هاتە دان!’;
+db.ref(`rooms/${gs.roomCode}/votes`).update({[myPlayerId]:myVoteChoice});
 }
 function checkVotingComplete(gameData,votes){
 const activePlayers=gameData.playerNames.length-(gs.eliminatedPlayers||[]).length;
 const totalVotes=Object.keys(votes).length;
-if(totalVotes>=activePlayers&&gs.isHost){clearInterval(voteTimerInterval);const rb=document.getElementById('seeResultsBtn');if(rb)rb.disabled=false;}
+if(totalVotes>=activePlayers&&gs.isHost){clearInterval(voteTimerInterval);const rb=document.getElementById(‘seeResultsBtn’);if(rb)rb.disabled=false;}
 }
 function openOnlineResults(){
 if(!gs.isHost)return;clearInterval(voteTimerInterval);
-db.ref('rooms/'+gs.roomCode+'/votes').get().then(snap=>{
+db.ref(`rooms/${gs.roomCode}/votes`).get().then(snap=>{
 const votes=snap.val()||{},gameData=voteGameData,names=gameData.playerNames,spyIndices=gameData.spyIndices;
 const eliminated=gameData._eliminatedPlayers||gs.eliminatedPlayers||[];
 gs.eliminatedPlayers=eliminated;
 const tally={};Object.values(votes).forEach(v=>{tally[v]=(tally[v]||0)+1;});
 let maxVotes=0,chosenIdx=-1;
 Object.entries(tally).forEach(([idx,cnt])=>{if(!eliminated.includes(parseInt(idx))&&cnt>maxVotes){maxVotes=cnt;chosenIdx=parseInt(idx);}});
-const chosenName=chosenIdx>=0?names[chosenIdx]:'—',chosenIsSpy=spyIndices.includes(chosenIdx);
-const newEliminated=[...eliminated,chosenIdx];gs.eliminatedPlayers=newEliminated;
-let outcome='';
-if(chosenIsSpy){gs.spiesEliminated=(gs.spiesEliminated||0)+1;const rem=spyIndices.filter(i=>!newEliminated.includes(i)).length;outcome=rem===0?'civils_win':'spy_out_continue';}
-else outcome='civil_out';
-const spyNames=spyIndices.map(i=>names[i]).join(', ');
-db.ref('rooms/'+gs.roomCode+'/voteResult').set({chosenIdx,chosenName,chosenIsSpy,outcome,spyNames,maxVotes,tally,eliminatedPlayers:newEliminated,playerNames:names,spyIndices,secretWord:gameData.secretWord,differentWord:gameData.differentWord||'',mode:gameData.mode,playerAvatars:gameData.playerAvatars||[]});
+const chosenName=chosenIdx>=0?names[chosenIdx]:’—’,chosenIsSpy=spyIndices.includes(chosenIdx);
+const newEliminated=[…eliminated,chosenIdx];gs.eliminatedPlayers=newEliminated;
+let outcome=’’;
+if(chosenIsSpy){gs.spiesEliminated=(gs.spiesEliminated||0)+1;const rem=spyIndices.filter(i=>!newEliminated.includes(i)).length;outcome=rem===0?‘civils_win’:‘spy_out_continue’;}
+else outcome=‘civil_out’;
+const spyNames=spyIndices.map(i=>names[i]).join(’, ‘);
+db.ref(`rooms/${gs.roomCode}/voteResult`).set({chosenIdx,chosenName,chosenIsSpy,outcome,spyNames,maxVotes,tally,eliminatedPlayers:newEliminated,playerNames:names,spyIndices,secretWord:gameData.secretWord,differentWord:gameData.differentWord||’’,mode:gameData.mode,playerAvatars:gameData.playerAvatars||[]});
 });
 }
 function showOnlineVoteResults(result){
 const{chosenIdx,chosenName,chosenIsSpy,outcome,spyNames,tally,eliminatedPlayers,playerNames,spyIndices,secretWord,differentWord,mode}=result;
 gs.eliminatedPlayers=eliminatedPlayers||[];if(voteGameData)voteGameData._eliminatedPlayers=gs.eliminatedPlayers;
-showPage('online-results-page');
-const container=document.getElementById('online-results-container');
-let html='';
-if(outcome==='civils_win'){
-playSound('win');
+showPage(‘online-results-page’);
+const container=document.getElementById(‘online-results-container’);
+let html=’’;
+if(outcome===‘civils_win’){
+playSound(‘win’);
 html=`<div class="result-win-card"><div class="result-big-icon">🎉</div><div class="result-big-title">مەدەنیا سیخوڕ گرت!</div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:10px;"><div style="font-size:0.9rem;color:#555;">هەلبژارتی</div><div style="font-size:1.8rem;font-weight:bold;color:#00994d;">${chosenName} 🕵️</div></div></div>`;
-html+='<div class="results-container">';
-playerNames.forEach((name,idx)=>{const cnt=tally[idx]||0;const isSpy=spyIndices.includes(idx);const isElim=eliminatedPlayers.includes(idx);const rAv=getAvatarForIndex((result.playerAvatars||[])[idx]??idx);html+=`<div class="player-result" style="${isElim?'opacity:0.5;':''}"><div class="avatar-circle sm" style="background:${rAv.c};flex-shrink:0;">${rAv.e}</div><span>${name}</span><span style="display:flex;align-items:center;gap:8px;"><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span>${isSpy?'<span class="spy-badge">سیخوڕ</span>':'<span class="civilian-badge">مەدەنی</span>'}</span></div>`;});
+html+=’<div class="results-container">’;
+playerNames.forEach((name,idx)=>{const cnt=tally[idx]||0;const isSpy=spyIndices.includes(idx);const isElim=eliminatedPlayers.includes(idx);const rAv=getAvatarForIndex((result.playerAvatars||[])[idx]??idx);html+=`<div class="player-result" style="${isElim?'opacity:0.5;':''}"><div class="avatar-circle sm" style="background:${rAv.c};flex-shrink:0;">${rAv.e}</div><span>${isElim?'❌ ':''}${name}</span><span style="display:flex;align-items:center;gap:8px;"><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span>${isSpy?'<span class="spy-badge">سیخوڕ</span>':'<span class="civilian-badge">مەدەنی</span>'}</span></div>`;});
 html+=`</div><div class="word-box"><div class="word-value">${secretWord}</div></div>`;
-}else if(outcome==='spy_out_continue'){
+}else if(outcome===‘spy_out_continue’){
 html=`<div class="result-win-card" style="border-color:#ffcc00;"><div class="result-big-icon">✅</div><div class="result-big-title" style="color:#cc8800;">سیخوڕەک هاتە دەرکەفتن!</div><div style="font-size:1.1rem;color:#333;margin:8px 0;">یارییا بەردەوامە — سیخوڕ هێشتا مایە! ⚠️</div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:10px;"><div style="font-size:0.9rem;color:#555;">دەرکەفتی</div><div style="font-size:1.8rem;font-weight:bold;color:#cc8800;">${chosenName} 🕵️</div></div></div>`;
-html+='<div class="results-container">';playerNames.forEach((name,idx)=>{const cnt=tally[idx]||0;const isElim=eliminatedPlayers.includes(idx);html+=`<div class="player-result" style="${isElim?'opacity:0.5;':''}"><span>${name}</span><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span></div>`;});html+='</div>';
-if(gs.isHost)html+=`<button class="btn btn-blue" onclick="startNextVotingRound()" style="margin-top:10px;">🗳️ دەنگدانەکا دی دەستپێبکە</button>`;
-else html+=`<div style="text-align:center;padding:16px;color:#666;background:#f5f9ff;border-radius:30px;margin-top:10px;">⏳ چاڤەریێ هۆستێ بکەن بو دەنگدانەکا دی…</div>`;
+html+=’<div class="results-container">’;playerNames.forEach((name,idx)=>{const cnt=tally[idx]||0;const isElim=eliminatedPlayers.includes(idx);html+=`<div class="player-result" style="${isElim?'opacity:0.5;':''}"><span>${isElim?'❌ ':''}${name}</span><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span></div>`;});html+=’</div>’;
+html+=`<div style="text-align:center;padding:16px 10px;margin-top:10px;background:linear-gradient(135deg,rgba(0,102,204,0.1),rgba(255,204,0,0.1));border-radius:24px;border:2px solid rgba(255,204,0,0.4);"><div style="font-size:1rem;color:#0066cc;font-weight:bold;">🗣️ دوبارە دەگەڕینەڤە مناقشەیێ...</div><div id="spy-continue-countdown" style="font-size:2.5rem;font-weight:bold;color:#ffcc00;margin:6px 0;">10</div></div>`;
 }else{
 html=`<div class="result-lose-card"><div class="result-big-icon">💀</div><div class="result-big-title">مەدەنی هاتە دەرکەفتن!</div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:10px;"><div style="font-size:0.9rem;color:#555;">سیخوڕ ئەڤانە :</div><div style="font-size:1.8rem;font-weight:bold;color:#cc0000;">${spyNames}</div></div></div>`;
-html+='<div class="results-container">';playerNames.forEach((name,idx)=>{const cnt=tally[idx]||0;const isSpy=spyIndices.includes(idx);const isElim=eliminatedPlayers.includes(idx);const rAv=getAvatarForIndex((result.playerAvatars||[])[idx]??idx);html+=`<div class="player-result" style="${isElim?'opacity:0.5;':''}"><div class="avatar-circle sm" style="background:${rAv.c};flex-shrink:0;">${rAv.e}</div><span>${name}</span><span style="display:flex;align-items:center;gap:8px;"><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span>${isSpy?'<span class="spy-badge">سیخوڕ</span>':'<span class="civilian-badge">مەدەنی</span>'}</span></div>`;});
+html+=’<div class="results-container">’;playerNames.forEach((name,idx)=>{const cnt=tally[idx]||0;const isSpy=spyIndices.includes(idx);const isElim=eliminatedPlayers.includes(idx);const rAv=getAvatarForIndex((result.playerAvatars||[])[idx]??idx);html+=`<div class="player-result" style="${isElim?'opacity:0.5;':''}"><div class="avatar-circle sm" style="background:${rAv.c};flex-shrink:0;">${rAv.e}</div><span>${isElim?'❌ ':''}${name}</span><span style="display:flex;align-items:center;gap:8px;"><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span>${isSpy?'<span class="spy-badge">سیخوڕ</span>':'<span class="civilian-badge">مەدەنی</span>'}</span></div>`;});
 html+=`</div><div class="word-box"><div class="word-value">${secretWord}</div></div>`;
 }
 container.innerHTML=html;
+// After a spy is caught but game continues — auto-redirect ALL to discussion in 10s
+if(outcome===‘spy_out_continue’){
+if(gs.isHost){
+// Host resets voteResult + discussionDone so next round starts clean, then triggers countdown via Firebase
+db.ref(`rooms/${gs.roomCode}/discussionDone`).set(false);
+db.ref(`rooms/${gs.roomCode}/continueRound`).set({round:gs.currentRound,at:Date.now(),eliminatedPlayers:eliminatedPlayers});
+}
+// Everyone listens to continueRound and starts local countdown
+db.ref(`rooms/${gs.roomCode}/continueRound`).off();
+db.ref(`rooms/${gs.roomCode}/continueRound`).on(‘value’,snap=>{
+if(!snap.exists()||!snap.val())return;
+// Start 10s countdown UI and then go to discussion
+_startContinueCountdown(result);
+});
+}
+}
+function _startContinueCountdown(result){
+// Stop any existing countdown
+clearInterval(window._continueInterval);
+if(window._continueRunning)return; // prevent re-entry
+window._continueRunning=true;
+let sec=10;
+const tick=()=>{
+sec–;
+const el=document.getElementById(‘spy-continue-countdown’);
+if(el)el.textContent=sec;
+if(sec<=0){
+clearInterval(window._continueInterval);
+window._continueRunning=false;
+if(gs.roomCode)db.ref(`rooms/${gs.roomCode}/continueRound`).off();
+if(voteGameData){
+voteGameData._eliminatedPlayers=gs.eliminatedPlayers;
+if(gs.roomCode){
+db.ref(`rooms/${gs.roomCode}/voteResult`).off();
+if(gs.isHost){
+db.ref(`rooms/${gs.roomCode}`).update({voteResult:null,discussionDone:false,votes:null,continueRound:null});
+}
+}
+_discChatAttached=false;
+openDiscussionPage(voteGameData);
+}
+}
+};
+window._continueInterval=setInterval(tick,1000);
 }
 function startNextVotingRound(){
+// Legacy — now handled automatically via _startContinueCountdown
 if(!gs.isHost)return;
-db.ref('rooms/'+gs.roomCode+'/voteResult').set(null).then(()=>{
-gs.currentRound=(gs.currentRound||1)+1;
-if(voteGameData)voteGameData._eliminatedPlayers=gs.eliminatedPlayers;
-db.ref('rooms/'+gs.roomCode).update({votingRound:gs.currentRound});
-startVotingPhase(voteGameData);
-});
+db.ref(`rooms/${gs.roomCode}/continueRound`).set({round:gs.currentRound,at:Date.now(),eliminatedPlayers:gs.eliminatedPlayers});
 }
+
+// ── Play Again → Back to Room ──
 function playAgainOnline(){
-clearInterval(voteTimerInterval);gs.eliminatedPlayers=[];gs.currentRound=1;gs.spiesEliminated=0;
-try{sessionStorage.removeItem('sikhur_room');}catch(e){}
-if(!gs.roomCode)return;
-db.ref('rooms/'+gs.roomCode+'/players/'+myPlayerId).update({wantPlayAgain:true,ready:false});
-db.ref('rooms/'+gs.roomCode+'/players').get().then(snap=>{
-let total=0,wantCount=0;snap.forEach(c=>{total++;if(c.val().wantPlayAgain)wantCount++;});
-if(wantCount>=total&&gs.isHost){
-db.ref('rooms/'+gs.roomCode).update({status:'waiting',gameData:null,gameState:null,votes:null,voteResult:null,votingRound:null,discussionDone:null,discussionChat:null});
-snap.forEach(child=>{db.ref('rooms/'+gs.roomCode+'/players/'+child.key).update({ready:false,wantPlayAgain:false});});
-}
+clearInterval(voteTimerInterval);clearInterval(window._continueInterval);window._continueRunning=false;
+gs.eliminatedPlayers=[];gs.currentRound=1;gs.spiesEliminated=0;
+if(!gs.roomCode){showPage(‘home-page’);return;}
+// Show waiting UI immediately so player knows something is happening
+showToast(‘⏳ چاڤەرێی زڤرینا ژوورێ…’, false);
+db.ref(`rooms/${gs.roomCode}/players/${myPlayerId}`).update({wantPlayAgain:true,ready:false});
+if(gs.isHost){
+// Host resets immediately — all players’ status listener will fire and call returnToLobbyAfterGame
+db.ref(`rooms/${gs.roomCode}`).update({
+status:‘waiting’,gameData:null,gameState:null,votes:null,
+voteResult:null,votingRound:null,discussionDone:null,
+discussionChat:null,voicePresence:null,voiceSignals:null,continueRound:null
+});
+db.ref(`rooms/${gs.roomCode}/players`).get().then(snap=>{
+snap.forEach(child=>{
+db.ref(`rooms/${gs.roomCode}/players/${child.key}`).update({ready:false,wantPlayAgain:false});
+});
 });
 }
+// Non-host: the status=‘waiting’ listener in openLobby will call returnToLobbyAfterGame automatically
+// So no manual redirect needed — just wait for Firebase
+}
+
 function returnToLobbyAfterGame(){
+clearInterval(window._continueInterval);window._continueRunning=false;
+if(gs.roomCode){
+db.ref(`rooms/${gs.roomCode}/continueRound`).off();
+db.ref(`rooms/${gs.roomCode}/voteResult`).off();
+db.ref(`rooms/${gs.roomCode}/votes`).off();
+db.ref(`rooms/${gs.roomCode}/discussionDone`).off();
+db.ref(`rooms/${gs.roomCode}/voicePresence`).off();
+db.ref(`rooms/${gs.roomCode}/discussionChat`).off();
+}
 _discChatAttached=false;
-document.getElementById('lobby-title').textContent='🏠 ژوورا یاریێ';
-document.getElementById('room-code-display').textContent=formatRoomCode(gs.roomCode);
-document.getElementById('host-controls').classList.toggle('hidden',!gs.isHost);
-document.getElementById('chatBox').innerHTML='';
-showPage('online-lobby-page');
+document.getElementById(‘lobby-title’).textContent=‘🏠 ژوورا یاریێ’;
+document.getElementById(‘room-code-display’).textContent=formatRoomCode(gs.roomCode);
+document.getElementById(‘host-controls’).classList.toggle(‘hidden’,!gs.isHost);
+document.getElementById(‘chatBox’).innerHTML=’’;
+showPage(‘online-lobby-page’);
 }
-// ══════════════════════════════
-//  CHAT
-// ══════════════════════════════
+// ── CHAT ──
 function sendMsg(){
-const inp=document.getElementById('chatInput');const txt=inp.value.trim();
-if(!txt||!gs.roomCode)return;inp.value='';
-db.ref('rooms/'+gs.roomCode+'/chat').push({senderId:myPlayerId,name:gs.myNickname,text:txt,type:'chat',ts:Date.now()});
+const inp=document.getElementById(‘chatInput’);const txt=inp.value.trim();
+if(!txt||!gs.roomCode)return;inp.value=’’;
+db.ref(`rooms/${gs.roomCode}/chat`).push({senderId:myPlayerId,name:gs.myNickname,text:txt,type:‘chat’,ts:Date.now()});
 }
-// ══════════════════════════════
-//  LEADERBOARD
-// ══════════════════════════════
+// ── LEADERBOARD ──
 async function openLeaderboard(from){
-_leaderboardFrom=from||'home-page';showPage('leaderboard-page');
-const container=document.getElementById('leaderboard-container');
-container.innerHTML='<div style="text-align:center;padding:30px;color:#999;">⏳ چاوەڕوان بە…</div>';
+_leaderboardFrom=from||‘home-page’;showPage(‘leaderboard-page’);
+const container=document.getElementById(‘leaderboard-container’);
+container.innerHTML=’<div style="text-align:center;padding:30px;color:#999;">⏳ چاوەڕوان بە…</div>’;
 try{
-const snap=await db.ref('users').get();
-if(!snap.exists()){container.innerHTML='<p style="text-align:center;color:#999;">هێشتا کەس نییە 😅</p>';return;}
-const players=[];snap.forEach(child=>{const d=child.val();if(d.nickname&&d.gamesPlayed>0)players.push({...d,uid:child.key});});
+const snap=await db.ref(‘users’).get();
+if(!snap.exists()){container.innerHTML=’<p style="text-align:center;color:#999;">هێشتا کەس نییە 😅</p>’;return;}
+const players=[];snap.forEach(child=>{const d=child.val();if(d.nickname&&d.gamesPlayed>0)players.push({…d,uid:child.key});});
 players.sort((a,b)=>(b.wins||0)-(a.wins||0));
-const top=players.slice(0,10),medals=['🥇','🥈','🥉'],rowClass=['gold','silver','bronze'];
-let html='';
+const top=players.slice(0,10),medals=[‘🥇’,‘🥈’,‘🥉’],rowClass=[‘gold’,‘silver’,‘bronze’];
+let html=’’;
 top.forEach((p,i)=>{
 const av=getAvatarForIndex(p.avatarIdx??0),rate=p.gamesPlayed>0?Math.round(p.wins/p.gamesPlayed*100):0,isMe=currentUser&&p.uid===currentUser.uid;
-html+=`<div class="leaderboard-row ${rowClass[i]||''}" style="${isMe?'border-color:#0066cc;':''}">`+
-`<div class="lb-rank">${medals[i]||('#'+(i+1))}</div>`+
-`<div class="avatar-circle sm" style="background:${av.c};">${av.e}</div>`+
-`<div style="flex:1;"><div class="lb-name">${p.nickname}${isMe?' (تۆ)':''}</div><div class="lb-games">${p.gamesPlayed} یاری · ${rate}% بردن</div></div>`+
-`<div class="lb-wins">🏆 ${p.wins||0}</div></div>`;
+html+=`<div class="leaderboard-row ${rowClass[i]||''}" style="${isMe?'border-color:#0066cc;':''}"><div class="lb-rank">${medals[i]||('#'+(i+1))}</div><div class="avatar-circle sm" style="background:${av.c};">${av.e}</div><div style="flex:1;"><div class="lb-name">${p.nickname}${isMe?' (تۆ)':''}</div><div class="lb-games">${p.gamesPlayed} یاری · ${rate}% بردن</div></div><div class="lb-wins">🏆 ${p.wins||0}</div></div>`;
 });
-container.innerHTML=html||'<p style="text-align:center;color:#999;">هێشتا کەس نییە 😅</p>';
-}catch(e){container.innerHTML='<p style="text-align:center;color:#cc0000;">❌ هەڵە ڕووی دا</p>';}
+container.innerHTML=html||’<p style="text-align:center;color:#999;">هێشتا کەس نییە 😅</p>’;
+}catch(e){container.innerHTML=’<p style="text-align:center;color:#cc0000;">❌ هەڵە ڕووی دا</p>’;}
 }
-function goBackFromLeaderboard(){showPage(_leaderboardFrom||'home-page');}
-// ══════════════════════════════
-//  HOW TO PLAY
-// ══════════════════════════════
-function showHowToPlayOptions(){document.getElementById('how-to-play-modal').classList.remove('hidden');}
-function closeHowToPlayOptions(){document.getElementById('how-to-play-modal').classList.add('hidden');}
+function goBackFromLeaderboard(){showPage(_leaderboardFrom||‘home-page’);}
+// ── HOW TO PLAY ──
+function showHowToPlayOptions(){document.getElementById(‘how-to-play-modal’).classList.remove(‘hidden’);}
+function closeHowToPlayOptions(){document.getElementById(‘how-to-play-modal’).classList.add(‘hidden’);}
 function showHowToPlayInstructions(mode){
 closeHowToPlayOptions();
-const title=document.getElementById('instructions-title'),text=document.getElementById('instructions-text');
-if(mode===1){title.textContent='یارییا سیخوڕی 🕵️';title.style.color='#0066cc';text.innerHTML='<strong>🎯 ئارمانج:</strong> سیخوڕی بگرن!<br><br><strong>📋 چەوا دێ یاریێ کەی؟:</strong><br>- سیخوڕ پەیڤێ نزانیت، لێ دێ هەولدەت ل تشتێن مەدەنیا پەیڤێ بزانیت.<br>- نابیت پەیڤ بخو بهێتە گوتن لێ تشتێن ب پەیڤێ ڤە گرێدایی و نزیک درستن.<br>- ب گشتی راوند (فەرە) بدلێ هنگو نە، و هەر فەرێ تە ئێک کەلیمە یاهەی نە زێدەتر!!<br>- نابیت مناقشە بهێتە کرن، دناڤ راوندا (فەر)ا دا.!';}
-else{title.textContent='یارییا پەییڤێن جیاواز 🎭';title.style.color='#cc0000';text.innerHTML='<strong>🎯 ئارمانج:</strong> کەسێ جیاواز بگرن!<br><br><strong>📋 چەوا دێ یاریێ کەی؟:</strong><br>- بتنێ ئێک نەفەر پەیڤا جیاواز یا هەی کو ئەوژی نزانیت ئەو یێ جیاوازە.<br>- نموونە وەک [تەیارە، عەلیکوپتەر] گەلەک تشتا ڤە وەکی ئێکن!<br>- ب گشتی راوند (فەرە) بدلێ هنگو نە، و هەر فەرێ تە ئێک کەلیمە یاهەی نە زێدەتر!!<br>- نابیت مناقشە بهێتە کرن، دناڤ راوندا (فەر)ا دا.!';}
-document.getElementById('how-to-play-instructions-modal').classList.remove('hidden');
+const title=document.getElementById(‘instructions-title’),text=document.getElementById(‘instructions-text’);
+if(mode===1){title.textContent=‘یارییا سیخوڕی 🕵️’;title.style.color=’#0066cc’;text.innerHTML=’<strong>🎯 ئارمانج:</strong> سیخوڕی بگرن!<br><br><strong>📋 چەوا دێ یاریێ کەی؟:</strong><br>- سیخوڕ پەیڤێ نزانیت، لێ دێ هەولدەت ل تشتێن مەدەنیا پەیڤێ بزانیت.<br>- نابیت پەیڤ بخو بهێتە گوتن لێ تشتێن ب پەیڤێ ڤە گرێدایی و نزیک درستن.<br>- ب گشتی راوند (فەرە) بدلێ هنگو نە، و هەر فەرێ تە ئێک کەلیمە یاهەی نە زێدەتر!!<br>- نابیت مناقشە بهێتە کرن، دناڤ راوندا (فەر)ا دا.!’;}
+else{title.textContent=‘یارییا پەییڤێن جیاواز 🎭’;title.style.color=’#cc0000’;text.innerHTML=’<strong>🎯 ئارمانج:</strong> کەسێ جیاواز بگرن!<br><br><strong>📋 چەوا دێ یاریێ کەی؟:</strong><br>- بتنێ ئێک نەفەر پەیڤا جیاواز یا هەی کو ئەوژی نزانیت ئەو یێ جیاوازە.<br>- نموونە وەک [تەیارە، عەلیکوپتەر] گەلەک تشتا ڤە وەکی ئێکن!<br>- ب گشتی راوند (فەرە) بدلێ هنگو نە، و هەر فەرێ تە ئێک کەلیمە یاهەی نە زێدەتر!!<br>- نابیت مناقشە بهێتە کرن، دناڤ راوندا (فەر)ا دا.!’;}
+document.getElementById(‘how-to-play-instructions-modal’).classList.remove(‘hidden’);
 }
-function closeHowToPlayInstructions(){document.getElementById('how-to-play-instructions-modal').classList.add('hidden');}
-// ══════════════════════════════
-//  SOUND
-// ══════════════════════════════
+function closeHowToPlayInstructions(){document.getElementById(‘how-to-play-instructions-modal’).classList.add(‘hidden’);}
+// ── SOUND ──
 function playSound(type){
 try{
 const ctx=new(window.AudioContext||window.webkitAudioContext)();
 const osc=ctx.createOscillator(),gain=ctx.createGain();
 osc.connect(gain);gain.connect(ctx.destination);
-if(type==='win'){osc.frequency.setValueAtTime(523,ctx.currentTime);osc.frequency.setValueAtTime(659,ctx.currentTime+0.1);osc.frequency.setValueAtTime(784,ctx.currentTime+0.2);}
+if(type===‘win’){osc.frequency.setValueAtTime(523,ctx.currentTime);osc.frequency.setValueAtTime(659,ctx.currentTime+0.1);osc.frequency.setValueAtTime(784,ctx.currentTime+0.2);}
 else{osc.frequency.setValueAtTime(300,ctx.currentTime);osc.frequency.setValueAtTime(200,ctx.currentTime+0.2);}
 gain.gain.setValueAtTime(0.3,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.6);
 osc.start(ctx.currentTime);osc.stop(ctx.currentTime+0.6);
 }catch(e){}
 }
-// ══════════════════════════════
-//  INIT
-// ══════════════════════════════
-document.addEventListener('DOMContentLoaded',()=>{
+// ── INIT ──
+document.addEventListener(‘DOMContentLoaded’,()=>{
 setupJoinBoxes();setupVcBoxes();
-showPage('auth-page');
+showPage(‘auth-page’);
 const urlParams=new URLSearchParams(window.location.search);
-const inviteCode=urlParams.get('room');
+const inviteCode=urlParams.get(‘room’);
 if(inviteCode){
-const clean=inviteCode.replace(/[^0-9]/g,'');
+const clean=inviteCode.replace(/[^0-9]/g,’’);
 if(clean.length===6){
-sessionStorage.setItem('sikhur_invite',clean);
-for(let i=0;i<6;i++){const b=document.getElementById('jc'+i);if(b)b.value=clean[i]||'';}
+sessionStorage.setItem(‘sikhur_invite’,clean);
+for(let i=0;i<6;i++){const b=document.getElementById(‘jc’+i);if(b)b.value=clean[i]||’’;}
 }
-window.history.replaceState({},'',window.location.pathname);
+window.history.replaceState({},’’,window.location.pathname);
 }
-document.getElementById('how-to-play-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeHowToPlayOptions();});
-document.getElementById('how-to-play-instructions-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeHowToPlayInstructions();});setTimeout(()=>{const t=document.getElementById('welcomeToast');if(t)t.remove();},5000);
+document.getElementById(‘how-to-play-modal’).addEventListener(‘click’,e=>{if(e.target===e.currentTarget)closeHowToPlayOptions();});
+document.getElementById(‘how-to-play-instructions-modal’).addEventListener(‘click’,e=>{if(e.target===e.currentTarget)closeHowToPlayInstructions();});
+setTimeout(()=>{const t=document.getElementById(‘welcomeToast’);if(t)t.remove();},5000);
 });
-// ══════════════════════════════
-//  GLOBAL EXPORTS
-// ══════════════════════════════
+// ── GLOBAL EXPORTS ──
 Object.assign(window,{
 switchAuthTab,doLogin,doSignup,doGoogleLogin,doSignOut,confirmPickedNickname,
 submitVerifyCode,resendVerificationEmail,cancelVerification,
@@ -1628,9 +1823,10 @@ startOfflineSetup,changePlayerCount,startGame,
 copyRoomCode,setOnlineMode,startOnlineGame,leaveRoom,markReady,
 nextPlayerAction,revealOfflineCard,goToRevealPage,showFinalResults,playAgain,
 submitVote,openOnlineResults,playAgainOnline,startNextVotingRound,
-sendDiscMsg,hostStartVoting,toggleDiscMic,
+sendDiscMsg,hostStartVoting,toggleDiscMic,startVoiceChat,stopVoiceChat,cleanupVoiceOnLeave,
 showHowToPlayOptions,closeHowToPlayOptions,showHowToPlayInstructions,closeHowToPlayInstructions,
-sendMsg,selectCategory,renderCategoryBtns,openDiscussionPage,
+sendMsg,selectCategory,renderCategoryBtns,openDiscussionPage,_renderAllPlayersInVoice,_updateVoiceSpeaking,_startContinueCountdown,
 });
 </script></body>
+
 </html>
