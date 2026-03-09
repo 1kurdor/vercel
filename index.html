@@ -550,6 +550,25 @@ storageBucket:"sikhur-game.firebasestorage.app",
 messagingSenderId:"501101971993",
 appId:"1:501101971993:web:1feea3e49ab43a74187888"
 };
+if(typeof firebase === 'undefined'){
+document.body.style.cssText='margin:0;display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#1a1a2e,#0f3460);font-family:sans-serif;';
+document.body.innerHTML=`<div style="text-align:center;color:#fff;padding:32px 24px;background:rgba(255,255,255,0.08);border-radius:28px;max-width:340px;border:1px solid rgba(255,204,0,0.3);backdrop-filter:blur(10px);">
+<div style="font-size:3.5rem;margin-bottom:12px;">📂</div>
+<div style="font-size:1.3rem;font-weight:bold;margin-bottom:10px;color:#ffcc00;">فایل بکە لە وێبگەڕا خۆ!</div>
+<div style="font-size:0.9rem;color:rgba(255,255,255,0.75);line-height:1.7;margin-bottom:20px;direction:rtl;">
+ئەم فایلی ناتوانیت ڕاستەوخۆ لە Claude Preview bixebite.<br>
+تکایە فایل داونلۆد بکە و لە وێبگەڕا (Chrome/Safari) بیکەرەوە.
+</div>
+<div style="background:rgba(255,204,0,0.1);border:1px solid rgba(255,204,0,0.3);border-radius:16px;padding:14px;font-size:0.82rem;color:rgba(255,255,255,0.6);direction:ltr;text-align:left;margin-bottom:20px;">
+<b style="color:#ffcc00;">How to open:</b><br>
+1. Click the download button (↓) above<br>
+2. Open the downloaded <code style="background:rgba(255,255,255,0.1);padding:1px 5px;border-radius:4px;">index.html</code> file<br>
+3. It will open in your browser ✅
+</div>
+<div style="font-size:0.78rem;color:rgba(255,255,255,0.35);">Firebase requires a real browser environment</div>
+</div>`;
+throw new Error('Firebase SDK not loaded — open file in browser');
+}
 firebase.initializeApp(firebaseConfig);
 const db   = firebase.database();
 const auth = firebase.auth();
