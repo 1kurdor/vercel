@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark" data-lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kurdor Dev</title><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><style>
+   /* Rabar Font - Kurdish */
+@font-face {
+font-family: 'Rabar 021';
+src: url('assets/fonts/Rabar.ttf') format('truetype');
+font-weight: 400;
+font-style: normal;
+font-display: swap;
+}
+
+@font-face {
+font-family: 'Rabar';
+src: url('assets/fonts/Rabar.ttf') format('truetype');
+font-weight: 400;
+font-style: normal;
+font-display: swap;
+}
+
+/* Preload critical fonts */
+link[rel="preload"][as="font"] {
+font-display: swap;
+}
+/* Ensure font loading doesn't block rendering */
+.fonts-loading * {
+font-display: swap;
+}
+:root {
+/* Dark Theme (Default) */
+--obsidian: #0a0a0f;
+--void-black: #050507;
+--shadow-dark: #101018;
+--deep-charcoal: #1a1a24;
+--blood-crimson: #c91a25;
+--neon-red: #ff003c;
+--ghost-blue: #0ea5e9;
+--cyber-teal: #06d6a0;
+--ash-gray: #a0a0b0;
+--fog-white: #e0e0e8;
+--terminal-green: #00ff88;
+--transition-slow: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+--transition-fast: 0.2s ease;
+--shadow-deep: 0 10px 30px rgba(0, 0, 0, 0.7);
+
+/* Light Theme Variables */
+--bg-primary: var(--obsidian);
+--bg-secondary: var(--void-black);
+--text-primary: var(--fog-white);
+--text-secondary: var(--ash-gray);
+--accent-primary: var(--blood-crimson);
+--accent-secondary: var(--terminal-green);
+--glass-bg: rgba(255, 255, 255, 0.1);
+--glass-border: rgba(255, 255, 255, 0.2);
+--hr-color: rgba(255, 255, 255, 0.05);
+--header-bg: rgba(0, 0, 0, 0.95);
+
+
+}
+[data-theme="light"] {
+/* Light Theme Colors */
+--bg-primary: #ffffff;
+--bg-secondary: #f8f9fa;
+--text-primary: #000000;
+--text-secondary: #6c757d;
+--accent-primary: #007bff;
+--accent-secondary: #00a86b;
+--glass-bg: rgba(0, 0, 0, 0.05);
+--glass-border: rgba(0, 0, 0, 0.1);
+--hr-color: rgba(0, 0, 0, 0.1);
+--header-bg: rgba(255, 255, 255, 0.95);
+
+/* Override original colors */
+--obsidian: #ffffff;
+--void-black: #f8f9fa;
+--fog-white: #000000;
+--ash-gray: #6c757d;
+--blood-crimson: #007bff;
+--terminal-green: #00a86b;
+
+
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+html {
+scroll-behavior: smooth;
+background-color: var(--bg-secondary);
+}
+body {
+font-family: 'Inter', sans-serif;
+line-height: 1.7;
+color: var(--text-secondary);
+background-color: var(--bg-primary);
+overflow-x: hidden;
+position: relative;
+user-select: none; /* Prevent text selection */
+-webkit-user-select: none; /* Safari */
+-moz-user-select: none; /* Firefox */
+-ms-user-select: none; /* IE/Edge */
+padding-bottom: 100px;
+}
+body::before {
+content: '';
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background:
+radial-gradient(circle at 20% 50%, rgba(109, 40, 217, 0.1) 0%, transparent 50%),
+radial-gradient(circle at 80% 20%, rgba(201, 26, 37, 0.05) 0%, transparent 50%),
+radial-gradient(circle at 40% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 50%);
+z-index: -2;
+pointer-events: none;
+opacity: 0.5;
+}
+[data-theme="light"] body::before {
+background:
+radial-gradient(circle at 20% 50%, rgba(109, 40, 217, 0.05) 0%, transparent 50%),
+radial-gradient(circle at 80% 20%, rgba(201, 26, 37, 0.03) 0%, transparent 50%),
+radial-gradient(circle at 40% 80%, rgba(14, 165, 233, 0.03) 0%, transparent 50%);
+}
+/* Prevent selection on all elements */
+* {
+user-select: none;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+}
+
+/* Allow selection only on input elements if needed */
+input, textarea {
+user-select: text;
+-webkit-user-select: text;
+-moz-user-select: text;
+-ms-user-select: text;
+}
+/* Kurdish Font */
+[data-lang="ku"] body,
+[data-lang="ku"] .hero-description,
+[data-lang="ku"] .status-label,
+[data-lang="ku"] .work,
+[data-lang="ku"] h1,
+[data-lang="ku"] h3,
+[data-lang="ku"] .logo,
+[data-lang="ku"] .lang-btn,
+[data-lang="ku"] .projects-header p,
+[data-lang="ku"] .profile-bio,
+[data-lang="ku"] .profile-title {
+font-family: 'Rabar', sans-serif !important;
+}
+
+/* Terminal keeps its font for code - Now using Rabar 021 for Kurdish */
+[data-lang="ku"] .terminal,
+[data-lang="ku"] .terminal-line,
+[data-lang="ku"] .terminal-title,
+[data-lang="ku"] .terminal-body,
+[data-lang="ku"] .prompt,
+[data-lang="ku"] .command,
+[data-lang="ku"] .output,
+[data-lang="ku"] .status-box p,
+[data-lang="ku"] .status-tag {
+font-family: 'Rabar 021', 'JetBrains Mono', monospace !important;
+}
+
+/* RTL for Kurdish */
+[data-lang="ku"] {
+direction: rtl;
+}
+[data-lang="ku"] .terminal-container {
+margin-left: auto;
+margin-right: 0;
+}
+/* Fix for terminal lines in Kurdish - make them RTL */
+[data-lang="ku"] .terminal-line {
+direction: rtl !important;
+text-align: right !important;
+justify-content: flex-end !important;
+}
+[data-lang="ku"] .terminal-line .prompt {
+margin-right: 0;
+margin-left: 10px;
+}
+[data-lang="ku"] .icons {
+direction: ltr;
+}
+[data-lang="ku"] .navbar {
+direction: rtl;
+}
+/* Fix for header controls in Kurdish - move to left side */
+[data-lang="ku"] .header-controls {
+direction: ltr;
+margin-left: 0;
+margin-right: auto;
+}
+[data-lang="ku"] .bottom-menu {
+direction: ltr;
+}
+[data-lang="ku"] .project-grid {
+direction: ltr;
+}
+[data-lang="ku"] .profile-name,
+[data-lang="ku"] .profile-bio,
+[data-lang="ku"] .profile-title {
+direction: rtl;
+}
+[data-lang="ku"] .profile-bio {
+border-left: none;
+border-right: 3px solid var(--accent-primary);
+padding-left: 0;
+padding-right: 20px;
+}
+h1, h2, h3, h4, h5 {
+font-family: 'Space Grotesk', sans-serif;
+font-weight: 700;
+color: var(--text-primary);
+letter-spacing: -0.5px;
+transition: color 0.5s ease;
+}
+h1 {
+font-size: 4.5rem;
+line-height: 1.1;
+background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+text-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+h3 {
+font-size: 2.2rem;
+margin-bottom: 1rem;
+text-align: center;
+background: linear-gradient(135deg, var(--text-primary), var(--accent-primary));
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+}
+.container {
+width: 90%;
+max-width: 1400px;
+margin: 0 auto;
+padding: 0 20px;
+}
+/* Header */
+header {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+z-index: 1000;
+background-color: var(--header-bg);
+backdrop-filter: blur(10px);
+border-bottom: 1px solid var(--glass-border);
+transition: var(--transition-slow);
+padding: 15px 0;
+}
+.navbar {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+/* Header Controls Container */
+.header-controls {
+display: flex;
+align-items: center;
+gap: 15px;
+margin-left: auto;
+}
+/* Language Switcher */
+.language-switcher {
+display: flex;
+gap: 5px;
+background: var(--glass-bg);
+backdrop-filter: blur(10px);
+padding: 5px;
+border-radius: 20px;
+border: 1px solid var(--glass-border);
+}
+.lang-btn {
+padding: 6px 15px;
+background: transparent;
+border: 1px solid transparent;
+color: var(--text-secondary);
+border-radius: 15px;
+cursor: pointer;
+transition: all 0.3s ease;
+font-family: 'Inter', sans-serif;
+font-weight: 500;
+font-size: 0.85rem;
+min-width: 45px;
+}
+.lang-btn.active {
+background: var(--accent-primary);
+color: white;
+border-color: var(--accent-primary);
+}
+.lang-btn:hover:not(.active) {
+background: var(--glass-bg);
+color: var(--text-primary);
+}
+/* Theme Toggle */
+.theme-toggle {
+width: 40px;
+height: 40px;
+border-radius: 50%;
+background: var(--glass-bg);
+backdrop-filter: blur(10px);
+border: 1px solid var(--glass-border);
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: all 0.3s ease;
+color: var(--text-primary);
+font-size: 1rem;
+position: relative;
+overflow: hidden;
+padding: 0;
+}
+.theme-toggle:hover {
+transform: scale(1.1);
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+border-color: var(--accent-primary);
+}
+.theme-icon {
+position: absolute;
+transition: opacity 0.3s ease, transform 0.3s ease;
+display: flex;
+align-items: center;
+justify-content: center;
+width: 20px;
+height: 20px;
+object-fit: contain;
+}
+.theme-icon.light {
+opacity: 0;
+transform: rotate(-90deg);
+}
+[data-theme="dark"] .theme-icon.dark {
+opacity: 1;
+transform: rotate(0);
+}
+[data-theme="light"] .theme-icon.light {
+opacity: 1;
+transform: rotate(0);
+}
+[data-theme="light"] .theme-icon.dark {
+opacity: 0;
+transform: rotate(90deg);
+}
+.logo {
+font-family: 'Space Grotesk', sans-serif;
+font-size: 2rem;
+font-weight: 800;
+color: var(--text-primary);
+text-decoration: none;
+position: relative;
+transition: color 0.3s ease;
+}
+.logo::before {
+content: '</> ';
+color: var(--accent-primary);
+margin-right: 5px;
+}
+.logo::after {
+content: '_';
+animation: blink 1s infinite;
+color: var(--accent-secondary);
+}
+@keyframes blink {
+0%, 100% { opacity: 1; }
+50% { opacity: 0; }
+}
+/* ========== PROFESSIONAL ANIMATED BOTTOM MENU ========== */
+.bottom-menu {
+position: fixed;
+bottom: 25px;
+left: 50%;
+transform: translateX(-50%);
+z-index: 2000;
+background: rgba(20, 20, 30, 0.8);
+backdrop-filter: blur(15px);
+-webkit-backdrop-filter: blur(15px);
+border: 1px solid rgba(255, 255, 255, 0.15);
+border-radius: 60px;
+padding: 8px;
+box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+display: flex;
+gap: 5px;
+justify-content: center;
+align-items: center;
+transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+animation: menuFloat 3s ease-in-out infinite;
+}
+
+.bottom-menu:hover {
+box-shadow: 0 20px 40px rgba(201, 26, 37, 0.2), 0 0 0 1px var(--accent-primary) inset;
+transform: translateX(-50%) translateY(-5px);
+}
+
+@keyframes menuFloat {
+0%, 100% { transform: translateX(-50%) translateY(0); }
+50% { transform: translateX(-50%) translateY(-5px); }
+}
+
+.menu-item {
+display: flex;
+align-items: center;
+justify-content: center;
+cursor: pointer;
+font-size: 2rem;
+width: 70px;
+height: 70px;
+border-radius: 50%;
+transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+color: var(--text-secondary);
+text-decoration: none;
+position: relative;
+background: transparent;
+overflow: hidden;
+}
+
+.menu-item::before {
+content: '';
+position: absolute;
+top: 50%;
+left: 50%;
+width: 0;
+height: 0;
+border-radius: 50%;
+background: radial-gradient(circle at center, rgba(201, 26, 37, 0.3), transparent 70%);
+transform: translate(-50%, -50%);
+transition: width 0.4s ease, height 0.4s ease;
+z-index: -1;
+}
+
+.menu-item:hover::before {
+width: 100px;
+height: 100px;
+}
+
+.menu-item:hover {
+transform: scale(1.2) rotate(5deg);
+color: var(--accent-primary);
+text-shadow: 0 0 15px rgba(201, 26, 37, 0.5);
+}
+
+.menu-item.active {
+color: var(--accent-primary);
+background: radial-gradient(circle at center, rgba(201, 26, 37, 0.2), transparent 70%);
+box-shadow: 0 0 20px rgba(201, 26, 37, 0.3);
+animation: activePulse 2s ease-in-out infinite;
+}
+
+@keyframes activePulse {
+0%, 100% { box-shadow: 0 0 20px rgba(201, 26, 37, 0.3); }
+50% { box-shadow: 0 0 30px rgba(201, 26, 37, 0.6); }
+}
+
+.menu-item .emoji-box {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 2px;
+filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
+}
+
+/* Tooltip for menu items */
+.menu-item::after {
+content: attr(data-tooltip);
+position: absolute;
+bottom: -30px;
+left: 50%;
+transform: translateX(-50%) scale(0.8);
+background: var(--header-bg);
+backdrop-filter: blur(5px);
+padding: 5px 10px;
+border-radius: 20px;
+font-size: 0.8rem;
+color: var(--text-primary);
+border: 1px solid var(--glass-border);
+opacity: 0;
+visibility: hidden;
+transition: all 0.3s ease;
+white-space: nowrap;
+pointer-events: none;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.menu-item:hover::after {
+opacity: 1;
+visibility: visible;
+transform: translateX(-50%) scale(1);
+bottom: -40px;
+}
+
+/* Hero Section */
+.hero {
+padding: 150px 0 80px;
+position: relative;
+overflow: hidden;
+min-height: 100vh;
+display: flex;
+align-items: center;
+}
+.hero::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: linear-gradient(135deg, rgba(5,5,7,0.9) 0%, rgba(10,10,15,0.7) 100%);
+z-index: -1;
+opacity: 0.8;
+}
+[data-theme="light"] .hero::before {
+background: linear-gradient(135deg, rgba(248, 249, 250, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+}
+.hero-content {
+position: relative;
+z-index: 2;
+}
+.hero-description {
+font-size: 1.2rem;
+max-width: 700px;
+margin: 20px 0 30px;
+color: var(--text-secondary);
+line-height: 1.8;
+transition: color 0.5s ease;
+}
+/* Active Status */
+.active-status {
+display: flex;
+align-items: center;
+gap: 10px;
+margin-bottom: 15px;
+}
+.green-indicator {
+width: 10px;
+height: 10px;
+background-color: #22c55e;
+border-radius: 50%;
+display: inline-block;
+box-shadow: 0 0 5px rgba(34, 197, 94, 0.5);
+}
+.status-label {
+color: var(--text-secondary);
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+font-size: 14px;
+font-weight: 500;
+letter-spacing: 0.5px;
+transition: color 0.5s ease;
+}
+.work {
+color: var(--text-secondary);
+text-decoration: none;
+transition: color 0.3s ease;
+cursor: pointer;
+}
+.work:hover {
+color: var(--accent-primary);
+}
+/* Terminal Container */
+.terminal-container {
+width: 100%;
+max-width: 600px;
+transition: all 0.5s ease;
+margin-top: 20px;
+}
+[data-lang="ku"] .terminal-container {
+margin-left: auto;
+}
+/* Terminal - Updated with simplified content */
+.terminal {
+background-color: var(--void-black);
+border: 1px solid var(--glass-border);
+border-radius: 8px;
+padding: 25px;
+box-shadow: var(--shadow-deep);
+position: relative;
+transition: all 0.5s ease;
+width: 100%;
+}
+.terminal::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg, transparent, rgba(255, 0, 60, 0.03), transparent);
+z-index: 0;
+pointer-events: none;
+opacity: 0.5;
+}
+[data-theme="light"] .terminal {
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+.terminal-header {
+display: flex;
+align-items: center;
+margin-bottom: 20px;
+padding-bottom: 15px;
+border-bottom: 1px solid var(--glass-border);
+}
+.terminal-dots {
+display: flex;
+gap: 8px;
+margin-right: 15px;
+}
+.dot {
+width: 12px;
+height: 12px;
+border-radius: 50%;
+}
+.dot-red { background-color: var(--blood-crimson); }
+.dot-yellow { background-color: #fbbf24; }
+.dot-green { background-color: var(--terminal-green); }
+.terminal-title {
+font-family: 'JetBrains Mono', monospace;
+color: var(--ash-gray);
+font-size: 0.9rem;
+}
+.terminal-line {
+font-family: 'JetBrains Mono', monospace;
+margin-bottom: 10px;
+display: flex;
+align-items: flex-start;
+direction: ltr !important;
+text-align: left !important;
+}
+.prompt {
+color: var(--terminal-green);
+margin-right: 10px;
+white-space: nowrap;
+direction: ltr !important;
+}
+.command {
+color: var(--ghost-blue);
+}
+.output {
+color: var(--ash-gray);
+}
+/* Horizontal Rule - Removed since footer is gone */
+.hr-gray {
+display: none;
+}
+/* Contact Section */
+.section.contact {
+padding: 60px 0 80px;
+position: relative;
+min-height: auto;
+}
+/* Social Icons */
+.icons {
+display: flex;
+gap: 20px;
+z-index: 10;
+justify-content: center;
+align-items: center;
+direction: ltr !important;
+}
+.icons img {
+width: 35px;
+height: 35px;
+object-fit: contain;
+filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
+transition: all 0.3s ease;
+}
+.icons a {
+width: 60px;
+height: 60px;
+display: flex;
+justify-content: center;
+align-items: center;
+border-radius: 10px;
+transition: all 0.25s ease;
+backdrop-filter: blur(10px);
+}
+.icons a:hover {
+border-radius: 50%;
+transform: scale(1.2) translateY(-5px);
+}
+/* Hover colors for social icons */
+.icons a.whatsapp:hover { background: #25d366; box-shadow: 0 0 15px rgba(37, 211, 102, 0.5); }
+.icons a.telegram:hover { background: #0088cc; box-shadow: 0 0 15px rgba(0, 136, 204, 0.5); }
+.icons a.instagram:hover { background: linear-gradient(45deg, #F9CE34, #EE2A7B, #6228D7); box-shadow: 0 0 15px rgba(225, 48, 108, 0.5); }
+.icons a.snapchat:hover { background: #FFD700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); }
+.icons a.tiktok:hover { background: #000000; box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); }
+/* ========== PROFESSIONAL PROJECTS SECTION ========== */
+.projects-section {
+padding: 60px 0;
+}
+
+.projects-header {
+text-align: center;
+margin-bottom: 40px;
+}
+
+.projects-header h3 {
+font-size: 2.5rem;
+margin-bottom: 10px;
+}
+
+.projects-header p {
+color: var(--text-secondary);
+font-size: 1.2rem;
+letter-spacing: 1px;
+}
+
+.projects-grid {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 25px;
+max-width: 900px;
+margin: 0 auto;
+}
+
+.project-card {
+background: var(--glass-bg);
+backdrop-filter: blur(10px);
+border: 1px solid var(--glass-border);
+border-radius: 20px;
+padding: 35px 25px;
+text-align: center;
+transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+position: relative;
+overflow: hidden;
+cursor: pointer;
+}
+
+.project-card::before {
+content: '';
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: linear-gradient(135deg, transparent, rgba(201, 26, 37, 0.1), transparent);
+transform: translateX(-100%);
+transition: transform 0.6s ease;
+}
+
+.project-card:hover::before {
+transform: translateX(100%);
+}
+
+.project-card:hover {
+transform: translateY(-10px) scale(1.02);
+border-color: var(--accent-primary);
+box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--accent-primary);
+}
+
+.project-icon {
+font-size: 3.5rem;
+margin-bottom: 20px;
+filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+transition: all 0.3s ease;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.project-icon img {
+width: 56px;
+height: 56px;
+object-fit: contain;
+filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+transition: all 0.3s ease;
+}
+
+.project-card:hover .project-icon {
+transform: scale(1.1) rotate(5deg);
+}
+
+.project-card:hover .project-icon img {
+transform: scale(1.1) rotate(5deg);
+}
+
+.project-title {
+font-size: 1.6rem;
+font-weight: 700;
+color: var(--text-primary);
+margin-bottom: 8px;
+transition: color 0.3s ease;
+}
+
+.project-subtitle {
+color: var(--text-secondary);
+font-size: 1.1rem;
+opacity: 0.8;
+letter-spacing: 0.5px;
+}
+
+/* Status Box */
+.status-box {
+margin-top: 60px;
+padding: 25px;
+background: var(--void-black);
+border: 1px solid var(--glass-border);
+border-radius: 15px;
+text-align: center;
+max-width: 700px;
+margin-left: auto;
+margin-right: auto;
+position: relative;
+overflow: hidden;
+}
+
+.status-box::before {
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg, transparent, rgba(201, 26, 37, 0.1), transparent);
+animation: statusShine 3s infinite;
+}
+
+@keyframes statusShine {
+0% { left: -100%; }
+20% { left: 100%; }
+100% { left: 100%; }
+}
+
+.status-box p {
+font-family: 'JetBrains Mono', monospace;
+font-size: 1.2rem;
+color: var(--terminal-green);
+margin-bottom: 15px;
+position: relative;
+z-index: 1;
+}
+
+.status-tags {
+display: flex;
+gap: 20px;
+justify-content: center;
+flex-wrap: wrap;
+position: relative;
+z-index: 1;
+}
+
+.status-tag {
+padding: 8px 20px;
+background: rgba(201, 26, 37, 0.1);
+border: 1px solid var(--accent-primary);
+border-radius: 30px;
+color: var(--text-primary);
+font-size: 1rem;
+transition: all 0.3s ease;
+}
+
+.status-tag:hover {
+background: var(--accent-primary);
+color: white;
+transform: scale(1.05);
+box-shadow: 0 0 20px rgba(201, 26, 37, 0.5);
+}
+
+.status-tag span {
+color: var(--accent-primary);
+font-weight: 600;
+transition: color 0.3s ease;
+}
+
+.status-tag:hover span {
+color: white;
+}
+
+/* About Section */
+.profile-container {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+margin-top: 40px;
+}
+.profile-image-wrapper {
+position: relative;
+width: 200px;
+height: 200px;
+margin-bottom: 30px;
+border-radius: 50%;
+overflow: hidden;
+}
+.profile-image {
+width: 100%;
+height: 100%;
+border-radius: 50%;
+object-fit: cover;
+border: 4px solid transparent;
+background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888, #0ea5e9, #00ff88) border-box;
+-webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+-webkit-mask-composite: destination-out;
+mask-composite: exclude;
+animation: rotate-gradient 8s linear infinite;
+}
+@keyframes rotate-gradient {
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
+}
+.profile-name {
+font-size: 2rem;
+color: var(--text-primary);
+margin-bottom: 5px;
+text-align: center;
+}
+.profile-title {
+font-size: 1.2rem;
+color: var(--accent-primary);
+margin-bottom: 10px;
+text-align: center;
+font-weight: 500;
+}
+.profile-bio {
+color: var(--text-secondary);
+font-size: 1.1rem;
+max-width: 600px;
+text-align: center;
+margin-bottom: 30px;
+font-style: italic;
+border-left: 3px solid var(--accent-primary);
+padding-left: 20px;
+}
+.profile-social {
+display: flex;
+gap: 25px;
+justify-content: center;
+margin-top: 20px;
+}
+.profile-social a {
+color: var(--text-secondary);
+font-size: 2rem;
+transition: all 0.3s ease;
+text-decoration: none;
+}
+/* Social Media Hover Colors */
+.profile-social a[data-social="whatsapp"]:hover { color: #25d366; transform: scale(1.2); text-shadow: 0 0 15px #25d366; }
+.profile-social a[data-social="telegram"]:hover { color: #0088cc; transform: scale(1.2); text-shadow: 0 0 15px #0088cc; }
+.profile-social a[data-social="instagram"]:hover { color: #e4405f; transform: scale(1.2); text-shadow: 0 0 15px #e4405f; }
+.profile-social a[data-social="snapchat"]:hover { color: #FFFC00; transform: scale(1.2); text-shadow: 0 0 15px #FFFC00; }
+.profile-social a[data-social="tiktok"]:hover { color: #000000; transform: scale(1.2); text-shadow: 0 0 15px #69C9D0; }
+
+/* Active state for clicked icons */
+.profile-social a.active-social {
+transform: scale(1.2);
+}
+.profile-social a[data-social="whatsapp"].active-social { color: #25d366; }
+.profile-social a[data-social="telegram"].active-social { color: #0088cc; }
+.profile-social a[data-social="instagram"].active-social { color: #e4405f; }
+.profile-social a[data-social="snapchat"].active-social { color: #FFFC00; }
+.profile-social a[data-social="tiktok"].active-social { color: #000000; text-shadow: 0 0 15px #69C9D0; }
+
+/* Glitch Effect */
+.glitch {
+position: relative;
+}
+.glitch::before,
+.glitch::after {
+content: attr(data-text);
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+}
+.glitch::before {
+left: 2px;
+text-shadow: -2px 0 var(--neon-red);
+clip: rect(24px, 550px, 90px, 0);
+animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+.glitch::after {
+left: -2px;
+text-shadow: -2px 0 var(--ghost-blue);
+clip: rect(85px, 550px, 140px, 0);
+animation: glitch-anim2 1s infinite linear alternate-reverse;
+}
+@keyframes glitch-anim {
+0% { clip: rect(31px, 9999px, 94px, 0); }
+5% { clip: rect(112px, 9999px, 76px, 0); }
+10% { clip: rect(85px, 9999px, 77px, 0); }
+15% { clip: rect(27px, 9999px, 97px, 0); }
+20% { clip: rect(64px, 9999px, 98px, 0); }
+25% { clip: rect(61px, 9999px, 85px, 0); }
+30% { clip: rect(99px, 9999px, 114px, 0); }
+35% { clip: rect(1px, 9999px, 115px, 0); }
+40% { clip: rect(80px, 9999px, 119px, 0); }
+45% { clip: rect(66px, 9999px, 98px, 0); }
+50% { clip: rect(88px, 9999px, 98px, 0); }
+55% { clip: rect(68px, 9999px, 84px, 0); }
+60% { clip: rect(14px, 9999px, 115px, 0); }
+65% { clip: rect(73px, 9999px, 102px, 0); }
+70% { clip: rect(42px, 9999px, 96px, 0); }
+75% { clip: rect(107px, 9999px, 113px, 0); }
+80% { clip: rect(74px, 9999px, 98px, 0); }
+85% { clip: rect(28px, 9999px, 111px, 0); }
+90% { clip: rect(65px, 9999px, 88px, 0); }
+95% { clip: rect(52px, 9999px, 85px, 0); }
+100% { clip: rect(119px, 9999px, 116px, 0); }
+}
+@keyframes glitch-anim2 {
+0% { clip: rect(65px, 9999px, 119px, 0); }
+5% { clip: rect(52px, 9999px, 99px, 0); }
+10% { clip: rect(108px, 9999px, 114px, 0); }
+15% { clip: rect(10px, 9999px, 85px, 0); }
+20% { clip: rect(31px, 9999px, 107px, 0); }
+25% { clip: rect(78px, 9999px, 104px, 0); }
+30% { clip: rect(1px, 9999px, 119px, 0); }
+35% { clip: rect(113px, 9999px, 102px, 0); }
+40% { clip: rect(99px, 9999px, 136px, 0); }
+45% { clip: rect(31px, 9999px, 122px, 0); }
+50% { clip: rect(114px, 9999px, 115px, 0); }
+55% { clip: rect(15px, 9999px, 99px, 0); }
+60% { clip: rect(91px, 9999px, 118px, 0); }
+65% { clip: rect(21px, 9999px, 117px, 0); }
+70% { clip: rect(96px, 9999px, 131px, 0); }
+75% { clip: rect(54px, 9999px, 111px, 0); }
+80% { clip: rect(66px, 9999px, 89px, 0); }
+85% { clip: rect(103px, 9999px, 125px, 0); }
+90% { clip: rect(42px, 9999px, 127px, 0); }
+95% { clip: rect(120px, 9999px, 150px, 0); }
+100% { clip: rect(8px, 9999px, 112px, 0); }
+}
+
+/* ===== SIKHUR BANNER AD ===== */
+.sikhur-banner {
+    position: relative;
+    width: 100%;
+    max-width: 560px;
+    border-radius: 24px;
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 0 auto 25px;
+}
+.sikhur-banner:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+}
+.sikhur-banner:active { transform: scale(0.99); }
+
+/* Dark gradient background */
+.sikhur-banner-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #0d0d1a 0%, #1a1040 40%, #0f1f4a 100%);
+    z-index: 0;
+}
+
+/* Glow blobs */
+.sikhur-banner-bg::before {
+    content: '';
+    position: absolute;
+    top: -40px; left: -40px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(100,60,220,0.35) 0%, transparent 70%);
+    border-radius: 50%;
+}
+.sikhur-banner-bg::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; right: -30px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(30,80,200,0.3) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+/* Gold border */
+.sikhur-banner-border {
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    border: 2px solid transparent;
+    background: linear-gradient(#0d0d1a, #0d0d1a) padding-box,
+                linear-gradient(135deg, #c8a820, #f5e060, #c8a820) border-box;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Content */
+.sikhur-banner-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px 28px;
+}
+
+/* Image */
+.sikhur-banner-img {
+    flex-shrink: 0;
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 2px solid rgba(245,197,24,0.5);
+    box-shadow: 0 0 20px rgba(245,197,24,0.3);
+    background: #1a1040;
+}
+.sikhur-banner-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Text */
+.sikhur-banner-text { flex: 1; }
+
+.sikhur-banner-title {
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    margin-bottom: 6px;
+    background: linear-gradient(135deg, #f5c518, #fff5a0, #f5c518);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: none;
+}
+
+.sikhur-banner-divider {
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, #f5c518, transparent);
+    border-radius: 2px;
+    margin-bottom: 8px;
+}
+
+/* CTA Button */
+.sikhur-banner-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    background: linear-gradient(135deg, #f5c518, #e8a800);
+    color: #0a0a0f;
+    font-weight: 800;
+    font-size: 0.82rem;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 14px rgba(245,197,24,0.4);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.sikhur-banner:hover .sikhur-banner-btn {
+    box-shadow: 0 6px 20px rgba(245,197,24,0.6);
+    transform: scale(1.04);
+}
+.sikhur-banner-btn-arrow { font-size: 1rem; }
+
+/* Shine sweep */
+.sikhur-banner-shine {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.04) 50%, transparent 60%);
+    border-radius: 24px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sikhur-banner-content {
+        padding: 20px;
+        gap: 15px;
+    }
+    .sikhur-banner-img {
+        width: 70px;
+        height: 70px;
+    }
+    .sikhur-banner-title {
+        font-size: 1.6rem;
+    }
+    .sikhur-banner-btn {
+        padding: 6px 14px;
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .sikhur-banner-content {
+        padding: 15px;
+        gap: 12px;
+    }
+    .sikhur-banner-img {
+        width: 60px;
+        height: 60px;
+    }
+    .sikhur-banner-title {
+        font-size: 1.3rem;
+    }
+    .sikhur-banner-btn {
+        padding: 5px 12px;
+        font-size: 0.7rem;
+    }
+}
+/* Responsive Design */
+@media (max-width: 1200px) {
+h1 { font-size: 3.8rem; }
+}
+@media (max-width: 992px) {
+.header-controls {
+margin-right: 0;
+}
+.language-switcher {
+    padding: 4px;
+}
+.lang-btn {
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    min-width: 40px;
+}
+.theme-toggle {
+    width: 35px;
+    height: 35px;
+}
+.theme-icon {
+    width: 18px;
+    height: 18px;
+}
+}
+@media (max-width: 768px) {
+.header-controls {
+    margin-right: 0;
+}
+h1 {
+    font-size: 3rem;
+}
+.hero {
+    padding: 120px 0 60px;
+}
+.section.contact {
+    padding: 40px 0 60px;
+}
+.logo {
+    font-size: 1.8rem;
+}
+.terminal {
+    padding: 20px;
+}
+.bottom-menu {
+    gap: 5px;
+    padding: 6px;
+}
+.menu-item {
+    width: 55px;
+    height: 55px;
+    font-size: 1.6rem;
+}
+.menu-item::after {
+    font-size: 0.7rem;
+}
+.projects-grid {
+    grid-template-columns: 1fr;
+    max-width: 450px;
+}
+.project-card {
+    padding: 25px;
+}
+.project-title {
+    font-size: 1.4rem;
+}
+.project-subtitle {
+    font-size: 1rem;
+}
+.project-icon img {
+    width: 48px;
+    height: 48px;
+}
+.status-box p {
+    font-size: 1rem;
+}
+.status-tag {
+    padding: 6px 15px;
+    font-size: 0.9rem;
+}
+.profile-image-wrapper {
+    width: 150px;
+    height: 150px;
+}
+.profile-name {
+    font-size: 1.8rem;
+}
+.profile-title {
+    font-size: 1.1rem;
+}
+.profile-social {
+    gap: 20px;
+}
+.profile-social a {
+    font-size: 1.8rem;
+}
+}
+@media (max-width: 576px) {
+h1 { font-size: 2.5rem; }
+body {
+    padding-bottom: 90px;
+}
+.terminal {
+    padding: 15px;
+}
+.terminal-header {
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+.terminal-line {
+    font-size: 0.9rem;
+}
+.icons {
+    gap: 15px;
+}
+.icons a {
+    width: 50px;
+    height: 50px;
+}
+.icons img {
+    width: 30px;
+    height: 30px;
+}
+.header-controls {
+    gap: 10px;
+}
+.language-switcher {
+    padding: 3px;
+}
+.lang-btn {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    min-width: 35px;
+}
+.theme-toggle {
+    width: 32px;
+    height: 32px;
+}
+.theme-icon {
+    width: 16px;
+    height: 16px;
+}
+.logo {
+    font-size: 1.5rem;
+}
+.logo::before {
+    content: '</>';
+}
+.bottom-menu {
+    padding: 5px;
+}
+.menu-item {
+    width: 48px;
+    height: 48px;
+    font-size: 1.4rem;
+}
+.menu-item::after {
+    font-size: 0.65rem;
+    bottom: -25px;
+}
+.projects-header h3 {
+    font-size: 2rem;
+}
+.projects-header p {
+    font-size: 1rem;
+}
+.project-card {
+    padding: 20px;
+}
+.project-icon {
+    font-size: 3rem;
+}
+.project-icon img {
+    width: 42px;
+    height: 42px;
+}
+.project-title {
+    font-size: 1.3rem;
+}
+.project-subtitle {
+    font-size: 0.9rem;
+}
+.status-box {
+    padding: 20px;
+}
+.status-box p {
+    font-size: 0.9rem;
+}
+.status-tag {
+    padding: 5px 12px;
+    font-size: 0.8rem;
+}
+.profile-image-wrapper {
+    width: 120px;
+    height: 120px;
+}
+.profile-name {
+    font-size: 1.5rem;
+}
+.profile-title {
+    font-size: 1rem;
+}
+.profile-bio {
+    font-size: 1rem;
+    padding-left: 15px;
+}
+.profile-social {
+    gap: 15px;
+}
+.profile-social a {
+    font-size: 1.6rem;
+}
+.sikhur-banner {
+    margin: 0 auto 20px;
+}
+}
+/* Fix for RTL layout */
+[data-lang="ku"] .container {
+text-align: right;
+}
+[data-lang="ku"] .hero {
+text-align: right;
+}
+[data-lang="ku"] .terminal-container {
+margin-right: 0;
+margin-left: auto;
+}
+</style></head>
+<body>
+    <header id="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo" data-i18n="logo">Kurdor</a>
+                <div class="header-controls">
+                    <div class="language-switcher">
+                        <button class="lang-btn active" data-lang="en" aria-label="English">En</button>
+                        <button class="lang-btn" data-lang="ku" aria-label="Kurdish">Ku</button>
+                    </div>
+                    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                        <img src="assets/image/dark-theme.png" class="theme-icon dark" alt="Dark theme">
+                        <img src="assets/image/light-theme.png" class="theme-icon light" alt="Light theme">
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Professional Animated Bottom Menu -->
+    <div class="bottom-menu">
+        <a href="#" class="menu-item" data-section="home" data-tooltip="Home">
+            🏠
+        </a>
+        <a href="#" class="menu-item" data-section="projects" data-tooltip="Projects">
+            <span class="emoji-box">⚙️🔧</span>
+        </a>
+        <a href="#" class="menu-item" data-section="about" data-tooltip="About">
+            👨‍💻
+        </a>
+    </div>
+
+    <section class="hero" id="home">
+        <div class="container">
+            <!-- Sikhur Banner Ad - Moved to the TOP, above Available for Work -->
+            <a class="sikhur-banner" href="https://sikhur.vercel.app" target="_blank" rel="noopener noreferrer">
+                <div class="sikhur-banner-bg"></div>
+                <div class="sikhur-banner-border"></div>
+                <div class="sikhur-banner-shine"></div>
+                <div class="sikhur-banner-content">
+                    <!-- Image -->
+                    <div class="sikhur-banner-img">
+                        <img src="assets/image/sikhur-icon.png" alt="Sikhur Game">
+                    </div>
+                    <!-- Text -->
+                    <div class="sikhur-banner-text">
+                        <div class="sikhur-banner-title">Sikhur | سیخوڕ</div>
+                        <div class="sikhur-banner-divider"></div>
+                        <div class="sikhur-banner-btn">
+                            یارییکرن
+                            <span class="sikhur-banner-btn-arrow">→</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            
+            <div class="active-status">
+                <span class="green-indicator"></span>
+                <span class="status-label">
+                    <a class="work" data-i18n="available">Available For Work</a>
+                </span>
+            </div>
+            <h1 class="glitch" data-text="Rashid Farhad" data-i18n="name">Kurdor Dev</h1>
+            <p class="hero-description" data-i18n="tagline">No Matter How Tall The Mountain Is, The Sun Always Rise... ☀️</p>
+            <div class="terminal-container">
+                <div class="terminal">
+                    <div class="terminal-header">
+                        <div class="terminal-dots">
+                            <div class="dot dot-red"></div>
+                            <div class="dot dot-yellow"></div>
+                            <div class="dot dot-green"></div>
+                        </div>
+                        <div class="terminal-title" data-i18n="terminal-title">KurdorDev ~ bash$</div>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="terminal-line"><span class="prompt">KurdorDev | </span><span class="command" data-i18n="terminal-name">Rashid Farhad $</span></div>
+                        <div class="terminal-line"><span class="output" data-i18n="terminal-title2">FullStack Developer | UI/UX</span></div>
+                        <div class="terminal-line"><span class="output" data-i18n="terminal-chess">A person who wants more chess.</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="section contact projects-section" id="projects" style="display: none;">
+        <div class="container">
+            <div class="projects-header">
+                <h3 data-i18n="projects-title">Projects</h3>
+                <p data-i18n="projects-subtitle">Things I've built & shipped</p>
+            </div>
+            
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-icon">💻</div>
+                    <div class="project-title">Kurdor Theme</div>
+                    <div class="project-subtitle">VS Code Extension</div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-icon">
+                        <img src="assets/image/sikhur-icon.png" alt="Sikhur Icon">
+                    </div>
+                    <div class="project-title">Portfolio</div>
+                    <div class="project-subtitle">Web · UI/UX</div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-icon">📱</div>
+                    <div class="project-title">Mobile App</div>
+                    <div class="project-subtitle">Coming Soon</div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-icon">🔓</div>
+                    <div class="project-title">Open Source</div>
+                    <div class="project-subtitle">GitHub</div>
+                </div>
+            </div>
+            
+            <!-- Status Box -->
+            <div class="status-box">
+                <p>✦ Kurdor Dev – Bilingual Portfolio Loaded ✦</p>
+                <div class="status-tags">
+                    <div class="status-tag">Language: <span>en</span></div>
+                    <div class="status-tag">Theme: <span>dark</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section contact" id="about" style="display: none;">
+        <div class="container">
+            <h3 data-i18n="about-title">About Me</h3>
+            
+            <div class="profile-container">
+                <div class="profile-image-wrapper">
+                    <img src="assets/image/profile.png" alt="Rashid Farhad" class="profile-image">
+                </div>
+                
+                <h2 class="profile-name">Rashid Farhad</h2>
+                <div class="profile-title" data-i18n="profile-title">FullStack Developer From Kurdistan, Barzan</div>
+                
+                <div class="profile-bio" data-i18n="profile-bio">
+                    "A chess player wants to know more but knows nothing."
+                </div>
+                
+                <div class="profile-social">
+                    <a href="https://wa.me/+7504976736" target="_blank" data-social="whatsapp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://t.me/rashidfarhad" target="_blank" data-social="telegram"><i class="fab fa-telegram"></i></a>
+                    <a href="https://www.instagram.com/rashidfarhaad" target="_blank" data-social="instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://snapchat.com/add/rashid_farhad" target="_blank" data-social="snapchat"><i class="fab fa-snapchat-ghost"></i></a>
+                    <a href="https://www.tiktok.com/@rashidfarhaad" target="_blank" data-social="tiktok"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section contact" id="contact">
+        <div class="container">
+            <h3 data-i18n="contact-title">Contact Me</h3>
+            <div class="icons">
+                <a href="https://wa.me/+7504976736" target="_blank" class="whatsapp"><img src="assets/image/w.png" alt="WhatsApp"></a>
+                <a href="https://t.me/rashidfarhad" target="_blank" class="telegram"><img src="assets/image/telegram.png" alt="Telegram"></a>
+                <a href="https://www.instagram.com/rashidfarhaad" target="_blank" class="instagram"><img src="assets/image/insta.png" alt="Instagram"></a>
+                <a href="https://snapchat.com/add/rashid_farhad" target="_blank" class="snapchat"><img src="assets/image/snap.png" alt="Snapchat"></a>
+                <a href="https://www.tiktok.com/@rashidfarhaad" target="_blank" class="tiktok"><img src="assets/image/tiktok.png" alt="TikTok"></a>
+            </div>
+        </div>
+    </section>
+
+<script>
+    // ============ KURDOR DEV APP ============
+    class KurdorApp {
+        constructor() {
+            this.translations = {
+                en: {
+                    "logo": "Kurdor",
+                    "available": "Available For Work",
+                    "name": "Kurdor Dev",
+                    "tagline": "No Matter How Tall The Mountain Is, The Sun Always Rise... ☀️",
+                    "terminal-title": "KurdorDev ~ bash$",
+                    "terminal-name": "Rashid Farhad $",
+                    "terminal-title2": "FullStack Developer | UI/UX",
+                    "terminal-chess": "A person who wants more chess.",
+                    "contact-title": "Contact Me",
+                    "projects-title": "Projects",
+                    "projects-subtitle": "Things I've built & shipped",
+                    "about-title": "About Me",
+                    "profile-title": "FullStack Developer From Kurdistan, Barzan",
+                    "profile-bio": "\"A chess player wants to know more but knows nothing.\""
+                },
+                ku: {
+                    "logo": "کوردۆردێڤ",
+                    "available": "بەردەستە بۆ کار",
+                    "name": "کوردۆردێڤ",
+                    "tagline": "گرنگ نیە چیە شاخەکە چەن بەرزە، هەمیشه خۆر هەڵدەستێ... ☀️",
+                    "terminal-title": "کوردۆردێڤ ~ bash$",
+                    "terminal-name": "ڕەشید فەرهەد $",
+                    "terminal-title2": "گەشەپێدەری FullStack | UI/UX",
+                    "terminal-chess": "کەسێک کە دەیەوێت زیاتر شەترەنج.",
+                    "contact-title": "پەیوەندیم پێوەبکە",
+                    "projects-title": "پڕۆژەکان",
+                    "projects-subtitle": "ئەو شتانەی کە دروستم کردوون و ناردوومیانە", 
+                    "about-title": "دەربارەی من",
+                    "profile-title": "گەشەپێدەری FullStack لە کوردستان، بارزان",
+                    "profile-bio": "\"یاریزانی شەترەنج دەیەوێت زیاتر بزانێت بەڵام هیچ نازانێت.\""
+                }
+            };
+            
+            this.currentLang = 'en';
+            this.currentSection = 'home';
+            this.init();
+        }
+
+        init() {
+            this._loadLanguage();
+            this._loadTheme();
+            this._setupBottomMenu();
+            this._setupEventListeners();
+            this._setupSocialIconsClick();
+            this._setupAvailableLink();
+            this._showSection('home');
+        }
+
+        // ============ BOTTOM MENU ============
+        _setupBottomMenu() {
+            const menuItems = document.querySelectorAll('.menu-item');
+            
+            menuItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const section = item.getAttribute('data-section');
+                    
+                    menuItems.forEach(mi => mi.classList.remove('active'));
+                    item.classList.add('active');
+                    
+                    this._showSection(section);
+                });
+            });
+        }
+
+        _showSection(sectionId) {
+            this.currentSection = sectionId;
+            
+            const sections = ['home', 'projects', 'about', 'contact'];
+            sections.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.style.display = 'none';
+                }
+            });
+            
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.style.display = 'block';
+                selectedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            
+            history.pushState(null, null, `#${sectionId}`);
+        }
+
+        // ============ AVAILABLE FOR WORK LINK ============
+        _setupAvailableLink() {
+            const availableLink = document.querySelector('.work');
+            if (availableLink) {
+                availableLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // Update bottom menu active state
+                    const menuItems = document.querySelectorAll('.menu-item');
+                    menuItems.forEach(mi => mi.classList.remove('active'));
+                    
+                    // Find and activate the About menu item (👨‍💻)
+                    const aboutMenuItem = document.querySelector('.menu-item[data-section="about"]');
+                    if (aboutMenuItem) {
+                        aboutMenuItem.classList.add('active');
+                    }
+                    
+                    // Show About section
+                    this._showSection('about');
+                });
+            }
+        }
+
+        // ============ SOCIAL ICONS CLICK EFFECT ============
+        _setupSocialIconsClick() {
+            const socialIcons = document.querySelectorAll('.profile-social a');
+            
+            socialIcons.forEach(icon => {
+                icon.addEventListener('click', (e) => {
+                    socialIcons.forEach(i => i.classList.remove('active-social'));
+                    icon.classList.add('active-social');
+                    
+                    setTimeout(() => {
+                        icon.classList.remove('active-social');
+                    }, 1000);
+                });
+            });
+        }
+
+        // ============ LANGUAGE SYSTEM ============
+        _loadLanguage() {
+            const saved = localStorage.getItem('kurdor-lang');
+            const browserLang = navigator.language?.substring(0, 2) || 'en';
+            const defaultLang = saved || (browserLang === 'ku' ? 'ku' : 'en');
+            
+            this.setLanguage(defaultLang);
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const lang = btn.getAttribute('data-lang');
+                    this.setLanguage(lang);
+                });
+            });
+        }
+
+        setLanguage(lang) {
+            if (lang === this.currentLang) return;
+            
+            this.currentLang = lang;
+            const html = document.documentElement;
+            
+            html.setAttribute('data-lang', lang);
+            html.setAttribute('lang', lang);
+            html.setAttribute('dir', lang === 'ku' ? 'rtl' : 'ltr');
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                const isActive = btn.getAttribute('data-lang') === lang;
+                btn.classList.toggle('active', isActive);
+            });
+            
+            this._updateTranslations(lang);
+            localStorage.setItem('kurdor-lang', lang);
+        }
+
+        _updateTranslations(lang) {
+            const texts = this.translations[lang];
+            if (!texts) return;
+            
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                const text = texts[key];
+                
+                if (text) {
+                    if (element.hasAttribute('data-text')) {
+                        element.setAttribute('data-text', text);
+                    }
+                    element.textContent = text;
+                }
+            });
+        }
+
+        // ============ THEME SYSTEM ============
+        _loadTheme() {
+            const saved = localStorage.getItem('kurdor-theme') || 'dark';
+            this.setTheme(saved);
+            
+            const themeToggle = document.getElementById('theme-toggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    const current = document.documentElement.getAttribute('data-theme');
+                    this.setTheme(current === 'dark' ? 'light' : 'dark');
+                });
+            }
+        }
+
+        setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            localStorage.setItem('kurdor-theme', theme);
+            
+            const themeTag = document.querySelector('.status-tag:last-child span');
+            if (themeTag) {
+                themeTag.textContent = theme;
+            }
+        }
+
+        // ============ EVENT LISTENERS ============
+        _setupEventListeners() {
+            document.addEventListener('keydown', (e) => {
+                if (e.altKey && e.key === 'l') {
+                    e.preventDefault();
+                    const newLang = this.currentLang === 'en' ? 'ku' : 'en';
+                    this.setLanguage(newLang);
+                }
+                
+                if (e.altKey && e.key === 't') {
+                    e.preventDefault();
+                    const current = document.documentElement.getAttribute('data-theme');
+                    this.setTheme(current === 'dark' ? 'light' : 'dark');
+                }
+            });
+            
+            window.addEventListener('scroll', () => {
+                const header = document.querySelector('header');
+                if (window.scrollY > 20) {
+                    header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+                } else {
+                    header.style.boxShadow = 'none';
+                }
+            });
+            
+            if (window.location.hash) {
+                const section = window.location.hash.substring(1);
+                if (['home', 'projects', 'about', 'contact'].includes(section)) {
+                    setTimeout(() => {
+                        this._showSection(section);
+                        document.querySelectorAll('.menu-item').forEach(item => {
+                            item.classList.toggle('active', item.getAttribute('data-section') === section);
+                        });
+                    }, 100);
+                }
+            }
+        }
+    }
+
+    // ============ INITIALIZE APP ============
+    document.addEventListener('DOMContentLoaded', () => {
+        const app = new KurdorApp();
+        console.log('🎯 Kurdor Dev - Bilingual Portfolio Loaded');
+        console.log('🌍 Language:', app.currentLang);
+        console.log('🎨 Theme:', document.documentElement.getAttribute('data-theme'));
+    });
+</script>
+</body>
+</html>
