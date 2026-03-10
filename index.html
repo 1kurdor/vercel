@@ -1,5 +1,5 @@
-<!DOCTYPE html><html lang="ckb">
-
+<!DOCTYPE html>
+<html lang="ckb">
 <head>
     <meta charset="UTF-8">
     <link rel="manifest" href="/manifest.json">
@@ -167,10 +167,10 @@
         .disc-voice-players { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
         .disc-voice-player { display:flex; flex-direction:column; align-items:center; gap:4px; background:rgba(255,255,255,0.08); border-radius:16px; padding:8px 12px; border:2px solid transparent; transition:all 0.3s; min-width:64px; }
         .disc-voice-player.speaking { border-color:#00ff88; background:rgba(0,255,136,0.12); box-shadow:0 0 12px rgba(0,255,136,0.4); }
-        .disc-voice-player .vp-avatar { font-size:1.8rem; }
+        .disc-voice-player .vp-avatar { font-size:1.8rem; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
         .disc-voice-player .vp-name { font-size:0.72rem; color:#fff; text-align:center; max-width:70px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-        .disc-voice-player .vp-bars { display:flex; gap:2px; align-items:flex-end; height:14px; }
-        .disc-voice-player .vp-bar { width:3px; background:#00ff88; border-radius:2px; animation:vbar 0.5s infinite ease-in-out; }
+        .disc-voice-player .vp-bars { display:flex; gap:2px; align-items:flex-end; height:16px; margin-top:4px; }
+        .disc-voice-player .vp-bar { width:4px; background:#00ff88; border-radius:2px; animation:vbar 0.5s infinite ease-in-out; }
         .disc-voice-player .vp-bar:nth-child(2){ animation-delay:0.15s; }
         .disc-voice-player .vp-bar:nth-child(3){ animation-delay:0.3s; }
         @keyframes vbar { 0%,100%{height:3px} 50%{height:13px} }
@@ -190,7 +190,9 @@
         .disc-send-btn { width:46px; height:46px; border-radius:23px; background:linear-gradient(135deg,#ffcc00,#ffaa00); border:none; color:#1a2a3a; font-size:1.2rem; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 3px 0 #996600; transition:all 0.2s; }
         .disc-vote-btn { width:100%; padding:16px; border:none; border-radius:40px; margin-top:12px; background:linear-gradient(135deg,#ff4444,#cc0000); color:white; font-size:1.2rem; font-weight:bold; cursor:pointer; box-shadow:0 4px 0 #990000; transition:all 0.2s; }
         .disc-vote-btn:hover { transform:translateY(-2px); box-shadow:0 6px 0 #990000; }
-        .disc-wait-msg { text-align:center; padding:14px; margin-top:12px; background:rgba(255,255,255,0.1); border-radius:30px; color:rgba(255,255,255,0.8); font-size:1rem; border:1px solid rgba(255,255,255,0.15); }
+        .continue-disc-banner{background:linear-gradient(135deg,#cc8800,#ffaa00);border:3px solid white;border-radius:28px;padding:20px;text-align:center;margin:14px 0;color:#1a1a1a;font-weight:bold;animation:gentleReveal 0.4s ease;}
+.continue-disc-banner .cdb-count{font-size:3rem;font-weight:bold;color:#0066cc;}
+.disc-wait-msg { text-align:center; padding:14px; margin-top:12px; background:rgba(255,255,255,0.1); border-radius:30px; color:rgba(255,255,255,0.8); font-size:1rem; border:1px solid rgba(255,255,255,0.15); }
         .avatar-circle { width:38px; height:38px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:1.3rem; border:2px solid white; box-shadow:0 2px 6px rgba(0,0,0,0.15); }
         .avatar-circle.sm { width:32px; height:32px; font-size:1.1rem; }
         .leaderboard-row { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:20px; margin:4px 0; background:white; border:1px solid rgba(0,102,204,0.08); transition:all 0.2s; }
@@ -231,75 +233,78 @@
         .stat-label { font-size:0.75rem; color:rgba(255,255,255,0.75); }
         .profile-badge { display:inline-block; background:rgba(255,204,0,0.2); border:1px solid #ffcc00; border-radius:20px; padding:4px 14px; font-size:0.8rem; color:#ffcc00; margin-top:8px; }
 
+```
 
-    /* ── JOIN ROW: boxes + button all on ONE line ── */
-    .join-inline-row {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        margin-top: 12px;
-        direction: ltr;
-    }
-    .join-inline-row .code-box {
-        width: 38px;
-        height: 46px;
-        border-radius: 10px;
-        border: 2px solid #dde3f0;
-        font-size: 1.4rem;
-        font-weight: bold;
-        text-align: center;
-        font-family: inherit;
-        outline: none;
-        transition: all 0.2s;
-        background: #f8fbff;
-        color: #0066cc;
-        flex-shrink: 0;
-        padding: 0;
-    }
-    .join-inline-row .code-box:focus {
-        border-color: #0066cc;
-        background: white;
-        box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
-    }
-    .join-inline-row .join-btn {
-        flex: 1;
-        height: 46px;
-        min-width: 70px;
-        border: none;
-        border-radius: 23px;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        background: linear-gradient(135deg, #36d1dc, #5b86e5);
-        color: white;
-        box-shadow: 0 3px 0 #2563eb;
-        transition: all 0.2s;
-        white-space: nowrap;
-        font-family: 'Rabar','Arial Unicode MS','Segoe UI',sans-serif;
-        padding: 0 12px;
-    }
-    .join-inline-row .join-btn:hover { transform:translateY(-1px); box-shadow:0 5px 0 #2563eb; }
-    .join-inline-row .join-btn:active { transform:translateY(1px); }
+/* ── JOIN ROW: boxes + button all on ONE line ── */
+.join-inline-row {
+display: flex;
+align-items: center;
+gap: 6px;
+margin-top: 12px;
+direction: ltr;
+}
+.join-inline-row .code-box {
+width: 38px;
+height: 46px;
+border-radius: 10px;
+border: 2px solid #dde3f0;
+font-size: 1.4rem;
+font-weight: bold;
+text-align: center;
+font-family: inherit;
+outline: none;
+transition: all 0.2s;
+background: #f8fbff;
+color: #0066cc;
+flex-shrink: 0;
+padding: 0;
+}
+.join-inline-row .code-box:focus {
+border-color: #0066cc;
+background: white;
+box-shadow: 0 0 0 2px rgba(0,102,204,0.15);
+}
+.join-inline-row .join-btn {
+flex: 1;
+height: 46px;
+min-width: 70px;
+border: none;
+border-radius: 23px;
+font-size: 1rem;
+font-weight: 600;
+cursor: pointer;
+background: linear-gradient(135deg, #36d1dc, #5b86e5);
+color: white;
+box-shadow: 0 3px 0 #2563eb;
+transition: all 0.2s;
+white-space: nowrap;
+font-family: 'Rabar','Arial Unicode MS','Segoe UI',sans-serif;
+padding: 0 12px;
+}
+.join-inline-row .join-btn:hover { transform:translateY(-1px); box-shadow:0 5px 0 #2563eb; }
+.join-inline-row .join-btn:active { transform:translateY(1px); }
 
-    /* Verification code boxes (signup) */
-    .vc-box {
-        width: 58px; height: 66px; border-radius: 16px;
-        border: 2.5px solid #ddd; font-size: 2.1rem; font-weight: bold;
-        text-align: center; font-family: inherit; outline: none;
-        transition: all 0.2s; background: #fafafa; color: #0066cc; padding: 0;
-    }
-    .vc-box:focus { border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,0.15); background: white; }
+/* Verification code boxes (signup) */
+.vc-box {
+width: 58px; height: 66px; border-radius: 16px;
+border: 2.5px solid #ddd; font-size: 2.1rem; font-weight: bold;
+text-align: center; font-family: inherit; outline: none;
+transition: all 0.2s; background: #fafafa; color: #0066cc; padding: 0;
+}
+.vc-box:focus { border-color: #0066cc; box-shadow: 0 0 0 3px rgba(0,102,204,0.15); background: white; }
 
-    /* Reset code boxes (forgot password) — different IDs, same style */
-    .frc-box {
-        width: 58px; height: 66px; border-radius: 16px;
-        border: 2.5px solid #ddd; font-size: 2.1rem; font-weight: bold;
-        text-align: center; font-family: inherit; outline: none;
-        transition: all 0.2s; background: #fafafa; color: #9b59b6; padding: 0;
-    }
-    .frc-box:focus { border-color: #ff69b4; box-shadow: 0 0 0 3px rgba(255,105,180,0.15); background: white; }
+/* Reset code boxes (forgot password) — different IDs, same style */
+.frc-box {
+width: 58px; height: 66px; border-radius: 16px;
+border: 2.5px solid #ddd; font-size: 2.1rem; font-weight: bold;
+text-align: center; font-family: inherit; outline: none;
+transition: all 0.2s; background: #fafafa; color: #9b59b6; padding: 0;
+}
+.frc-box:focus { border-color: #ff69b4; box-shadow: 0 0 0 3px rgba(255,105,180,0.15); background: white; }
+
+```
+
 </style>
-
 
 </head>
 <body>
@@ -322,13 +327,13 @@
 یان ئەگەر تویێ تومارکری بی چوونەژوورێ بکاربینە.
 </div>
 
-
 <div class="auth-tabs">
     <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">چوونەژوور (Login)</button>
     <button class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')"> هەژمارا نوی (Signup)</button>
 </div>
 
 <!-- LOGIN -->
+
 <div id="auth-login-form">
     <div class="auth-input-group">
         <label class="auth-input-label">ئیمەیڵ 📧</label>
@@ -352,6 +357,7 @@
 </div>
 
 <!-- SIGNUP -->
+
 <div id="auth-signup-form" class="hidden">
     <div style="background:#f0f7ff;border-radius:20px;padding:12px 14px;margin-bottom:14px;border:1px solid rgba(0,102,204,0.12);font-size:0.88rem;color:#555;text-align:right;direction:rtl;">
         📝 هەژمارا نوی پێویستی ب تەئکید کرنێ هەیە، برێکا کۆدی.
@@ -378,6 +384,7 @@
 </div>
 
 <!-- VERIFY EMAIL (signup) -->
+
 <div id="auth-verify-email" class="hidden">
     <div style="text-align:center;padding:8px 0 4px;">
         <div style="font-size:3.5rem;margin-bottom:6px;">📨</div>
@@ -400,6 +407,7 @@
 </div>
 
 <!-- NICKNAME PICKER -->
+
 <div id="auth-nickname-picker" class="hidden">
     <div style="background:#f0f7ff;border-radius:24px;padding:18px 16px;border:2px solid rgba(0,102,204,0.15);margin:4px 0;">
         <p style="color:#0066cc;font-size:1.05rem;margin-bottom:8px;text-align:center;font-weight:bold;">🎭 ناڤێ یارییکەرێ خۆ دیاری بکە</p>
@@ -410,7 +418,6 @@
     </div>
 </div>
 
-
 </div>
 </div>
 
@@ -419,8 +426,8 @@
 <div id="forgot-password-page" class="hidden">
 <div style="padding:8px 0;">
 
-
 <!-- STEP 1: Enter email -->
+
 <div id="fp-step-1">
     <div style="text-align:center;margin-bottom:24px;">
         <div style="font-size:5rem;margin-bottom:10px;">🔐</div>
@@ -441,6 +448,7 @@
 </div>
 
 <!-- STEP 2: Enter 4-digit code -->
+
 <div id="fp-step-2" class="hidden">
     <div style="text-align:center;margin-bottom:20px;">
         <div style="font-size:4rem;margin-bottom:10px;">📨</div>
@@ -461,6 +469,7 @@
 </div>
 
 <!-- STEP 3: Set new password -->
+
 <div id="fp-step-3" class="hidden">
     <div style="text-align:center;margin-bottom:22px;">
         <div style="font-size:4rem;margin-bottom:10px;">🔑</div>
@@ -479,7 +488,6 @@
     <button class="btn btn-blue" onclick="doResetPassword()" style="font-size:1.1rem;background:linear-gradient(135deg,#00994d,#00cc66);box-shadow:0 4px 0 #006633;">✅ پاسوورد نوی بکەڤە</button>
     <button onclick="closeForgotPasswordPage()" style="width:100%;padding:10px;border:none;background:none;color:#aaa;font-size:0.85rem;cursor:pointer;font-family:inherit;margin-top:4px;">← زڤرین</button>
 </div>
-
 
 </div>
 </div>
@@ -634,9 +642,10 @@
             <div class="disc-starter" id="disc-starter-name">—</div>
         </div>
         <div class="disc-voice-section">
-            <div class="disc-voice-title">🎙️ ئاخفتن!</div>
+            <div class="disc-voice-title">🎙️ ئاخفتن! (هەموو یاریکەران)</div>
             <div class="disc-voice-players" id="discVoicePlayers"></div>
             <button class="disc-mic-btn mic-off" id="discMicBtn" onclick="toggleDiscMic()">🎙️ مایکروفونێ چالاک بکە</button>
+            <div id="micErrorMsg" class="hidden" style="color:#ff8888;font-size:0.85rem;margin-top:8px;text-align:center;"></div>
         </div>
         <div class="disc-chat-box" id="discChatBox"></div>
         <div class="disc-chat-row">
@@ -713,13 +722,9 @@
 </div></div></div>
 
 <!-- Firebase Compat SDK -->
-
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <script>
@@ -809,7 +814,6 @@ const wordPairsByCategory = {
 };
 function getWordPairsByCategory(cat){
     if(!cat||cat==='هەمی'){
-        // merge all categories into one pool
         const all=[];
         Object.values(wordPairsByCategory).forEach(arr=>arr.forEach(p=>all.push(p)));
         return all.length>0?all:wordPairs;
@@ -846,9 +850,397 @@ const gs = {
 let currentPlayerCount=5;
 let selectedCategory='هەمی';
 
-// ══════════════════════════════
-//  JOIN BOX — jc0..jc5 (unique IDs, no conflict)
-// ══════════════════════════════
+// ===== VOICE CHAT FIX =====
+const voice = {
+    localStream: null,
+    peerConnections: {},
+    micEnabled: false,
+    analyserInterval: null,
+    audioCtx: null,
+    analysers: {},
+    localAnalyser: null,
+    speakingStates: {},
+};
+
+async function startVoiceChat(gameData) {
+    console.log("Starting voice chat...");
+    renderVoicePlayers(gameData);
+    listenSpeakingStates();
+    
+    if (gs.roomCode && myPlayerId) {
+        await db.ref(`rooms/${gs.roomCode}/voicePresence/${myPlayerId}`).set({
+            name: gs.myNickname,
+            ts: Date.now(),
+            avatarIdx: userProfile?.avatarIdx || 0
+        });
+    }
+    
+    db.ref(`rooms/${gs.roomCode}/voicePresence`).on('value', () => {
+        renderVoicePlayers(gameData);
+    });
+    
+    setupSignalListener(gameData);
+}
+
+function stopVoiceChat() {
+    if (voice.localStream) {
+        voice.localStream.getTracks().forEach(t => {
+            t.stop();
+            t.enabled = false;
+        });
+        voice.localStream = null;
+    }
+    
+    Object.values(voice.peerConnections).forEach(pc => {
+        try { pc.close(); } catch(e) {}
+    });
+    voice.peerConnections = {};
+    
+    voice.micEnabled = false;
+    if (voice.analyserInterval) {
+        clearInterval(voice.analyserInterval);
+        voice.analyserInterval = null;
+    }
+    
+    if (voice.audioCtx) {
+        try { voice.audioCtx.close(); } catch(e) {}
+        voice.audioCtx = null;
+    }
+    
+    voice.analysers = {};
+    voice.localAnalyser = null;
+    voice.speakingStates = {};
+    
+    const btn = document.getElementById('discMicBtn');
+    if (btn) {
+        btn.className = 'disc-mic-btn mic-off';
+        btn.innerHTML = '🎙️ مایکروفونێ چالاک بکە';
+    }
+    
+    if (gs.roomCode && myPlayerId) {
+        db.ref(`rooms/${gs.roomCode}/voicePresence/${myPlayerId}`).remove().catch(() => {});
+        db.ref(`rooms/${gs.roomCode}/speaking/${myPlayerId}`).remove().catch(() => {});
+        db.ref(`rooms/${gs.roomCode}/voicePresence`).off();
+        db.ref(`rooms/${gs.roomCode}/speaking`).off();
+        db.ref(`rooms/${gs.roomCode}/signals`).off();
+    }
+}
+
+async function toggleDiscMic() {
+    if (voice.micEnabled) {
+        voice.micEnabled = false;
+        if (voice.localStream) {
+            voice.localStream.getTracks().forEach(t => t.enabled = false);
+        }
+        db.ref(`rooms/${gs.roomCode}/speaking/${myPlayerId}`).set(false);
+        updateMicBtn();
+        return;
+    }
+    
+    const errEl = document.getElementById('micErrorMsg');
+    try {
+        voice.localStream = await navigator.mediaDevices.getUserMedia({ 
+            audio: {
+                echoCancellation: true,
+                noiseSuppression: true,
+                autoGainControl: true
+            }, 
+            video: false 
+        });
+        
+        voice.micEnabled = true;
+        voice.localStream.getTracks().forEach(t => t.enabled = true);
+        
+        voice.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const src = voice.audioCtx.createMediaStreamSource(voice.localStream);
+        voice.localAnalyser = voice.audioCtx.createAnalyser();
+        voice.localAnalyser.fftSize = 256;
+        src.connect(voice.localAnalyser);
+        
+        if (errEl) errEl.classList.add('hidden');
+        updateMicBtn();
+        startSpeakingDetection();
+        await setupAllPeerConnections();
+        showToast('🎤 مایکروفون چالاک بوو!', false);
+    } catch(e) {
+        console.error('Mic error:', e);
+        if (errEl) {
+            errEl.textContent = '⚠️ مایکروفون نەدۆزرا یان ڕێگا پێنەدرا';
+            errEl.classList.remove('hidden');
+        }
+        showToast('⚠️ مایکروفون نەدۆزرا', true);
+    }
+}
+
+function updateMicBtn() {
+    const btn = document.getElementById('discMicBtn');
+    if (!btn) return;
+    
+    if (voice.micEnabled) {
+        btn.className = 'disc-mic-btn mic-on';
+        btn.innerHTML = '🎙️ مایکروفون چالاکە — کلیک بکە بو گرتن';
+    } else {
+        btn.className = 'disc-mic-btn mic-off';
+        btn.innerHTML = '🎙️ مایکروفونێ چالاک بکە';
+    }
+}
+
+async function setupAllPeerConnections() {
+    if (!gs.roomCode || !myPlayerId || !voice.localStream) return;
+    
+    const presenceSnap = await db.ref(`rooms/${gs.roomCode}/voicePresence`).get();
+    const otherPlayers = [];
+    presenceSnap.forEach(child => {
+        if (child.key !== myPlayerId) {
+            otherPlayers.push(child.key);
+        }
+    });
+    
+    for (const peerId of otherPlayers) {
+        if (!voice.peerConnections[peerId]) {
+            await createPeerConnection(peerId);
+        }
+    }
+}
+
+async function createPeerConnection(peerId) {
+    const config = {
+        iceServers: [
+            { urls: 'stun:stun.l.google.com:19302' },
+            { urls: 'stun:stun1.l.google.com:19302' },
+            { urls: 'stun:stun2.l.google.com:19302' }
+        ]
+    };
+    
+    const pc = new RTCPeerConnection(config);
+    voice.peerConnections[peerId] = pc;
+    
+    if (voice.localStream) {
+        voice.localStream.getTracks().forEach(track => {
+            pc.addTrack(track, voice.localStream);
+        });
+    }
+    
+    pc.onicecandidate = (event) => {
+        if (event.candidate) {
+            db.ref(`rooms/${gs.roomCode}/signals/${myPlayerId}`).push({
+                type: 'ice',
+                candidate: JSON.stringify(event.candidate),
+                from: myPlayerId,
+                to: peerId,
+                ts: Date.now()
+            });
+        }
+    };
+    
+    pc.ontrack = (event) => {
+        const stream = event.streams[0];
+        const audio = new Audio();
+        audio.srcObject = stream;
+        audio.autoplay = true;
+        audio.volume = 1.0;
+        audio.play().catch(e => console.log('Audio play error:', e));
+        
+        if (voice.audioCtx) {
+            try {
+                const src = voice.audioCtx.createMediaStreamSource(stream);
+                const analyser = voice.audioCtx.createAnalyser();
+                analyser.fftSize = 256;
+                src.connect(analyser);
+                voice.analysers[peerId] = analyser;
+            } catch(e) {
+                console.log('Analyser error:', e);
+            }
+        }
+    };
+    
+    try {
+        const offer = await pc.createOffer();
+        await pc.setLocalDescription(offer);
+        
+        db.ref(`rooms/${gs.roomCode}/signals/${myPlayerId}`).push({
+            type: 'offer',
+            sdp: offer.sdp,
+            from: myPlayerId,
+            to: peerId,
+            ts: Date.now()
+        });
+    } catch(e) {
+        console.error('Offer creation error:', e);
+    }
+    
+    return pc;
+}
+
+function setupSignalListener(gameData) {
+    if (!gs.roomCode) return;
+    
+    db.ref(`rooms/${gs.roomCode}/signals`).on('child_added', async (snap) => {
+        const fromId = snap.key;
+        if (fromId === myPlayerId) return;
+        
+        snap.forEach(async (childSnap) => {
+            const signal = childSnap.val();
+            if (!signal || signal.from === myPlayerId) return;
+            
+            await handleSignal(fromId, signal, gameData);
+            
+            setTimeout(() => {
+                childSnap.ref.remove().catch(() => {});
+            }, 5000);
+        });
+    });
+}
+
+async function handleSignal(fromId, signal, gameData) {
+    if (!voice.micEnabled || !voice.localStream) return;
+    
+    try {
+        let pc = voice.peerConnections[fromId];
+        if (!pc) {
+            pc = await createPeerConnection(fromId);
+        }
+        
+        if (signal.type === 'offer') {
+            await pc.setRemoteDescription(new RTCSessionDescription({
+                type: 'offer',
+                sdp: signal.sdp
+            }));
+            
+            const answer = await pc.createAnswer();
+            await pc.setLocalDescription(answer);
+            
+            db.ref(`rooms/${gs.roomCode}/signals/${myPlayerId}`).push({
+                type: 'answer',
+                sdp: answer.sdp,
+                from: myPlayerId,
+                to: fromId,
+                ts: Date.now()
+            });
+        }
+        else if (signal.type === 'answer') {
+            if (pc.signalingState !== 'stable') {
+                await pc.setRemoteDescription(new RTCSessionDescription({
+                    type: 'answer',
+                    sdp: signal.sdp
+                }));
+            }
+        }
+        else if (signal.type === 'ice') {
+            const candidate = JSON.parse(signal.candidate);
+            await pc.addIceCandidate(new RTCIceCandidate(candidate));
+        }
+    } catch(e) {
+        console.error('Signal handling error:', e);
+    }
+}
+
+function startSpeakingDetection() {
+    if (voice.analyserInterval) {
+        clearInterval(voice.analyserInterval);
+    }
+    
+    const bufferLength = voice.localAnalyser ? voice.localAnalyser.frequencyBinCount : 128;
+    const dataArray = new Uint8Array(bufferLength);
+    
+    voice.analyserInterval = setInterval(() => {
+        if (voice.localAnalyser && voice.micEnabled) {
+            voice.localAnalyser.getByteFrequencyData(dataArray);
+            let sum = 0;
+            for (let i = 0; i < dataArray.length; i++) {
+                sum += dataArray[i];
+            }
+            const average = sum / dataArray.length;
+            const isSpeaking = average > 25;
+            
+            if (isSpeaking !== voice.speakingStates['__me__']) {
+                voice.speakingStates['__me__'] = isSpeaking;
+                db.ref(`rooms/${gs.roomCode}/speaking/${myPlayerId}`).set(isSpeaking);
+            }
+        }
+        
+        updateSpeakingUI();
+    }, 100);
+}
+
+function listenSpeakingStates() {
+    db.ref(`rooms/${gs.roomCode}/speaking`).on('value', (snap) => {
+        if (!snap.exists()) return;
+        
+        snap.forEach(child => {
+            voice.speakingStates[child.key] = !!child.val();
+        });
+        
+        updateSpeakingUI();
+    });
+}
+
+function updateSpeakingUI() {
+    document.querySelectorAll('.disc-voice-player').forEach(el => {
+        const uid = el.dataset.uid;
+        if (uid) {
+            const isSpeaking = uid === myPlayerId ? 
+                voice.speakingStates['__me__'] : 
+                voice.speakingStates[uid];
+            el.classList.toggle('speaking', !!isSpeaking);
+            
+            const bars = el.querySelectorAll('.vp-bar');
+            if (isSpeaking) {
+                bars.forEach(bar => {
+                    bar.style.animation = 'vbar 0.5s infinite ease-in-out';
+                });
+            } else {
+                bars.forEach(bar => {
+                    bar.style.animation = 'none';
+                    bar.style.height = '3px';
+                });
+            }
+        }
+    });
+}
+
+function renderVoicePlayers(gameData) {
+    const container = document.getElementById('discVoicePlayers');
+    if (!container || !gameData) return;
+    
+    const players = gameData.playerNames || [];
+    const avatars = gameData.playerAvatars || [];
+    
+    const playerIdMap = {};
+    gs.onlinePlayers.forEach(p => {
+        playerIdMap[p.name] = p.id;
+    });
+    
+    container.innerHTML = '';
+    
+    players.forEach((name, idx) => {
+        const avatarIdx = avatars[idx] || idx;
+        const av = getAvatarForIndex(avatarIdx);
+        const uid = playerIdMap[name] || `player-${idx}`;
+        const isSpeaking = uid === myPlayerId ? 
+            voice.speakingStates['__me__'] : 
+            voice.speakingStates[uid];
+        
+        const div = document.createElement('div');
+        div.className = 'disc-voice-player' + (isSpeaking ? ' speaking' : '');
+        div.dataset.uid = uid;
+        
+        div.innerHTML = `
+            <div class="vp-avatar" style="background: ${av.c};">${av.e}</div>
+            <div class="vp-name">${name}</div>
+            <div class="vp-bars">
+                <div class="vp-bar"></div>
+                <div class="vp-bar"></div>
+                <div class="vp-bar"></div>
+                <div class="vp-bar"></div>
+            </div>
+        `;
+        
+        container.appendChild(div);
+    });
+}
+
+// ══════════════ JOIN BOX SETUP ══════════════
 function setupJoinBoxes(){
     for(let i=0;i<6;i++){
         const box=document.getElementById('jc'+i);
@@ -877,9 +1269,7 @@ function setupJoinBoxes(){
 function getJoinCode(){ let c=''; for(let i=0;i<6;i++){const b=document.getElementById('jc'+i);c+=b?b.value:'';} return c; }
 function clearJoinBoxes(){ for(let i=0;i<6;i++){const b=document.getElementById('jc'+i);if(b)b.value='';} }
 
-// ══════════════════════════════
-//  VERIFY CODE BOXES — vc0..vc3
-// ══════════════════════════════
+// ══════════════ VERIFY CODE BOXES ══════════════
 function setupVcBoxes(){
     for(let i=0;i<4;i++){
         const box=document.getElementById('vc'+i);
@@ -893,20 +1283,10 @@ function setupVcBoxes(){
         box.addEventListener('keydown',function(e){
             if(e.key==='Backspace'&&this.value===''&&i>0) document.getElementById('vc'+(i-1)).focus();
         });
-        box.addEventListener('paste',function(e){
-            e.preventDefault();
-            const txt=(e.clipboardData||window.clipboardData).getData('text').replace(/[^0-9]/g,'');
-            for(let j=0;j<4&&j<txt.length;j++){const b=document.getElementById('vc'+j);if(b)b.value=txt[j];}
-            const lb=document.getElementById('vc'+Math.min(txt.length-1,3));
-            if(lb)lb.focus();
-            if(txt.length>=4)setTimeout(submitVerifyCode,80);
-        });
     }
 }
 
-// ══════════════════════════════
-//  AUTH STATE
-// ══════════════════════════════
+// ══════════════ AUTH STATE ══════════════
 auth.onAuthStateChanged(async(user)=>{
     if(user){
         currentUser=user; myPlayerId=user.uid;
@@ -920,7 +1300,6 @@ auth.onAuthStateChanged(async(user)=>{
                     sessionStorage.removeItem('sikhur_invite');
                     const clean=invite.replace(/[^0-9]/g,'');
                     if(clean.length===6){
-                        // fill join boxes
                         for(let i=0;i<6;i++){const b=document.getElementById('jc'+i);if(b)b.value=clean[i]||'';}
                         showToast('🔗 لینکی دەعوەتێ هاتە دیتن!',false);
                         await openLobby(false,clean); return;
@@ -1112,9 +1491,7 @@ async function confirmPickedNickname(){
     }
 }
 
-// ══════════════════════════════
-//  FORGOT PASSWORD — 3-step: email → 4-digit code → new password
-// ══════════════════════════════
+// ══════════════ FORGOT PASSWORD ══════════════
 let _fpFrom='auth-page', _fpEmail='', _fpCode='', _fpVerified=false, _fpResendCooldown=false;
 
 function _fpShowStep(n){
@@ -1170,7 +1547,6 @@ async function sendResetCode(){
     const errEl = document.getElementById('fp-error');
     const hintEl = document.getElementById('fp-signup-hint');
     
-    // Clear previous messages
     errEl.textContent = '';
     hintEl.classList.add('hidden');
     
@@ -1182,7 +1558,6 @@ async function sendResetCode(){
     errEl.textContent = '⏳ چاڤەرێ بە...';
     
     try {
-        // Check if email exists in Firebase using database lookup
         const usersSnapshot = await db.ref('users').orderByChild('email').equalTo(email).once('value');
         const accountExists = usersSnapshot.exists();
         
@@ -1192,11 +1567,9 @@ async function sendResetCode(){
             return;
         }
         
-        // Email exists, proceed with reset code
         _fpEmail = email;
         _fpCode = _gen4Code();
         
-        // Store code in database
         const key = btoa(email).replace(/[^a-zA-Z0-9]/g, '_');
         await db.ref('resetCodes/' + key).set({
             code: _fpCode,
@@ -1204,12 +1577,10 @@ async function sendResetCode(){
             expiresAt: Date.now() + 600000
         });
         
-        // Send email with code
         const sent = await _sendCodeEmail(email, _fpCode);
         
         errEl.textContent = '';
         
-        // Show step 2
         document.getElementById('fp-email-display').textContent = email;
         for (let i = 0; i < 4; i++) {
             const box = document.getElementById('fpc' + i);
@@ -1249,7 +1620,6 @@ async function submitResetCode(){
     const entered=[0,1,2,3].map(i=>{const el=document.getElementById('fpc'+i);return el?el.value.trim():'';}).join('');
     const errEl=document.getElementById('fp-code-error');
     if(entered.length<4){errEl.textContent='⚠️ کودێ 4 ژمارەیی بنڤیسە';return;}
-    // Verify against DB
     const key=btoa(_fpEmail).replace(/[^a-zA-Z0-9]/g,'_');
     let valid=false;
     try{
@@ -1259,7 +1629,6 @@ async function submitResetCode(){
             if(d.code===entered && Date.now()<d.expiresAt) valid=true;
         }
     }catch(e){}
-    // Also accept in-memory code as fallback
     if(entered===_fpCode) valid=true;
     if(!valid){
         for(let i=0;i<4;i++){const b=document.getElementById('fpc'+i);if(b){b.style.borderColor='#ff4444';setTimeout(()=>b.style.borderColor='#9b59b6',1000);}}
@@ -1285,17 +1654,15 @@ async function doResetPassword(){
     if(p1!==p2){errEl.textContent='❌ پاسووردەکان یەکسان نین';return;}
     errEl.style.color='#555';
     errEl.textContent='⏳ چاڤەرێ بە...';
-    // Store new password request in Firebase (verified by our code system)
     const key=btoa(_fpEmail).replace(/[^a-zA-Z0-9]/g,'_');
     try{
         await db.ref('pendingPasswordReset/'+key).set({
             email:_fpEmail,
-            newPassword:btoa(p1), // base64 just to avoid plaintext storage
+            newPassword:btoa(p1),
             verifiedAt:Date.now(),
-            expiresAt:Date.now()+300000 // 5 min
+            expiresAt:Date.now()+300000
         });
     }catch(e){}
-    // Try to update password if user is currently logged in (same device)
     if(auth.currentUser && auth.currentUser.email===_fpEmail){
         try{
             await auth.currentUser.updatePassword(p1);
@@ -1308,19 +1675,14 @@ async function doResetPassword(){
             return;
         }catch(e){}
     }
-    // User is not logged in — sign in with new password (if account exists with any password)
-    // Best UX: show success message + redirect to login with email prefilled
     errEl.style.color='#00994d';
     errEl.textContent='✅ داواکاریت تۆمار کرا!';
-    // Send branded email notification
     try{
         await _sendCodeEmail(_fpEmail, '🔑');
     }catch(e){}
-    // Actually do Firebase reset email as the real mechanism
     try{ await auth.sendPasswordResetEmail(_fpEmail); }catch(e){}
     setTimeout(()=>{
         closeForgotPasswordPage();
-        // Prefill login email
         const loginEmailEl=document.getElementById('login-email');
         if(loginEmailEl) loginEmailEl.value=_fpEmail;
         switchAuthTab('login');
@@ -1328,12 +1690,9 @@ async function doResetPassword(){
     },2000);
 }
 
-// Keep old sendResetLink name working
 function sendResetLink(){ sendResetCode(); }
 
-// ══════════════════════════════
-//  PROFILE UI
-// ══════════════════════════════
+// ══════════════ PROFILE UI ══════════════
 function updateProfileUI(){
     if(!userProfile)return;
     const nick=userProfile.nickname||'?';
@@ -1351,16 +1710,14 @@ function updateProfileUI(){
     const sr=document.getElementById('stat-rate');if(sr)sr.textContent=rate+'%';
     const badge=document.getElementById('profile-badge-role');
     if(badge){
-        if(wins>=50)badge.textContent='👑 لیگی امپراتور';
-        else if(wins>=20)badge.textContent='🏆 یارییکەرێ اسطورە';
+        if(wins>=50)badge.textContent='👑 لیگی ئیمپراتۆر';
+        else if(wins>=20)badge.textContent='🏆 یارییکەرێ ئەفسانەیی';
         else if(wins>=10)badge.textContent='⭐ یارییکەرێ باش';
         else badge.textContent='🎭 یارییکەرێ نوی';
     }
 }
 
-// ══════════════════════════════
-//  TOAST & CONFIRM MODAL
-// ══════════════════════════════
+// ══════════════ TOAST & CONFIRM MODAL ══════════════
 function showToast(msg,isError=false){
     document.querySelectorAll('.welcome-notification').forEach(e=>e.remove());
     const d=document.createElement('div');
@@ -1394,9 +1751,7 @@ function showConfirmModal(title,message,confirmText,cancelText){
     });
 }
 
-// ══════════════════════════════
-//  PAGES
-// ══════════════════════════════
+// ══════════════ PAGES ══════════════
 const PAGES=['auth-page','home-page','profile-page','leaderboard-page','offline-mode-page',
              'online-lobby-page','setup-page','game-page','discussion-page','reveal-page',
              'results-page','voting-page','online-results-page','forgot-password-page'];
@@ -1409,9 +1764,7 @@ function showPage(id){
 function goBackToHome(){ showPage('home-page'); }
 function goToHomePage(){  showPage('home-page'); }
 
-// ══════════════════════════════
-//  JOIN ROOM
-// ══════════════════════════════
+// ══════════════ JOIN ROOM ══════════════
 async function joinRoomClick(){
     const code=getJoinCode();
     if(code.length!==6){
@@ -1438,9 +1791,7 @@ function goToNickname(flow){
 function genCode(){ return String(Math.floor(100000+Math.random()*900000)); }
 function formatRoomCode(code){ const c=String(code).replace(/[^0-9]/g,''); return c.length===6?c.slice(0,3)+'-'+c.slice(3):code; }
 
-// ══════════════════════════════
-//  LOBBY
-// ══════════════════════════════
+// ══════════════ LOBBY ══════════════
 async function openLobby(isHost,code){
     gs.isHost=isHost; gs.roomCode=isHost?genCode():code;
     gs.isOnlineGame=true; gs.onlinePlayers=[];
@@ -1490,6 +1841,27 @@ async function openLobby(isHost,code){
             });
         }
     });
+    db.ref(`${roomRef}/playAgainSignal`).on('value',snap=>{
+        if(!snap.exists())return;
+        const val=snap.val();
+        if(val&&val.active&&!gs.isHost){
+            stopVoiceChat();
+            gs.eliminatedPlayers=[];gs.currentRound=1;gs.spiesEliminated=0;
+            returnToLobbyAfterGame();
+        }
+    });
+    db.ref(`${roomRef}/continueToDiscussion`).on('value',snap=>{
+        if(!snap.exists())return;
+        const val=snap.val();
+        if(val&&val.active){
+            const gd=val.gameData;
+            if(gd){
+                gs.eliminatedPlayers=gd._eliminatedPlayers||[];
+                if(voteGameData)voteGameData._eliminatedPlayers=gs.eliminatedPlayers;
+                openDiscussionPage(gd);
+            }
+        }
+    });
     db.ref(`${roomRef}/chat`).on('child_added',snap=>{
         const msg=snap.val();if(!msg)return;
         const box=document.getElementById('chatBox');if(!box)return;
@@ -1531,9 +1903,7 @@ function markReady(){
     db.ref(`rooms/${gs.roomCode}/players/${myPlayerId}/ready`).set(true).catch(()=>{});
 }
 
-// ══════════════════════════════
-//  LEAVE ROOM — with confirm modal
-// ══════════════════════════════
+// ══════════════ LEAVE ROOM ══════════════
 async function leaveRoom(){
     const confirmed=await showConfirmModal(
         'دەرکەفتن ل ژوورێ 🚪',
@@ -1564,9 +1934,7 @@ function copyRoomCode(){
 }
 function setOnlineMode(mode){gs.onlineMode=mode;db.ref(`rooms/${gs.roomCode}`).update({mode});}
 
-// ══════════════════════════════
-//  CATEGORIES
-// ══════════════════════════════
+// ══════════════ CATEGORIES ══════════════
 function renderCategoryBtns(){
     const box=document.getElementById('category-btns');if(!box)return;
     const cats=['هەمی',...categoryNames];
@@ -1578,9 +1946,7 @@ function selectCategory(cat){
     showToast('📚 بابەت: '+cat,false);
 }
 
-// ══════════════════════════════
-//  START ONLINE GAME
-// ══════════════════════════════
+// ══════════════ START ONLINE GAME ══════════════
 async function startOnlineGame(){
     const names=gs.onlinePlayers.map(p=>p.name);
     if(names.length<3){showToast('پێویستە ب کێمی 3 یارییکەر بن! ❌',true);return;}
@@ -1607,9 +1973,7 @@ async function startOnlineGame(){
     });
 }
 
-// ══════════════════════════════
-//  OFFLINE GAME
-// ══════════════════════════════
+// ══════════════ OFFLINE GAME ══════════════
 function startOfflineSetup(mode){
     gs.gameMode=mode;gs.isOnlineGame=false;
     document.getElementById('setup-title').textContent=mode===1?'⚙️ ڕێکخستنا سیخوڕی 🕵️':'⚙️ ڕێکخستنا پەیڤێن جیاواز 🎭';
@@ -1732,9 +2096,7 @@ function showFinalResults(){
 }
 function playAgain(){startNewGame(gs.playerNames);}
 
-// ══════════════════════════════
-//  ONLINE GAME STATE LISTENER
-// ══════════════════════════════
+// ══════════════ ONLINE GAME STATE LISTENER ══════════════
 function listenGameState(gameData){
     db.ref(`rooms/${gs.roomCode}/gameState`).on('value',snap=>{
         if(!snap.exists())return;
@@ -1798,9 +2160,7 @@ function onlineRevealMyCard(gameData,myIdx){
     nextBtn.onclick=()=>db.ref(`rooms/${gs.roomCode}/gameState`).update({turnIndex:(gameData._currentTurn||0)+1});
 }
 
-// ══════════════════════════════
-//  DISCUSSION
-// ══════════════════════════════
+// ══════════════ DISCUSSION ══════════════
 let _discChatAttached=false;
 function openDiscussionPage(gameData){
     showPage('discussion-page');
@@ -1818,6 +2178,7 @@ function openDiscussionPage(gameData){
             d.innerHTML='<div class="bname">'+msg.name+'</div>'+msg.text;box.appendChild(d);box.scrollTop=box.scrollHeight;
         });
     }
+    startVoiceChat(gameData);
 }
 function sendDiscMsg(){
     const inp=document.getElementById('discChatInput');const txt=inp.value.trim();
@@ -1825,11 +2186,8 @@ function sendDiscMsg(){
     db.ref(`rooms/${gs.roomCode}/discussionChat`).push({senderId:myPlayerId,name:gs.myNickname,text:txt,ts:Date.now()});
 }
 function hostStartVoting(){if(!gs.isHost)return;db.ref(`rooms/${gs.roomCode}/discussionDone`).set(true);}
-function toggleDiscMic(){showToast('🎙️ Voice chat — نزیکە!',false);}
 
-// ══════════════════════════════
-//  VOTING
-// ══════════════════════════════
+// ══════════════ VOTING ══════════════
 function startVotingPhase(gameData){
     voteGameData=gameData;myVoteChoice=null;voteSubmitted=false;
     showPage('voting-page');
@@ -1900,30 +2258,184 @@ function openOnlineResults(){
         db.ref(`rooms/${gs.roomCode}/voteResult`).set({chosenIdx,chosenName,chosenIsSpy,outcome,spyNames,maxVotes,tally,eliminatedPlayers:newEliminated,playerNames:names,spyIndices,secretWord:gameData.secretWord,differentWord:gameData.differentWord||'',mode:gameData.mode,playerAvatars:gameData.playerAvatars||[]});
     });
 }
-function showOnlineVoteResults(result){
-    const{chosenIdx,chosenName,chosenIsSpy,outcome,spyNames,tally,eliminatedPlayers,playerNames,spyIndices,secretWord,differentWord,mode}=result;
-    gs.eliminatedPlayers=eliminatedPlayers||[];if(voteGameData)voteGameData._eliminatedPlayers=gs.eliminatedPlayers;
+
+// ══════════════ FIXED: ONLINE RESULTS WITH 10 SECOND COUNTDOWN ══════════════
+function showOnlineVoteResults(result) {
+    const {
+        chosenIdx, chosenName, chosenIsSpy, outcome, spyNames,
+        tally, eliminatedPlayers, playerNames, spyIndices,
+        secretWord, differentWord, mode, playerAvatars
+    } = result;
+    
+    gs.eliminatedPlayers = eliminatedPlayers || [];
+    if (voteGameData) voteGameData._eliminatedPlayers = gs.eliminatedPlayers;
+    
     showPage('online-results-page');
-    const container=document.getElementById('online-results-container');
-    let html='';
-    if(outcome==='civils_win'){
+    const container = document.getElementById('online-results-container');
+    
+    if (outcome === 'civils_win') {
         playSound('win');
-        html=`<div class="result-win-card"><div class="result-big-icon">🎉</div><div class="result-big-title">مەدەنیا سیخوڕ گرت!</div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:10px;"><div style="font-size:0.9rem;color:#555;">هەلبژارتی</div><div style="font-size:1.8rem;font-weight:bold;color:#00994d;">${chosenName} 🕵️</div></div></div>`;
-        html+='<div class="results-container">';
-        playerNames.forEach((name,idx)=>{const cnt=tally[idx]||0;const isSpy=spyIndices.includes(idx);const isElim=eliminatedPlayers.includes(idx);const rAv=getAvatarForIndex((result.playerAvatars||[])[idx]??idx);html+=`<div class="player-result" style="${isElim?'opacity:0.5;':''}"><div class="avatar-circle sm" style="background:${rAv.c};flex-shrink:0;">${rAv.e}</div><span>${isElim?'❌ ':''}${name}</span><span style="display:flex;align-items:center;gap:8px;"><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span>${isSpy?'<span class="spy-badge">سیخوڕ</span>':'<span class="civilian-badge">مەدەنی</span>'}</span></div>`;});
-        html+=`</div><div class="word-box"><div class="word-value">${secretWord}</div></div>`;
-    }else if(outcome==='spy_out_continue'){
-        html=`<div class="result-win-card" style="border-color:#ffcc00;"><div class="result-big-icon">✅</div><div class="result-big-title" style="color:#cc8800;">سیخوڕەک هاتە دەرکەفتن!</div><div style="font-size:1.1rem;color:#333;margin:8px 0;">یارییا بەردەوامە — سیخوڕ هێشتا مایە! ⚠️</div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:10px;"><div style="font-size:0.9rem;color:#555;">دەرکەفتی</div><div style="font-size:1.8rem;font-weight:bold;color:#cc8800;">${chosenName} 🕵️</div></div></div>`;
-        html+='<div class="results-container">';playerNames.forEach((name,idx)=>{const cnt=tally[idx]||0;const isElim=eliminatedPlayers.includes(idx);html+=`<div class="player-result" style="${isElim?'opacity:0.5;':''}"><span>${isElim?'❌ ':''}${name}</span><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span></div>`;});html+='</div>';
-        if(gs.isHost)html+=`<button class="btn btn-blue" onclick="startNextVotingRound()" style="margin-top:10px;">🗳️ دەنگدانەکا دی دەستپێبکە</button>`;
-        else html+=`<div style="text-align:center;padding:16px;color:#666;background:#f5f9ff;border-radius:30px;margin-top:10px;">⏳ چاڤەریێ هۆستێ بکەن بو دەنگدانەکا دی...</div>`;
-    }else{
-        html=`<div class="result-lose-card"><div class="result-big-icon">💀</div><div class="result-big-title">مەدەنی هاتە دەرکەفتن!</div><div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin-top:10px;"><div style="font-size:0.9rem;color:#555;">سیخوڕ ئەڤانە :</div><div style="font-size:1.8rem;font-weight:bold;color:#cc0000;">${spyNames}</div></div></div>`;
-        html+='<div class="results-container">';playerNames.forEach((name,idx)=>{const cnt=tally[idx]||0;const isSpy=spyIndices.includes(idx);const isElim=eliminatedPlayers.includes(idx);const rAv=getAvatarForIndex((result.playerAvatars||[])[idx]??idx);html+=`<div class="player-result" style="${isElim?'opacity:0.5;':''}"><div class="avatar-circle sm" style="background:${rAv.c};flex-shrink:0;">${rAv.e}</div><span>${isElim?'❌ ':''}${name}</span><span style="display:flex;align-items:center;gap:8px;"><span style="color:#666;font-size:0.9rem;">${cnt} دەنگ</span>${isSpy?'<span class="spy-badge">سیخوڕ</span>':'<span class="civilian-badge">مەدەنی</span>'}</span></div>`;});
-        html+=`</div><div class="word-box"><div class="word-value">${secretWord}</div></div>`;
+        container.innerHTML = `
+            <div class="result-win-card">
+                <div class="result-big-icon">🎉</div>
+                <div class="result-big-title">مەدەنیا سیخوڕ گرت!</div>
+                <div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin:15px 0;">
+                    <div style="font-size:0.9rem;color:#555;">دەرکرا:</div>
+                    <div style="font-size:2rem;font-weight:bold;color:#00994d;">${chosenName} 🕵️</div>
+                </div>
+            </div>
+        `;
     }
-    container.innerHTML=html;
+    else if (outcome === 'spy_out_continue') {
+        container.innerHTML = `
+            <div class="result-win-card" style="border-color:#ffcc00;">
+                <div class="result-big-icon">✅</div>
+                <div class="result-big-title" style="color:#cc8800;">سیخوڕێک دەرکرا!</div>
+                <div style="font-size:1.2rem;color:#333;margin:10px 0;">
+                    هێشتا ${spyIndices.filter(i => !eliminatedPlayers.includes(i)).length} سیخوڕ ماوە!
+                </div>
+                <div class="continue-disc-banner" id="continueBanner">
+                    <div>⏳ 10 چرکە دووبارە گفتوگۆ...</div>
+                    <div class="cdb-count" id="continueCountdown">10</div>
+                </div>
+            </div>
+        `;
+        
+        // 10 second countdown for ALL players
+        let countdown = 10;
+        const countdownInterval = setInterval(() => {
+            countdown--;
+            const cdEl = document.getElementById('continueCountdown');
+            if (cdEl) cdEl.textContent = countdown;
+            
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                
+                const updatedGameData = Object.assign({}, voteGameData, {
+                    _eliminatedPlayers: eliminatedPlayers,
+                    playerNames: playerNames,
+                    spyIndices: spyIndices,
+                    secretWord: secretWord,
+                    differentWord: differentWord,
+                    mode: mode,
+                    playerAvatars: playerAvatars
+                });
+                
+                stopVoiceChat();
+                openDiscussionPage(updatedGameData);
+            }
+        }, 1000);
+    }
+    else { // civil_out
+        container.innerHTML = `
+            <div class="result-lose-card">
+                <div class="result-big-icon">💀</div>
+                <div class="result-big-title">مەدەنی دەرکرا!</div>
+                <div style="background:rgba(0,0,0,0.08);border-radius:20px;padding:12px;margin:15px 0;">
+                    <div style="font-size:0.9rem;color:#555;">سیخوڕەکان:</div>
+                    <div style="font-size:2rem;font-weight:bold;color:#cc0000;">${spyNames}</div>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Add results list
+    let resultsHtml = '<div class="results-container">';
+    playerNames.forEach((name, idx) => {
+        const cnt = tally[idx] || 0;
+        const isSpy = spyIndices.includes(idx);
+        const isElim = eliminatedPlayers.includes(idx);
+        const av = getAvatarForIndex((playerAvatars || [])[idx] || idx);
+        
+        resultsHtml += `
+            <div class="player-result" style="${isElim ? 'opacity:0.5;' : ''}">
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <div class="avatar-circle sm" style="background:${av.c};">${av.e}</div>
+                    <span>${isElim ? '❌ ' : ''}${name}</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <span style="color:#666;">${cnt} دەنگ</span>
+                    ${isSpy ? '<span class="spy-badge">سیخوڕ</span>' : '<span class="civilian-badge">مەدەنی</span>'}
+                </div>
+            </div>
+        `;
+    });
+    resultsHtml += '</div>';
+    
+    if (mode === 1) {
+        resultsHtml += `<div class="word-box"><div class="word-value">${secretWord}</div></div>`;
+    } else {
+        resultsHtml += `
+            <div class="word-box"><div class="word-value">${secretWord}</div></div>
+            <div class="word-box"><div class="word-value-different">${differentWord}</div></div>
+        `;
+    }
+    
+    container.innerHTML += resultsHtml;
 }
+
+// ══════════════ FIXED: PLAY AGAIN ONLINE ══════════════
+function playAgainOnline() {
+    clearInterval(voteTimerInterval);
+    gs.eliminatedPlayers = [];
+    gs.currentRound = 1;
+    gs.spiesEliminated = 0;
+    
+    if (!gs.roomCode) return;
+    
+    stopVoiceChat();
+    _discChatAttached = false;
+    
+    if (gs.isHost) {
+        const updates = {
+            status: 'waiting',
+            gameData: null,
+            gameState: null,
+            votes: null,
+            voteResult: null,
+            votingRound: null,
+            discussionDone: null,
+            continueToDiscussion: null,
+            playAgainSignal: { active: true, ts: Date.now() }
+        };
+        
+        db.ref(`rooms/${gs.roomCode}`).update(updates).then(() => {
+            db.ref(`rooms/${gs.roomCode}/players`).once('value', (snap) => {
+                snap.forEach(child => {
+                    db.ref(`rooms/${gs.roomCode}/players/${child.key}`).update({
+                        ready: false,
+                        wantPlayAgain: false
+                    });
+                });
+            });
+            
+            db.ref(`rooms/${gs.roomCode}/discussionChat`).remove();
+            returnToLobbyAfterGame();
+        });
+    } else {
+        returnToLobbyAfterGame();
+    }
+}
+
+function returnToLobbyAfterGame() {
+    stopVoiceChat();
+    _discChatAttached = false;
+    
+    document.getElementById('lobby-title').textContent = '🏠 ژوورا یاریێ';
+    document.getElementById('room-code-display').textContent = formatRoomCode(gs.roomCode);
+    document.getElementById('host-controls').classList.toggle('hidden', !gs.isHost);
+    
+    const chatBox = document.getElementById('chatBox');
+    if (chatBox) chatBox.innerHTML = '';
+    
+    const discChatBox = document.getElementById('discChatBox');
+    if (discChatBox) discChatBox.innerHTML = '';
+    
+    _discChatAttached = false;
+    
+    showPage('online-lobby-page');
+}
+
 function startNextVotingRound(){
     if(!gs.isHost)return;
     db.ref(`rooms/${gs.roomCode}/voteResult`).set(null).then(()=>{
@@ -1933,40 +2445,15 @@ function startNextVotingRound(){
         startVotingPhase(voteGameData);
     });
 }
-function playAgainOnline(){
-    clearInterval(voteTimerInterval);gs.eliminatedPlayers=[];gs.currentRound=1;gs.spiesEliminated=0;
-    try{sessionStorage.removeItem('sikhur_room');}catch(e){}
-    if(!gs.roomCode)return;
-    db.ref(`rooms/${gs.roomCode}/players/${myPlayerId}`).update({wantPlayAgain:true,ready:false});
-    db.ref(`rooms/${gs.roomCode}/players`).get().then(snap=>{
-        let total=0,wantCount=0;snap.forEach(c=>{total++;if(c.val().wantPlayAgain)wantCount++;});
-        if(wantCount>=total&&gs.isHost){
-            db.ref(`rooms/${gs.roomCode}`).update({status:'waiting',gameData:null,gameState:null,votes:null,voteResult:null,votingRound:null,discussionDone:null,discussionChat:null});
-            snap.forEach(child=>{db.ref(`rooms/${gs.roomCode}/players/${child.key}`).update({ready:false,wantPlayAgain:false});});
-        }
-    });
-}
-function returnToLobbyAfterGame(){
-    _discChatAttached=false;
-    document.getElementById('lobby-title').textContent='🏠 ژوورا یاریێ';
-    document.getElementById('room-code-display').textContent=formatRoomCode(gs.roomCode);
-    document.getElementById('host-controls').classList.toggle('hidden',!gs.isHost);
-    document.getElementById('chatBox').innerHTML='';
-    showPage('online-lobby-page');
-}
 
-// ══════════════════════════════
-//  CHAT
-// ══════════════════════════════
+// ══════════════ CHAT ══════════════
 function sendMsg(){
     const inp=document.getElementById('chatInput');const txt=inp.value.trim();
     if(!txt||!gs.roomCode)return;inp.value='';
     db.ref(`rooms/${gs.roomCode}/chat`).push({senderId:myPlayerId,name:gs.myNickname,text:txt,type:'chat',ts:Date.now()});
 }
 
-// ══════════════════════════════
-//  LEADERBOARD
-// ══════════════════════════════
+// ══════════════ LEADERBOARD ══════════════
 async function openLeaderboard(from){
     _leaderboardFrom=from||'home-page';showPage('leaderboard-page');
     const container=document.getElementById('leaderboard-container');
@@ -1991,9 +2478,7 @@ async function openLeaderboard(from){
 }
 function goBackFromLeaderboard(){showPage(_leaderboardFrom||'home-page');}
 
-// ══════════════════════════════
-//  HOW TO PLAY
-// ══════════════════════════════
+// ══════════════ HOW TO PLAY ══════════════
 function showHowToPlayOptions(){document.getElementById('how-to-play-modal').classList.remove('hidden');}
 function closeHowToPlayOptions(){document.getElementById('how-to-play-modal').classList.add('hidden');}
 function showHowToPlayInstructions(mode){
@@ -2005,9 +2490,7 @@ function showHowToPlayInstructions(mode){
 }
 function closeHowToPlayInstructions(){document.getElementById('how-to-play-instructions-modal').classList.add('hidden');}
 
-// ══════════════════════════════
-//  SOUND
-// ══════════════════════════════
+// ══════════════ SOUND ══════════════
 function playSound(type){
     try{
         const ctx=new(window.AudioContext||window.webkitAudioContext)();
@@ -2020,9 +2503,7 @@ function playSound(type){
     }catch(e){}
 }
 
-// ══════════════════════════════
-//  INIT
-// ══════════════════════════════
+// ══════════════ INIT ══════════════
 document.addEventListener('DOMContentLoaded',()=>{
     setupJoinBoxes();setupVcBoxes();
     showPage('auth-page');
@@ -2042,9 +2523,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     setTimeout(()=>{const t=document.getElementById('welcomeToast');if(t)t.remove();},5000);
 });
 
-// ══════════════════════════════
-//  GLOBAL EXPORTS
-// ══════════════════════════════
+// ══════════════ GLOBAL EXPORTS ══════════════
 Object.assign(window,{
     switchAuthTab,doLogin,doSignup,doGoogleLogin,doSignOut,confirmPickedNickname,
     submitVerifyCode,resendVerificationEmail,cancelVerification,
@@ -2055,7 +2534,7 @@ Object.assign(window,{
     copyRoomCode,setOnlineMode,startOnlineGame,leaveRoom,markReady,
     nextPlayerAction,revealOfflineCard,goToRevealPage,showFinalResults,playAgain,
     submitVote,openOnlineResults,playAgainOnline,startNextVotingRound,
-    sendDiscMsg,hostStartVoting,toggleDiscMic,
+    sendDiscMsg,hostStartVoting,toggleDiscMic,startVoiceChat,stopVoiceChat,
     showHowToPlayOptions,closeHowToPlayOptions,showHowToPlayInstructions,closeHowToPlayInstructions,
     sendMsg,selectCategory,renderCategoryBtns,openDiscussionPage,
 });
